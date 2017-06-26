@@ -48,9 +48,9 @@ villagers.trade = {
 	}, 
 	
 	field = {
-		{"farming:wheat", "villagers:coins 1"}
-		{"farming:cotton", "villagers:coins 1"}
-		{"default:dirt", "villagers:coins 1"}
+		{"farming:wheat", "villagers:coins 1"},
+		{"farming:cotton", "villagers:coins 1"},
+		{"default:dirt", "villagers:coins 1"},
 		{"default:clay", "villagers:coins 1"}
 	}, 
 	
