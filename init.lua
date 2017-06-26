@@ -1548,6 +1548,26 @@ local function tradeVillager(self, player)
 
 end
 
+local function setTradeInventory(self, trading_type)
+	--[[
+	local all_available_items = copytable(villagers.trade[self.vType])
+	
+	local item_count = math.random(#all_available_items)
+	if self.vType == "" then
+		
+	else
+		item_count =  #all_available_items
+	end
+
+
+	while( item_count > 0 ) do
+		local index_to_pop = math.random(item_count)
+		local popped_item = table.remove(all_available_items, index_to_pop)
+		table.insert(self.vSell, popped_item)
+		item_count = item_count - 1
+	end
+	--]]
+end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	
@@ -2168,6 +2188,10 @@ local function spawnVillager(pos, building_type, region)
 	
 	-- position of nodemeta for inventory trading
 	luaEntity.vNodeMetaPos = {x=pos.x, y=luaEntity.vTargetHeight-1, z=pos.z}
+	
+	-- generate list of items this villager will trade depending on building_type
+	-- setTradeInventory(luaEntity, "sell")
+	-- setTradeInventory(luaEntity, "buy")
 	
 	--set a random default yaw and facing direction
 	local random_num = math.random(8)
