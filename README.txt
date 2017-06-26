@@ -2,8 +2,12 @@ VILLAGERS
 
 BY:             ErrorNull
 DESCRIPTION:    Villagers for Minetest
-VERSION:        0.12
+VERSION:        0.13
 LICENCE:        WTFPL
+
+REQUIRES: Sokomine's mg_villages mod.
+Github - https://github.com/Sokomine/mg_villages
+Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
 CHANGELOG:
 
