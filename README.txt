@@ -9,6 +9,16 @@ REQUIRES: Sokomine's mg_villages mod.
 Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
+CHAT COMMANDS:
+
+/villager <region> <building type>
+
+<region> are the climate/region types that dictate villager ethnicity and clothing style: hot, cold, normal, native, desert
+
+<building type> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco, empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
+
+Example: /villager cold tower
+
 CHANGELOG:
 
 v0.13
