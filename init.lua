@@ -10,7 +10,8 @@ dofile(modpaths.."/trading.lua")
 
 local log = false	--debug actions
 local log2 = false	--debug chatting
-local log3 = true 	--debug textures
+local log3 = false 	--debug textures
+local log4 = false	--debug trading
 
 
 -- ============================================ CONSTANTS =================================================
@@ -132,7 +133,7 @@ end
 -- ========================================================================================================
 -- Generate villager attributes and appearance after spawning
 
--- visual sized of villager entity based on villager's age
+-- villager entity's visual size based on age
 local VISUAL_SIZES = {
 	male = {
 		young = {0.50, 0.65, 0.80}, 
@@ -146,56 +147,66 @@ local VISUAL_SIZES = {
 	}
 }
 
--- these are all the same exact textures for now
--- will make variations soon
-local BODY_TEXTURES = { "body_01.png", "body_02.png", "body_03.png" }
-local LOWER_TEXTURES = { "body_01.png", "body_02.png", "body_03.png" }
+local REGION_TYPES = { "hot", "cold", "normal", "navtive", "desert" }
 
-local STRAPS = {
-	"strap_01.png", "strap_02.png", "strap_03.png", 
-	"strap_04.png", "strap_05.png", "strap_06.png" 
-}
-
-local BACKPACKS = {
-	"backpack_01.png", "backpack_02.png", "backpack_03.png",
-	"backpack_04.png", "backpack_05.png", "backpack_06.png"
-}
-
-local SWORDS = { "sword_01.png", "sword_01.png", "sword_01.png", "sword_01.png" }
-
-local HAIR = {
-	male = {
-		"hair_male_02.png", "hair_male_03.png", "hair_male_04.png", "hair_male_05.png", "hair_male_06.png", 
-		"hair_male_07.png", "hair_male_08.png", "hair_male_09.png", "hair_male_11.png", "hair_male_13.png", 
-		"hair_male_14.png", "hair_male_18.png", "hair_male_20.png", "hair_male_21.png", "hair_male_22.png"
-	},
+--[[
+local function getClimateData(pos)
+	object_pos = vector.round({x=pos.x,y=pos.y,z=pos.z})
 	
-	female = {
-		"hair_female_00.png", "hair_female_02.png", "hair_female_03.png", "hair_female_04.png", "hair_female_05.png", 
-		"hair_female_06.png", "hair_female_07.png", "hair_female_08.png", "hair_female_09.png", "hair_female_10.png", 
-		"hair_female_11.png", "hair_female_12.png", "hair_female_13.png", "hair_female_14.png", "hair_female_15.png", 
-		"hair_female_16.png", "hair_female_17.png", "hair_female_18.png", "hair_female_20.png", "hair_female_21.png", 
-		"hair_female_22.png", "hair_female_23.png", "hair_female_27.png", "hair_female_28.png", "hair_female_28.png", 
-		"hair_female_29.png", "hair_female_30.png", "hair_female_31.png", "hair_female_32.png"
-	},
+	local noise
 	
-	male_old = { 
-		"hair_male_old_01.png", "hair_male_old_02.png", "hair_male_old_03.png", "hair_male_old_04.png",
-		"hair_male_old_05.png", "hair_male_old_06.png"
-	},
+	noise = minetest.get_perlin(35293, 1, 0, 500):get2d({x=object_pos.x,y=object_pos.z})
+	local temperature = round((noise * 100) + 100, 1)
 	
-	female_old = { 
-		"hair_female_old_01.png", "hair_female_old_02.png", "hair_female_old_03.png", "hair_female_old_04.png",
-		"hair_female_old_05.png", "hair_female_old_06.png"
-	}
-}
+	noise = minetest.get_perlin(12094, 2, 0.6, 750):get2d({x=object_pos.x,y=object_pos.z})
+	local humidity = round(noise * 100, 1)
+	return {temperature, humidity}
+end
+minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+	local climateData = getClimateData(pos)
+	local temperature = climateData[1]
+	local humidity = climateData[2]
+	
+	print("## temperature="..temperature.." humidity="..humidity)
+end)
+--]]
 
-local function getVillagerName(gender, subtype)
+local function setRegionType(pos)
+
+	local curr_pos
+	local node_names = {}
+	local radius_limit = 10
+	
+	-- save the names of nodes originating from pos and out
+	-- in 8 directions and stopping at radium_limit 
+	for dir_index = 1, #DIRECTIONS do
+		local direction = DIRECTIONS[dir_index]
+		curr_pos = {x=pos.x, y=pos.y, z=pos.z}
+		for rad_index = 1, radius_limit do
+			curr_pos.x = curr_pos.x + (NODE_AREA[direction][1] * rad_index)
+			curr_pos.z = curr_pos.z + (NODE_AREA[direction][2] * rad_index)
+			table.insert(node_names, minetest.get_node(curr_pos).name)
+		end
+	end
+	  
+	local sorted_nodes = {}
+	table.insert(sorted_nodes, table.remove(node_names))
+	for i = 1, #node_names do
+		
+	end
+	
+end
+
+minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
+	--setRegionType(pos)
+end)
+
+local function getVillagerName(gender, region)
 	local name
-	if subtype then
-		local name_category = gender.."_"..subtype
-		local random_index = math.random(#villagers.names[name_category])
-		name = villagers.names[name_category][random_index]
+	if region then
+		local subgroup = gender.."_"..region
+		local random_index = math.random(#villagers.names[subgroup])
+		name = villagers.names[subgroup][random_index]
 	else
 		local random_index = math.random(#villagers.names[gender])
 		name = villagers.names[gender][random_index]
@@ -328,7 +339,6 @@ local function getVillagerAppearance(building_type, region, gender, age)
 		final_texture = final_texture .. "^("..extra_back_texture..")"
 	end
 
-	
 	-- determine visual_size
 	local sizes = VISUAL_SIZES[gender][age]
 	local new_size = sizes[math.random(#sizes)]
@@ -341,7 +351,6 @@ local function getVillagerAppearance(building_type, region, gender, age)
 	
 	return final_texture, new_size, new_collision_box
 	
-
 end
 
 
@@ -1057,7 +1066,7 @@ local function showMessageBubble(self, player, message_text, message_location, c
 			nameAndTitleString = nameAndTitleString .. "(lumberjack) ~"
 			
 		elseif self.vType == "mill" or self.vType == "sawmill" then
-			nameAndTitleString = nameAndTitleString .. "(millworker) ~"
+			nameAndTitleString = nameAndTitleString .. "(mill owner) ~"
 			
 		elseif self.vType == "school" then
 			if self.vAge == "young" then
@@ -1080,6 +1089,20 @@ local function showMessageBubble(self, player, message_text, message_location, c
 			
 		elseif self.vType == "trader" then
 			nameAndTitleString = nameAndTitleString .. "(trader) ~"
+		
+		-- village towntest mod
+		elseif self.vType == "castle" then
+			nameAndTitleString = nameAndTitleString .. "(royalty) ~"
+			
+		-- village gambit mod
+		elseif self.vType == "hotel" then
+			nameAndTitleString = nameAndTitleString .. "(hotel owner) ~"
+			
+		elseif self.vType == "pub" then
+			nameAndTitleString = nameAndTitleString .. "(pub owner) ~"
+			
+		elseif self.vType == "stable" then
+			nameAndTitleString = nameAndTitleString .. "(stable owner) ~"	
 			
 		else
 			nameAndTitleString = nameAndTitleString .. " ~"
@@ -1526,7 +1549,7 @@ local function getTradingFormspec(self, player)
 end
 
 local function tradeVillager(self, player)
-	io.write("trade() ")
+	if log4 then io.write("trade() ") end
 	self.vAction = "TRADE"
 	
 	-- formspec was already displayed and villager is currently trading
@@ -1558,8 +1581,6 @@ local function setTradeInventory(self, trading_type)
 	else
 		item_count =  #all_available_items
 	end
-
-
 	while( item_count > 0 ) do
 		local index_to_pop = math.random(item_count)
 		local popped_item = table.remove(all_available_items, index_to_pop)
@@ -1824,7 +1845,7 @@ minetest.register_entity("villagers:villager", {
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		
 		-- debugging
-		--print("\n## "..self.vTextureString.."\n")
+		if log3 then print("\n## "..self.vTextureString.."\n") end
 		
 		local current_action = self.vAction
 		if log then io.write("vAction="..current_action.." ") end
@@ -2092,30 +2113,30 @@ local function spawnVillager(pos, building_type, region)
 	
 	-- SPAWN THE ACTUAL VILLAGER ENTITY!!!!
 	local objectRef = minetest.add_entity(pos, "villagers:villager")
-	local luaEntity = objectRef:get_luaentity()
+	local self = objectRef:get_luaentity()
 	
 	--get GENDER and save to 'vGender' object custom field
 	local gender = "male"
 	if math.random(villagers.plots[building_type].female) == 1 then
 		gender = "female"
 	end
-	luaEntity.vGender = gender
+	self.vGender = gender
 	
 	--get AGE and save to 'vAge' object custom field
 	local age_chance = villagers.plots[building_type].age
 	local age = age_chance[math.random(#age_chance)]
-	luaEntity.vAge = age
+	self.vAge = age
 	
 	--get NAME and save to 'vName' object custom field
 	if region == "native" then
-		luaEntity.vName = getVillagerName(gender, region)
+		self.vName = getVillagerName(gender, region)
 	elseif region == "desert" then
-		luaEntity.vName = getVillagerName(gender, region)
+		self.vName = getVillagerName(gender, region)
 	else
 		if age == "young" then
-			luaEntity.vName = getVillagerName(gender, age)
+			self.vName = getVillagerName(gender, age)
 		else
-			luaEntity.vName = getVillagerName(gender)
+			self.vName = getVillagerName(gender)
 		end
 	end
 	
@@ -2125,7 +2146,7 @@ local function spawnVillager(pos, building_type, region)
 	objectRef:set_properties({visual_size={x=newSize,y=newSize}})
 	objectRef:set_properties({collisionbox=collisionBox})	
 	objectRef:set_properties({infotext=
-		luaEntity.vName.." ("..building_type..")\n"..
+		self.vName.." ("..building_type..")\n"..
 		age.." "..gender.."\n"..
 		region.." region"
 	})	
@@ -2147,28 +2168,28 @@ local function spawnVillager(pos, building_type, region)
 	--]]
 		
 	local pos = objectRef:getpos()
-	luaEntity.vSpawnHeight = pos.y
-	luaEntity.vTargetHeight = luaEntity.vSpawnHeight - 0.5
+	self.vSpawnHeight = pos.y
+	self.vTargetHeight = self.vSpawnHeight - 0.5
 	
 	--set final position that takes into account calc'd collision_box 
 	-- that was based on dynamic visual_size
 	pos.y = pos.y - (1-newSize)
 	objectRef:setpos(pos)
-	luaEntity.vPos = {x=pos.x,y=pos.y,z=pos.z}
-	luaEntity.vOriginPos = {x=pos.x,y=pos.y,z=pos.z}
-	luaEntity.vTargetPos = {x=pos.x, y=luaEntity.vTargetHeight, z=pos.z}
+	self.vPos = {x=pos.x,y=pos.y,z=pos.z}
+	self.vOriginPos = {x=pos.x,y=pos.y,z=pos.z}
+	self.vTargetPos = {x=pos.x, y=self.vTargetHeight, z=pos.z}
 	
 	-- randomly set how often in seconds that this villager will
 	-- check to do a different action
-	luaEntity.vActionFrequency = math.random(4,6)
+	self.vActionFrequency = math.random(4,6)
 	
 	--overlay applied entity new properties to custom fields
 	local prop = objectRef:get_properties()
-	luaEntity.vTexture = prop.textures[1]
-	luaEntity.vSize = prop.visual_size
-	luaEntity.vBox = prop.collisionbox
-	luaEntity.vType = building_type
-	luaEntity.vRegion = region
+	self.vTexture = prop.textures[1]
+	self.vSize = prop.visual_size
+	self.vBox = prop.collisionbox
+	self.vType = building_type
+	self.vRegion = region
 	
 	-- copy chat dialogue scripts from villagers.chat global var
 	-- and save it into villager entity for more quicker access
@@ -2177,37 +2198,37 @@ local function spawnVillager(pos, building_type, region)
 	local copy_of_chat_scripts = copytable(villagers.chat[building_type].mainchat)
 	local copy_of_gtg_scripts = copytable(villagers.chat.gtg)
 	local copy_of_smalltalk_scripts = copytable(villagers.chat.smalltalk)
-	getRandomChatText(luaEntity, copy_of_hi_scripts, "vScriptHi", 3)
-	getRandomChatText(luaEntity, copy_of_bye_scripts, "vScriptBye", 3)
-	getRandomChatText(luaEntity, copy_of_chat_scripts, "vScriptMain", 3)
-	getRandomChatText(luaEntity, copy_of_gtg_scripts, "vScriptGtg", 3)
-	getRandomChatText(luaEntity, copy_of_smalltalk_scripts, "vScriptSmalltalk", 3)
+	getRandomChatText(self, copy_of_hi_scripts, "vScriptHi", 3)
+	getRandomChatText(self, copy_of_bye_scripts, "vScriptBye", 3)
+	getRandomChatText(self, copy_of_chat_scripts, "vScriptMain", 3)
+	getRandomChatText(self, copy_of_gtg_scripts, "vScriptGtg", 3)
+	getRandomChatText(self, copy_of_smalltalk_scripts, "vScriptSmalltalk", 3)
 	
 	-- use for villager trading with formspec formhandler callback
-	luaEntity.vID = luaEntity.vName .. tostring(math.random(9999))
+	self.vID = self.vName .. tostring(math.random(9999))
 	
 	-- position of nodemeta for inventory trading
-	luaEntity.vNodeMetaPos = {x=pos.x, y=luaEntity.vTargetHeight-1, z=pos.z}
+	self.vNodeMetaPos = {x=pos.x, y=self.vTargetHeight-1, z=pos.z}
 	
 	-- generate list of items this villager will trade depending on building_type
-	-- setTradeInventory(luaEntity, "sell")
-	-- setTradeInventory(luaEntity, "buy")
+	-- setTradeInventory(self, "sell")
+	-- setTradeInventory(self, "buy")
 	
 	--set a random default yaw and facing direction
 	local random_num = math.random(8)
 	objectRef:setyaw(YAWS[random_num])
-	luaEntity.vYaw = objectRef:getyaw()
-	luaEntity.vFacingDirection = DIRECTIONS[random_num]
+	self.vYaw = objectRef:getyaw()
+	self.vFacingDirection = DIRECTIONS[random_num]
 	
-	luaEntity.object:set_animation(
-		{x=luaEntity.animation["stand_start"], y=luaEntity.animation["stand_end"]},
-		luaEntity.animation_speed + math.random(10)
+	self.object:set_animation(
+		{x=self.animation["stand_start"], y=self.animation["stand_end"]},
+		self.animation_speed + math.random(10)
 	)
 
 	-- debugging
-	luaEntity.vTextureString = newTexture
+	self.vTextureString = newTexture
 
-	return luaEntity
+	return self
 	
 end
 
@@ -2227,23 +2248,20 @@ local function validateBuildingType(building_type)
 	end
 	
 	if is_valid then
-		-- building_type was valid, so return that back
 		return building_type
 	else
-		local bTypes = {}
-		for key,_ in pairs(villagers.plots) do
-			table.insert(bTypes, key)
+		if building_type then
+			print("## Invalid building type: "..region..". Set to ALLMENDE.")
+		else
+			print("## No building type specified. Set to ALLMENDE.")
 		end
-		
-		local random_btype = bTypes[math.random(#bTypes)]
-		return random_btype
+		return "allmende"
 	end
 end
 
 -- for use by chat command to manually spawn a villager
 local function validateRegion(region)
 
-	local REGION_TYPES = { "hot", "cold", "normal", "desert", "native" }
 	local is_valid = false
 	if region then
 		for i=1, #REGION_TYPES do
@@ -2254,39 +2272,44 @@ local function validateRegion(region)
 	end
 	
 	if is_valid then
-		-- building_type was valid, so return that back
 		return region
 	else
 		if region then
-			--print("  REGION INVALID: "..region..". Getting random one..")
+			print("## Invalid region: "..region..". Set to NORMAL.")
 		else
-			--print("  REGION is NIL. Getting random one..")
+			print("## Region not specified. Set to NORMAL.")
 		end
-		
-		local random_region = REGION_TYPES[math.random(#REGION_TYPES)]
-		return random_region
+		return "normal"
 	end
 end
 
 -- manually spawn villager via chat command. mostly for testing.
-minetest.register_chatcommand("v", {
-	params = "<building_type> <region>",
+minetest.register_chatcommand("villagers", {
+	params = "<region> <building_type>",
 	description = "Spawn Villager",
 	privs = {},	
 	func = function(name, param)
 		
-		local admin = minetest.check_player_privs(name, {server=true})
-		if admin then
+		--local admin = minetest.check_player_privs(name, {server=true})
+		--if admin then
 			local player = minetest.get_player_by_name(name)
 			local entity_name = "villagers:villager"
-			local pos = player:getpos()
-			pos.y = pos.y + 1.0
+			local pos = vector.round(player:getpos())
+			pos.y = pos.y + 0.5
 			
 			local params = string.split(param, " ")	
-			spawnVillager(pos, entity_name, validateBuildingType(params[1]), validateRegion(params[2]))
-		else
-			--print(" ERROR - Must be admin to run command.")
-		end
+			local region_type = validateRegion(params[1])
+			local building_type = validateBuildingType(params[2])
+			
+			-- spawn the villager
+			local luaentity = spawnVillager(pos, building_type, region_type)
+			
+			-- setup preliminary trading interface
+			local meta = minetest.get_meta(luaentity.vNodeMetaPos)
+			local inv = meta:get_inventory()
+			inv:set_size("main", 9)
+			
+		--else minetest.chat_send_player(name, "ERROR. Must be admin to spawn villager.") end
 	end,
 })
 
@@ -2554,20 +2577,20 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 				local spwan_pos_str = minetest.pos_to_string(spawn_pos,1)
 				
 				-- spawn the actual villager entity
-				local luaEntity = spawnVillager(spawn_pos, building_data.typ , region_type)
-				
-				-- everything below is just for debug output -------
+				local luaEntity = spawnVillager(spawn_pos, building_data.typ, region_type)
 				local vName = luaEntity.vName
+				
+				
+				--[[ debug output -------
 				local vPosStr = minetest.pos_to_string(luaEntity.vPos,1)
 				local vOriginPosStr = minetest.pos_to_string(luaEntity.vOriginPos,1)
-				
 				local target_pos = {x=luaEntity.vTargetPos.x, y=luaEntity.vTargetPos.y, z=luaEntity.vTargetPos.z}
 				local vTargetPosStr = minetest.pos_to_string(target_pos, 1)
 				target_pos.y = target_pos.y - 1
 				local nodename = getNodeName(target_pos)[2]
-				
-				--io.write("## SPAWNED on "..nodename.." ## "..vName.." ")
-				--io.write("actualPos"..vPosStr.." origin"..vOriginPosStr.." target"..vTargetPosStr.." ")
+				io.write("## SPAWNED on "..nodename.." ## "..vName.." ")
+				io.write("actualPos"..vPosStr.." origin"..vOriginPosStr.." target"..vTargetPosStr.." ")
+				--]]
 				
 				-- preliminary code for villager trading behavior
 				minetest.after(3, function() 
@@ -2584,7 +2607,6 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 			else
 				--io.write("\n      Giving up spawn posistion search...")
 			end
-			
 			
 		end
 		
