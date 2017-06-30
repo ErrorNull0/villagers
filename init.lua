@@ -2372,15 +2372,15 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 		
 		-- for each bed in the building
 		for bed_index = 1, beds_count do
-			io.write("\n    spawn_pos #"..bed_index.." ")		
+			--io.write("\n    spawn_pos #"..bed_index.." ")		
 			local mob_spawner_data = handle_schematics.get_pos_in_front_of_house(building_data, bed_index)
 			local mob_spawner_pos = {x=mob_spawner_data.x, y=mob_spawner_data.y, z=mob_spawner_data.z}
-			io.write(minetest.pos_to_string(mob_spawner_pos).." ")
+			--io.write(minetest.pos_to_string(mob_spawner_pos).." ")
 			
 			-- if any trader has already spawned for this building AND a villager already
 			-- spawned in that specific spawn location 'bed_index' then skip.
 			if building_data.traders and building_data.traders[bed_index] then
-				io.write(building_data.traders[bed_index].." already spawned @ "..minetest.pos_to_string(mob_spawner_pos).." ")
+				--io.write(building_data.traders[bed_index].." already spawned @ "..minetest.pos_to_string(mob_spawner_pos).." ")
 				
 			-- villager not yet spawned
 			else
@@ -2393,19 +2393,19 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 						local distance =  math.floor(vector.distance(player:getpos(), mob_spawner_pos) * 10 + 0.5) / 10
 						if distance < 50 then 
 							players_in_range = players_in_range + 1
-							io.write("PlayerInRange ")
+							--io.write("PlayerInRange ")
 						else
-							io.write("PlayerOutOfRange ")
+							--io.write("PlayerOutOfRange ")
 						end
 					else
-						io.write("PlayerDespawned ")
+						--io.write("PlayerDespawned ")
 					end
 						
 				end
 				
 				-- no players are near the mob spawner location. skip spawn.
 				if players_in_range == 0 then 
-					io.write("No players in range of spawn location: "..minetest.pos_to_string(mob_spawner_pos).." ")
+					--io.write("No players in range of spawn location: "..minetest.pos_to_string(mob_spawner_pos).." ")
 					
 				-- at least one player is near the spawn location. continue spawn.
 				else
@@ -2423,7 +2423,7 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 					-- spawn the villager
 					mob_spawner_pos.y = mob_spawner_pos.y + 0.5
 					local luaEntity = spawnVillager(mob_spawner_pos, building_type, region_type, mob_spawner_data.yaw)
-					io.write("** SPAWNED!! "..luaEntity.vName.." "..luaEntity.vGender.." "..luaEntity.vAge.." ")
+					--io.write("** SPAWNED!! "..luaEntity.vName.." "..luaEntity.vGender.." "..luaEntity.vAge.." ")
 					
 					minetest.after(3, function() 
 						-- node metadata for trading inventory
@@ -2447,14 +2447,14 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 			
 		end
 	else
-		io.write("notLivingStructure ")
+		--io.write("notLivingStructure ")
 	end
 
 end
 
 local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_type)
 	--io.write("\n    spawnVillagerOnNonResidential().. ")
-	io.write("\n    ")
+	--io.write("\n    ")
 				
 		local function getDistance(pos1, pos2)			
 			local mult = 10
@@ -2570,22 +2570,22 @@ local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_typ
 		end
 		
 		local bpos_str = minetest.pos_to_string({x=bpos.x, y=bpos.y, z=bpos.z})
-		io.write("spawn_pos #1 "..bpos_str.." ")
+		--io.write("spawn_pos #1 "..bpos_str.." ")
 		
 		-- skip spawn if villager already spawned previously
 		if villagerAlreadySpawned() then
-			io.write(existing_villager_name.." already spawned @ "..bpos_str.." ")
+			--io.write(existing_villager_name.." already spawned @ "..bpos_str.." ")
 		
 		-- skip spawn if this building location is not a building plot (eg road, street)
 		elseif notBuildingLocation() then 
-			io.write("Not a building plot: "..bpos_str.." ")
+			--io.write("Not a building plot: "..bpos_str.." ")
 			
 		-- skip spawn if this building location is too far away from player
 		elseif locationOutOfRange() then
-			io.write("Distance to "..building_data.typ.." "..bpos_str.." too far. ")
+			--io.write("Distance to "..building_data.typ.." "..bpos_str.." too far. ")
 			
 		else
-			io.write("Location OK so far. "..bpos_str.." ")
+			--io.write("Location OK so far. "..bpos_str.." ")
 			
 			local validSpawnPosFound = false
 			local valid_spawn_pos
@@ -2609,7 +2609,7 @@ local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_typ
 			end
 			
 			if validSpawnPosFound then
-				io.write("VALID SPAWN POS FOUND! ")
+				--io.write("VALID SPAWN POS FOUND! ")
 				
 				-- calculate villager spawn position
 				local spawn_pos = {x=valid_spawn_pos[1], y=bpos.y+1.5, z=valid_spawn_pos[2]}
@@ -2618,18 +2618,6 @@ local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_typ
 				-- spawn the actual villager entity
 				local luaEntity = spawnVillager(spawn_pos, building_data.typ, region_type)
 				local vName = luaEntity.vName
-				
-				
-				--[[ debug output -------
-				local vPosStr = minetest.pos_to_string(luaEntity.vPos,1)
-				local vOriginPosStr = minetest.pos_to_string(luaEntity.vOriginPos,1)
-				local target_pos = {x=luaEntity.vTargetPos.x, y=luaEntity.vTargetPos.y, z=luaEntity.vTargetPos.z}
-				local vTargetPosStr = minetest.pos_to_string(target_pos, 1)
-				target_pos.y = target_pos.y - 1
-				local nodename = getNodeName(target_pos)[2]
-				io.write("## SPAWNED on "..nodename.." ## "..vName.." ")
-				io.write("actualPos"..vPosStr.." origin"..vOriginPosStr.." target"..vTargetPosStr.." ")
-				--]]
 				
 				-- preliminary code for villager trading behavior
 				minetest.after(3, function() 
@@ -2644,7 +2632,7 @@ local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_typ
 				local traders = {vName.."_"..math.random(1000)}
 				bpos.traders = vName
 			else
-				io.write("Spawn POS blocked. Retry next cycle. ")
+				--io.write("Spawn POS blocked. Retry next cycle. ")
 			end
 			
 			
@@ -2665,6 +2653,7 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	local village_type  = village.village_type;
 	
 	-- debug output
+	--[[
 	io.write("\n## ")
 	io.write("village loc("..village.vx..","..village.vz..") ")
 	io.write("type="..village_type.." ")
@@ -2672,14 +2661,15 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	io.write("height="..village.vh.." ")
 	io.write("snow="..tostring(snowCover).." ")
 	io.write("buildings="..#village.to_add_data.bpos.." ")
-
+	--]]
+	
 	-- different village types determine region type (climate)
 	-- which determines type of clothing villager will wear
 	local region_type
 		
 	if snowCover == 1 then
 		region_type = "cold"
-		io.write("region_type="..region_type.." ")
+		--io.write("region_type="..region_type.." ")
 	-- included in mg_villages
 	elseif village_type == "nore" then region_type = "normal"
 	elseif village_type == "taoki" then region_type = "normal"
@@ -2721,15 +2711,15 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	for building_index,bpos in pairs(village.to_add_data.bpos) do		
 		local building_type = mg_villages.BUILDINGS[bpos.btype].typ
 		local building_pos = {x=bpos.x, y=bpos.y, z=bpos.z}
-		io.write("\n  building #"..building_index.." ")
-		io.write("loc"..minetest.pos_to_string(building_pos).." ")
-		io.write("type_id="..bpos.btype.." ")
+		--io.write("\n  building #"..building_index.." ")
+		--io.write("loc"..minetest.pos_to_string(building_pos).." ")
+		--io.write("type_id="..bpos.btype.." ")
 		if bpos.btype == "road" then
 			--io.write("type=n/a ")
 			--io.write("beds=n/a ")
 		else
-			io.write("type="..building_type.." ")
-			io.write("beds="..#bpos.beds.." ")
+			--io.write("type="..building_type.." ")
+			--io.write("beds="..#bpos.beds.." ")
 		end
 		
 		-- get mob spawner positions for this building
@@ -2743,7 +2733,9 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 			spawnOnNonResidential(bpos, mg_villages.BUILDINGS[bpos.btype], minp, maxp, region_type)
 			
 		elseif building_type == "house" or building_type == "tavern" or building_type == "library" or
-			 building_type == "hut" or building_type == "lumberjack" or building_type == "trader" then
+			building_type == "mill" or building_type == "farm_full" or building_type == "farm_tiny" or
+			building_type == "forge" or
+			building_type == "hut" or building_type == "lumberjack" or building_type == "trader" then
 			spawnOnResidential(bpos, building_type, region_type, village.vx, village.vz, building_pos)
 		else
 			spawnOnNonResidential(bpos, mg_villages.BUILDINGS[bpos.btype], minp, maxp, region_type)
@@ -2751,7 +2743,7 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 		
 		
 	end --end for loop
-	io.write("\n")
+	--io.write("\n")
 end
 
 --[[ NOTES ON DATA STRUCTURE OF VILLAGES OBJECT

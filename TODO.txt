@@ -50,7 +50,6 @@ TODO:
 
 
 ISSUES/BUGS:
-- tent has no beds
 - gambit and sandcity village types have no beds
 - cornernote village type does not have beds in their huts
 - on very rare occasions villagers seen to walk diagonally
