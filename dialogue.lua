@@ -501,7 +501,7 @@ villagers.chat = {
 		mainchat = {
 			"My name is VILLAGER_NAME.", 
 			"That's my hut.",
-			"The space is tiny, but\n."..
+			"The space is tiny, but\n"..
 			"I don't mind it.",
 			"The place is not too bad.",
 			"At least I don't worry about\n"..
@@ -543,7 +543,13 @@ villagers.chat = {
 	lumberjack = {
 		greetings = DEFAULT_HI,
 		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
+		mainchat = {
+			"My name is VILLAGER_NAME.", 
+			"That's my home as a BUILDING_TYPE.", 
+			"I am a AGE GENDER.",
+			"This is a REGION region.",
+			"I like to trade random things."
+		}
 	}, 
 	
 	library = {

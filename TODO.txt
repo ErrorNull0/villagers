@@ -1,0 +1,56 @@
+TODO:
+
+- ensure homes with multiple inhabitants follow these patterns:
+-- 1 inhab: a) adult male b) adult female c) old male d) old female
+-- 2 inhab: a) adult male and female b) old male and female c) more to come
+-- 3 inhab: a) adult male and female and young b) old male and female and young
+-- 4 inhab: a) adult male and female and two young b) old male and female and adult female and young
+-- 5 inhab: a) adult male and female and three young b) old male and female and adult male and female and young
+
+- allow villagers to walk through doors
+- while villager is walking and attempting to chat, show chat bubble 'pardon me', 'excuse me', 'sorry', 'coming through', 'walking here', etc.
+- due to  many more spawned villagers matching each bed, make most of these villagers walk the roads instead of randomly wandering around the plot
+
+- add new variable 'vDoorFound' and 'vDoorPosition' that stores the position of a found door as verifyPath() executes
+- after each walk action, check if vDoorFound is true contains a position and currPos + 2 nodes forward doesn't hit maxDistance, then set action to USEDOOR
+- USEDOOR: villager opens door, walks forward two nodes, and closes door, then sets action to STAND.
+
+- have villagers appear on bed laying down at night
+- make villagers that have no beds lay on the ground at night with a sleeping mat (maybe next to a tree or building)
+
+- have guards wield a shield and/or weapon
+- make tower villagers appear atop tower
+
+- have farmers/field workers plant seedlings if they encounter bare soil
+- make field villagers stay near their fields and not wander off
+- villager wields the tool depending on what item digging - shovel for snow, hoe for crops and soil, etc
+
+- make church villagers look for and stay inside the church
+
+- add support for weather mod
+- have villagers say something different depending on weather
+
+- when adding more hair textures start using v1.8 type
+- add probability for adult and old males to have beards
+- add probability for gloves in cold regions
+- add more jacket styles
+- add more female short sleeved, long sleeved and sleeveless shirt styles
+- add different dress type of males (currently using slightly modified texture of female full dress)
+- add more full dress styles for females
+
+- allow villagers to kill mobs
+- allow villagers to get 'knocked out' (but not die) from attackes
+- knocked out villagers will automatically recover and stand back up after some time
+- cannot trade with a knocked out villager
+- knocked out villager can only respond like 'uuuhg', 'ouch', 'help', etc when knocked out
+- player can right-click on villager with a healing item to help recovery
+
+- complete a simple trading system
+- upon trading, formspec also pulls from villager's inventory of dug/harvested crops
+
+
+ISSUES/BUGS:
+- tent has no beds
+- gambit and sandcity village types have no beds
+- cornernote village type does not have beds in their huts
+- on very rare occasions villagers seen to walk diagonally

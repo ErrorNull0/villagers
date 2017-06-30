@@ -2,14 +2,14 @@ VILLAGERS
 
 BY:             ErrorNull
 DESCRIPTION:    Villagers for Minetest
-VERSION:        0.13
+VERSION:        0.14
 LICENCE:        WTFPL
 
 REQUIRES: Sokomine's mg_villages mod.
 Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
-CHAT COMMANDS:
+CHAT COMMAND:
 
 /villager <region> <building type>
 
@@ -19,7 +19,19 @@ CHAT COMMANDS:
 
 Example: /villager cold tower
 
+NOTE ABOUT 'GRASSHUT' VILLAGE TYPE:
+This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is installed with 'mg_villages' mod - both by Sokomine. At this time, my villagers mod do not support the GRASSHUT village type because it requires Mossmanikin's 'dryplants' mod which depends on Venessa's 'biome_lib' mod. Venessa's biome_lib mod and her beautiful mods 'plantlife_modpack' and 'moretrees' are amazing mods that make the world look so much more lush and realistic. However, in my experience so far with biome_lib and other mods that depend on it, it becomes fairly processing intensive and detracks from my goal of having a lightweight, server and multiplayer friendly villagers mod. If you have a fast computer and primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
+
 CHANGELOG:
+
+v0.14
+[improved]
+- if village generates aritificial snow, villagers spawn as cold region inhabitants (light skinned and warmer clothing)
+- for each residental building (home, hut, tavern, etc), one villager will spawn for each bed that exists
+- these villagers will now spawn on the convenient mob spawners (thanks Sokomine!)
+- other villagers still spawn next to the various non-residental buildings (forge, library, bakery, sawmill, church, etc)
+[added]
+- chat command to manually spawn a villager at current position (instructions above)
 
 v0.13
 [fixed]
