@@ -8,6 +8,7 @@
 -- village gambit: cementry, lamp, hotel, pub, stable, 
 --]]
 villagers.plots = {
+	
 	allmende = { female = 2, age = {"young", "old"} }, 
 	bakery = { female=2, age={"adult", "adult", "old"} }, 
 	bench =	{ female=2, age={"adult", "old", "old"} }, 
@@ -52,5 +53,3 @@ villagers.plots = {
 	pub = { female=3, age={"adult", "adult", "old"} },
 	stable = { female=2, age={"adult"} }
 }
-
-

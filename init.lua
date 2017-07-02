@@ -1,6 +1,9 @@
 villagers = {}
 
 local modpaths = minetest.get_modpath("villagers")
+dofile(modpaths.."/constants.lua")
+dofile(modpaths.."/functions.lua")
+dofile(modpaths.."/items.lua")
 dofile(modpaths.."/names.lua")
 dofile(modpaths.."/plots.lua")
 dofile(modpaths.."/textures.lua")
@@ -11,7 +14,8 @@ dofile(modpaths.."/trading.lua")
 local log = false	--debug actions
 local log2 = false	--debug chatting
 local log3 = false 	--debug textures
-local log4 = false	--debug trading
+local log4 = true	--debug trading
+local log5 = false	--debug spawning
 
 
 -- ============================================ CONSTANTS =================================================
@@ -1050,12 +1054,14 @@ local function showMessageBubble(self, player, message_text, message_location, c
 			bubble_texture = "bubble_villager_behind.png"
 			message_position = { x = 0.5, y = 1.0 }
 			message_align = {x=0, y=0}
+		--[[
 		elseif message_location == "TRADING" then
-			x_offset = -280
+			x_offset = -420
 			y_offset = -100
 			bubble_texture = "bubble_villager_right.png"
 			message_position = { x = 0.5, y = 0.5 }
 			message_align = {x=1, y=0}
+		--]]
 		elseif message_location == "TRADINGBYE" then
 			x_offset = 0
 			y_offset = -240
@@ -1391,7 +1397,7 @@ local function chatVillager(self, player, player_is_trading)
 	-- on villager for trading
 	if player_is_trading == 1 then
 		if log2 then io.write("startTrading ") end
-		showMessageBubble(self, player, villagers.chat.trade.hi[math.random(#villagers.chat.trade.hi)], "TRADING", 3)
+		--showMessageBubble(self, player, villagers.chat.trade.hi[math.random(#villagers.chat.trade.hi)], "TRADING", 4)
 		
 	elseif player_is_trading == 2 then
 		if log2 then io.write("endingTrade ") end
@@ -1532,44 +1538,75 @@ local function endVillagerTrading(villager_id, player)
 end
 
 local function getTradingFormspec(self, player)
+	if log4 then 
+		io.write("getFormspec() ") 
+		io.write("for "..self.vName.." vSell:"..dump(self.vSell).."\n")
+	end
 	
-	--[[
-	local width_vertical_margins = 0.25
+	local item_count = #self.vSell
+	
 	local width_column = 1
-	local width_between_columns = 0.25
-	local width_item_count = 0.5
-	local width_trade_button = 1
+	local width_item_count = 0.25
+	local width_trade_button = 2
 	local number_of_columns = 5
-	local number_of_item_counters = 3
+	local width_form = (width_column * number_of_columns) + (width_item_count * 2) + width_trade_button
 	
-	local width_form = 
-		(width_vertical_margins * 2) +
-		(width_column * number_of_columns) +
-		(width_between_columns * (number_of_columns - 1)) +
-		(width_item_count * (number_of_item_counters)) +
-		width_trade_button
-	
-	local height_horizontal_margins = 0.25
-	local height_row = 1
-	local height_between_rows = 0.25
-	local height_labels = 1
 	local height_exit_button = 1
-	local number_of_rows = #self.vSell + 2 
-	-- the +2 is for rows accupied by the column lables the exit button
+	local height_row = 1
+	local height_labels = 1
+	local number_of_rows = item_count
+	local height_form = height_exit_button + (height_row * number_of_rows) + height_labels
 	
-	local height_form = 
-		(height_horizontal_margins * 2) +
-		(height_row * number_of_rows) +
-		(height_between_rows * (number_of_rows + 1)) +
-		height_labels + height_exit_button
-	--]]
+	-- GUI related stuff
+	--local bg = "bgcolor[#080808BB;true]"
+	local bg_image = "background[0,0;0,0;gui_formbg.png;true]"
+	local y_offset = 0.4
+
 	
-	local width_form = 3
-	local height_form = 3
-	
-	local formspec = "size["..width_form..","..height_form.."]"..
+	local formspec = 
+		-- gui background attributes
+		"size["..width_form..","..height_form.."]"..bg_image..
 		
-		"list[nodemeta:"..self.vNodeMetaPos.x..","..self.vNodeMetaPos.y..","..self.vNodeMetaPos.z..";main;0,0;3,3;]"
+		-- header row
+		"label[0,0;Item]"..
+		"label["..1+(width_item_count)..",0;Stock]"..
+		"label["..2+(width_item_count*2)..",0;Villager\nWants]"..
+		"label["..3+(width_item_count*3)+(width_item_count)..",0;You\nHave]"..
+		"label["..4+(width_item_count*4)+(width_item_count*2)..",0;Action]"
+		
+		
+	-- construct rows for each item villager is selling
+	for item_index = 1, item_count do
+		
+		local sell_data = self.vSell[item_index]
+		local item_data = string.split(sell_data[1], " ")
+		local item_img = item_data[1]
+		local item_stock = item_data[2]
+		local cost_data = string.split(sell_data[2], " ")
+		local cost_img = cost_data[1]
+		local quantity_cost = tonumber(cost_data[2])
+		
+		local quantity_inv = math.random(10) -- how many does player have of the needed 'cost' item
+		
+		formspec = formspec..
+			-- items
+			"item_image[0,"..item_index..";1,1;"..item_img.."]".. -- item being sold
+			"label["..1.2+(width_item_count)..","..item_index+y_offset..";"..item_stock.."]".. -- how many in stock
+			"item_image["..2+(width_item_count*2)..","..item_index..";1,1;"..cost_img.."]".. -- item villager wants
+			"label["..2.8+(width_item_count*2)..","..item_index+y_offset..";x"..quantity_cost.."]".. -- want how many
+			"item_image["..3+(width_item_count*3)+(width_item_count)..","..item_index..";1,1;"..cost_img.."]".. -- what player has
+			"label["..3.8+(width_item_count*3)+(width_item_count)..","..item_index+y_offset..";x"..quantity_inv.."]" -- how many player has
+			
+		local button_name = "villagers_"..self.vName.."_"..self.vID.."_"..quantity_cost.."_"..quantity_inv.."_"..item_stock
+		if quantity_inv >= quantity_cost then 
+			formspec = formspec.."button["..4+(width_item_count*4)+(width_item_count*2)..
+				","..item_index..";"..width_trade_button..",1;"..button_name..";trade]" 
+		end
+		
+	end
+		
+	formspec = formspec.. "button_exit[2.5,"..(item_count+1.2)..";2.5,"..height_exit_button..";".."villagers_"..self.vName.."_"..self.vID..";I'm Done!]"
+		
 		
 	return formspec
 end
@@ -1580,7 +1617,9 @@ local function tradeVillager(self, player)
 	
 	-- formspec was already displayed and villager is currently trading
 	if self.vTrading then
-	
+		local message_text = self.vName.." is busy trading with "..self.vTrading.."."
+		showAlert(self, player, "", 3)
+		
 	-- villager is not yet trading: might be currently standing, walking, etc
 	-- so create and show the tranding formspec
 	else
@@ -1588,32 +1627,49 @@ local function tradeVillager(self, player)
 		local player_name = player:get_player_name()
 		self.vTrading = player_name
 		self.vYawSaved = self.vYaw
-		turnToPlayer(self, player) -- make villager face player
+		turnToPlayer(self, player)
 		
 		-- show formspec
 		minetest.show_formspec(player_name, "villagers:trade".."_"..self.vID, getTradingFormspec(self, player))
 		
+		if log4 then 
+			local items_selling = self.vSell
+			io.write(self.vName.." is selling: ")
+			for i=1, #items_selling do
+				local item_name = string.split(items_selling[i][1], ":")[2]
+				io.write(item_name.." ")
+			end
+		end
 	end
 
 end
 
-local function setTradeInventory(self, trading_type)
-	--[[
-	local all_available_items = copytable(villagers.trade[self.vType])
+local function getTradeInventory(self, trading_type)
+	if log4 then io.write("\n## setTradeInv for "..self.vName.." ["..self.vType.."] ") end
 	
+	local new_trade_inventory = {}
+	local all_available_items = copytable(villagers.trade[self.vType])
 	local item_count = math.random(#all_available_items)
-	if self.vType == "" then
-		
-	else
-		item_count =  #all_available_items
-	end
+	
+	if log4 then io.write(item_count.." of "..#all_available_items.." avail items ") end
+	
 	while( item_count > 0 ) do
 		local index_to_pop = math.random(item_count)
 		local popped_item = table.remove(all_available_items, index_to_pop)
-		table.insert(self.vSell, popped_item)
+		local item_name = popped_item[1]
+		local cost_name = popped_item[2]
+		if log4 then io.write("\n  selling "..item_name.." for "..cost_name.." ") end
+		
+		local stock_count = math.random(10)
+		-- make stock_count based on type of item
+		-- cheap items have higher initial stock
+		
+		table.insert(new_trade_inventory, {item_name.." "..stock_count, cost_name})
 		item_count = item_count - 1
 	end
-	--]]
+	if log4 then io.write("\n") end
+	
+	return new_trade_inventory
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
@@ -1719,6 +1775,9 @@ minetest.register_entity("villagers:villager", {
 	vTurnPreference = "right",
 	vWalkReady = false,
 	vDigReady = false,
+	vBedPos = nil,
+	vDoorPos = nil,
+	vJobPos = nil,
 	
 	-- chatting
 	vChatting = nil,
@@ -1738,8 +1797,8 @@ minetest.register_entity("villagers:villager", {
 	vID = nil,
 	vTrading = nil,
 	vNodeMetaPos = {x=0,y=0,z=0},
-	vBuy = nil,
-	vSell = nil,
+	vBuy = {},
+	vSell = {},
 	
 	-- debugging
 	vTextureString = nil,
@@ -1792,6 +1851,9 @@ minetest.register_entity("villagers:villager", {
 			self.vTurnPreference = customFields.vTurnPreference
 			self.vWalkReady = false
 			self.vDigReady = false
+			self.vBedPos = customFields.vBedPos
+			self.vDoorPos = customFields.vDoorPos
+			self.vJobPos = customFields.vJobPos
 			
 			-- chatting
 			self.vChatting = nil
@@ -1870,6 +1932,14 @@ minetest.register_entity("villagers:villager", {
 	
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 		
+		self.object:set_hp(15) -- don't let villager die from punches, for now........
+		
+		-- prevent chat if punched by non-player entity (mobs, weapons, etc.)
+		if not puncher:is_player() then 
+			--print("## Punched by non-player. No chat.") 
+			return 
+		end
+		
 		-- debugging
 		if log3 then print("\n## "..self.vTextureString.."\n") end
 		
@@ -1922,7 +1992,6 @@ minetest.register_entity("villagers:villager", {
 			showAlert(self, puncher, self.vName.." is busy "..action_description..".")
 		end
 		
-		self.object:set_hp(15) -- don't let villager die from punches
 	end,
 	
 	on_rightclick = function(self, clicker)
@@ -2100,6 +2169,9 @@ minetest.register_entity("villagers:villager", {
 			vTurnPreference = self.vTurnPreference,
 			vWalkReady = false,
 			vDigReady = false,
+			vBedPos = self.vBed,
+			vDoorPos = self.vDoor,
+			vJobPos = self.vDoor,
 			
 			-- chatting
 			vChatting = nil,
@@ -2139,7 +2211,7 @@ local function spawnVillager(pos, building_type, region, yaw_data)
 	
 	-- SPAWN THE ACTUAL VILLAGER ENTITY!!!!
 	local objectRef = minetest.add_entity(pos, "villagers:villager")
-	local self = objectRef:get_luaentity()
+	local self = objectRef:get_luaentity()	
 	
 	--get GENDER and save to 'vGender' object custom field
 	local gender = "male"
@@ -2172,20 +2244,14 @@ local function spawnVillager(pos, building_type, region, yaw_data)
 	objectRef:set_properties({visual_size={x=newSize,y=newSize}})
 	objectRef:set_properties({collisionbox=collisionBox})	
 		
-	--[[ NOTE ABOUT ALL THE DIFFERENT POSITIONS:
-		'vPos' Tracks the current position of the villager. Also represents a valid spawn position.
-		
-		'originPos' Tracks the original spawn point of the villager. Upon first-time spawn, vPos
-		and originPos is the same value. The Y value of originPos/vPos is used when villager is
-		recalibrated via setpos() whenever the villager completes a WALK routine via walkVillager().
-		This Y value is important because it takes into account the differing model scale and collisionbox size.
-		This parameter is also used to calculate total distance from original spawn point to current position.
-		
-		'targetPos' Tracks the pos of the node that verifyPath() has last examined. This is
-		not a valid spawn point as the Y coordinate points to the node position corresponding to the
-		villagers legs, and does not account for model size and collisionbox size of each different
-		sized villager. targetPos is also used to determine/calculate the pos at head and pos 
-		below the feet.
+	--[[ Notes about vPos, vOriginPos and vTargetPos:
+		* 'vPos' Tracks the current position of the villager while vOriginPos Tracks the original spawn 
+		point of the villager. Both represent a valid spawn position, is typically used for disctance
+		calculations, and its Y value depends on the visual size of the villager entity and collisionbox.
+		At initial spawn, vPos and vOriginPos are the same value.
+		* 'vTargetPos' tracks the node that verifyPath() last examined. This should not be used for spawning
+		as the Y value corresponds to position of the villagers legs. vTargetPos is also used to determine
+		the pos of the villager's head and pos below the feet.
 	--]]
 		
 	local pos = objectRef:getpos()
@@ -2229,26 +2295,12 @@ local function spawnVillager(pos, building_type, region, yaw_data)
 	self.vID = self.vName .. tostring(math.random(9999))
 	
 	-- position of nodemeta for inventory trading
-	self.vNodeMetaPos = {x=pos.x, y=self.vTargetHeight-1, z=pos.z}
+	self.vNodeMetaPos = {x=pos.x, y=self.vTargetHeight-1, z=pos.z+1}
 	
 	-- generate list of items this villager will trade depending on building_type
-	-- setTradeInventory(self, "sell")
+	self.vSell = getTradeInventory(self, "sell")
 	-- setTradeInventory(self, "buy")
 	
-	-- certain villagers will wield certain items
-	--[[
-	if building_type == "field" then
-		print("## Setting wielditem for "..self.vName..".. ")
-		
-		local item = ItemStack("default:sword_stone")
-		io.write("item="..item:get_name().." ")
-		if self.object:set_wielded_item(item) then
-			io.write("SUCCESS. \n")
-		else
-			io.write("FAILED. \n")
-		end
-	end
-	--]]
 	
 	local yaw
 	if yaw_data then yaw = DEGREES_TO_YAW[yaw_data]
@@ -2262,13 +2314,6 @@ local function spawnVillager(pos, building_type, region, yaw_data)
 		{x=self.animation["stand_start"], y=self.animation["stand_end"]},
 		self.animation_speed + math.random(10)
 	)
-
-	-- set infotext
-	objectRef:set_properties({infotext=
-		self.vName.." "..building_type.." in "..region.." region\n"..
-		age.." "..gender.."\n"..
-		"yaw="..yaw
-	})
 
 	-- debugging
 	self.vTextureString = newTexture
@@ -2328,6 +2373,48 @@ local function validateRegion(region)
 	end
 end
 
+--[[
+    local meta = minetest.get_meta(pos)
+    meta:set_string("formspec",
+            "size[8,9]"..
+            "list[context;main;0,0;8,4;]"..
+            "list[current_player;main;0,5;8,4;]")
+    meta:set_string("infotext", "Chest");
+    local inv = meta:get_inventory()
+    inv:set_size("main", 8*4)
+    print(dump(meta:to_table()))
+    meta:from_table({
+        inventory = {
+            main = {[1] = "default:dirt", [2] = "", [3] = "", [4] = "",
+                    [5] = "", [6] = "", [7] = "", [8] = "", [9] = "",
+                    [10] = "", [11] = "", [12] = "", [13] = "",
+                    [14] = "default:cobble", [15] = "", [16] = "", [17] = "",
+                    [18] = "", [19] = "", [20] = "default:cobble", [21] = "",
+                    [22] = "", [23] = "", [24] = "", [25] = "", [26] = "",
+                    [27] = "", [28] = "", [29] = "", [30] = "", [31] = "",
+                    [32] = ""}
+        },
+        fields = {
+            formspec = "size[8,9]list[context;main;0,0;8,4;]list[current_player;main;0,5;8,4;]",
+            infotext = "Chest"
+        }
+    })
+--]]
+local function setTradingMeta(self)
+	minetest.after(3, function() 
+		-- node metadata for trading inventory
+		
+		local meta = minetest.get_meta(self.vNodeMetaPos)
+		
+		local inv = meta:get_inventory()
+		inv:set_size("main", 9)
+		--local stack = ItemStack("default:apple 1")
+		--local extra = inv:add_item("main", stack)
+		
+		meta:set_string("infotext", "Trading Meta for "..self.vName)
+	end)
+end
+
 -- manually spawn villager via chat command. mostly for testing.
 minetest.register_chatcommand("villagers", {
 	params = "<region> <building_type>",
@@ -2350,19 +2437,14 @@ minetest.register_chatcommand("villagers", {
 			local building_type = validateBuildingType(params[2])
 			
 			-- spawn the villager
-			local luaentity = spawnVillager(pos, building_type, region_type)
+			local luaEntity = spawnVillager(pos, building_type, region_type)
 			
-			-- setup preliminary trading interface
-			local meta = minetest.get_meta(luaentity.vNodeMetaPos)
-			local inv = meta:get_inventory()
-			inv:set_size("main", 9)
+			-- set metadata for later formspec use
+			setTradingMeta(luaEntity)
 			
 		--else minetest.chat_send_player(name, "ERROR. Must be admin to spawn villager.") end
 	end,
 })
-
-
-
 
 local function spawnOnResidential(building_data, building_type, region_type, village_posx, village_posz, building_pos)
 
@@ -2372,15 +2454,16 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 		
 		-- for each bed in the building
 		for bed_index = 1, beds_count do
-			--io.write("\n    spawn_pos #"..bed_index.." ")		
+			if log5 then io.write("\n    spawn_pos #"..bed_index.." ") end
+			
 			local mob_spawner_data = handle_schematics.get_pos_in_front_of_house(building_data, bed_index)
 			local mob_spawner_pos = {x=mob_spawner_data.x, y=mob_spawner_data.y, z=mob_spawner_data.z}
-			--io.write(minetest.pos_to_string(mob_spawner_pos).." ")
+			if log5 then io.write(minetest.pos_to_string(mob_spawner_pos).." ") end
 			
 			-- if any trader has already spawned for this building AND a villager already
 			-- spawned in that specific spawn location 'bed_index' then skip.
 			if building_data.traders and building_data.traders[bed_index] then
-				--io.write(building_data.traders[bed_index].." already spawned @ "..minetest.pos_to_string(mob_spawner_pos).." ")
+				if log5 then io.write(building_data.traders[bed_index].." already spawned @ "..minetest.pos_to_string(mob_spawner_pos).." ") end
 				
 			-- villager not yet spawned
 			else
@@ -2393,19 +2476,18 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 						local distance =  math.floor(vector.distance(player:getpos(), mob_spawner_pos) * 10 + 0.5) / 10
 						if distance < 50 then 
 							players_in_range = players_in_range + 1
-							--io.write("PlayerInRange ")
-						else
-							--io.write("PlayerOutOfRange ")
+							if log5 then io.write("PlayerInRange ") end
+						else 
+							if log5 then io.write("PlayerOutOfRange ") end
 						end
 					else
-						--io.write("PlayerDespawned ")
+						if log5 then io.write("PlayerDespawned ") end
 					end
-						
 				end
 				
 				-- no players are near the mob spawner location. skip spawn.
 				if players_in_range == 0 then 
-					--io.write("No players in range of spawn location: "..minetest.pos_to_string(mob_spawner_pos).." ")
+					if log5 then io.write("No players in range of spawn location: "..minetest.pos_to_string(mob_spawner_pos).." ") end
 					
 				-- at least one player is near the spawn location. continue spawn.
 				else
@@ -2423,16 +2505,20 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 					-- spawn the villager
 					mob_spawner_pos.y = mob_spawner_pos.y + 0.5
 					local luaEntity = spawnVillager(mob_spawner_pos, building_type, region_type, mob_spawner_data.yaw)
-					--io.write("** SPAWNED!! "..luaEntity.vName.." "..luaEntity.vGender.." "..luaEntity.vAge.." ")
+					if log5 then io.write("** SPAWNED!! "..luaEntity.vName.." "..luaEntity.vGender.." "..luaEntity.vAge.." ") end
 					
-					minetest.after(3, function() 
-						-- node metadata for trading inventory
-						local meta = minetest.get_meta(luaEntity.vNodeMetaPos)
-						local inv = meta:get_inventory()
-						inv:set_size("main", 9)
-						--local stack = ItemStack("default:apple 1")
-						--local extra = inv:add_item("main", stack)
-					end)
+					-- save bed position in villager entity
+					luaEntity.vBedPos = beds_data[bed_index]
+					luaEntity.vDoorPos = {x=mob_spawner_pos.x, y=mob_spawner_pos.y, z=mob_spawner_pos.z}
+					local door = luaEntity.vDoorPos
+					luaEntity.object:set_properties({infotext=
+						luaEntity.vName.." ["..building_type.."]\n"..
+						luaEntity.vAge.." "..luaEntity.vGender.." in "..region_type.." region\n"..
+						"bed("..beds_data[bed_index].x..","..beds_data[bed_index].y..","..beds_data[bed_index].z..") "..
+						"door("..door.x..","..door.y..","..door.z..")"
+					})
+					
+					setTradingMeta(luaEntity)  -- set metadata for later formspec use
 					
 					local villager_descriptor = "("..village_posx..","..village_posz..") "..
 					minetest.pos_to_string(building_pos).." "..minetest.pos_to_string(mob_spawner_pos)
@@ -2453,190 +2539,170 @@ local function spawnOnResidential(building_data, building_type, region_type, vil
 end
 
 local function spawnOnNonResidential(bpos, building_data, minp, maxp, region_type)
-	--io.write("\n    spawnVillagerOnNonResidential().. ")
-	--io.write("\n    ")
-				
-		local function getDistance(pos1, pos2)			
-			local mult = 10
-			return math.floor(vector.distance(pos1, pos2) * mult + 0.5) / mult
-		end
-		
-		local existing_villager_name
-		local function villagerAlreadySpawned()
-			if bpos.traders then
-				existing_villager_name = bpos.traders
-				return true
-			else
-				return false
-			end
-		end
-		
-		local function locationOutOfRange()
-			
-			-- how many players are out of range
-			local count = 0
-			
-			-- cycle through all connected players
-			for _,player in ipairs(minetest.get_connected_players()) do
-				if player ~= nil then			
-					
-					-- calculate distance between villager spawn position and current player position
-					local distance = getDistance(player:getpos(), {x=bpos.x, y=bpos.y, z=bpos.z})
-					if distance > 50 then 
-						count = count + 1 
-					end
-					
-				else 
-					--io.write("noPlayersToCheckRange ") 
-				end
-			end
-			
-			if count > 0 then return true
-			else return false end
-		end
-		
-		local function notBuildingLocation()
-			if (building_data and building_data.typ) then
-				return false
-			else
-				return true
-			end
-		end
-		
-		local error_message
-		local function invalidLocation()
-			if bpos.x > maxp.x then
-				error_message = "bpos.x("..bpos.x..") > maxp.x("..maxp.x..")"
-				return true
-			elseif (bpos.x + bpos.bsizex) < minp.x then
-				error_message = "bpos.x("..bpos.x..") + bpos.bsizex("..bpos.bsizex..") < minp.x("..minp.x..")" 
-				return true
-			elseif bpos.z > maxp.z then
-				error_message = "bpos.z("..bpos.z..") > maxp.z("..maxp.z..")"
-				return true
-			elseif (bpos.z + bpos.bsizez) < minp.z then
-				error_message = "bpos.z("..bpos.z..") + bpos.bsizez("..bpos.bsizez..") < minp.z("..minp.z..")"
-				return true
-			else
-				return false
-			end
-		end
-		
-		local function validateSpawnPosition(pos, checkNodeBelowVillager)
-			local node_name = getNodeName(pos)[2]
-			local result = {["pos"]=pos, ["name"]=node_name, ["result"]=false}
-			local nodeIsWalkable = minetest.registered_nodes[getNodeName(pos)[1]].walkable
-			local nodeIsLiquid = false
-			local nodeIsSnow = false
-			
-			-- check if node is a liquid
-			if string.find(node_name, "WATER") then
-				nodeIsLiquid = true
-			elseif string.find(node_name, "LAVA") then
-				nodeIsLiquid = true
-			elseif string.find(node_name, "SNOW") then
-				nodeIsSnow = true
-			end
-			
-			-- verifying node below villager's feet
-			if checkNodeBelowVillager then
-				if nodeIsWalkable then
-					--io.write("[OK!] ")
-					result.result = true
-				else
-					--io.write("[invalid] ")
-				end
-				
-			-- verifying node at villager's upper or lower body
-			else
-				--if node_name == "AIR" then
-				--	result.result = true
-				if node_name == "IGNORE" then
-					--io.write("[invalid] ")
-				elseif nodeIsSnow then
-					--io.write("[SNOW OK!] ")
-					result.result = true
-				elseif nodeIsWalkable then
-					--io.write("[blocked] ")
-				elseif nodeIsLiquid then
-					--io.write("[liquid] ")
-				else 
-					--io.write("[OK!] ")
-					result.result = true
-				end
-			end
-			
-			return result
-		end
-		
-		local bpos_str = minetest.pos_to_string({x=bpos.x, y=bpos.y, z=bpos.z})
-		--io.write("spawn_pos #1 "..bpos_str.." ")
-		
-		-- skip spawn if villager already spawned previously
-		if villagerAlreadySpawned() then
-			--io.write(existing_villager_name.." already spawned @ "..bpos_str.." ")
-		
-		-- skip spawn if this building location is not a building plot (eg road, street)
-		elseif notBuildingLocation() then 
-			--io.write("Not a building plot: "..bpos_str.." ")
-			
-		-- skip spawn if this building location is too far away from player
-		elseif locationOutOfRange() then
-			--io.write("Distance to "..building_data.typ.." "..bpos_str.." too far. ")
-			
+
+	local building_type = building_data.typ
+	
+	local function getDistance(pos1, pos2)			
+		local mult = 10
+		return math.floor(vector.distance(pos1, pos2) * mult + 0.5) / mult
+	end
+	
+	local existing_villager_name
+	local function villagerAlreadySpawned()
+		if bpos.traders then
+			existing_villager_name = bpos.traders
+			return true
 		else
-			--io.write("Location OK so far. "..bpos_str.." ")
-			
-			local validSpawnPosFound = false
-			local valid_spawn_pos
-			
-			-- At each position surrounding initial building spawn location, inspect a 
-			-- column of 3 vertical nodes: below villagers feet, at lower body, and at upper body.
-			-- If all three nodes are a valid spawn point, then spawn villager there.
-			for direction, spawn_pos in pairs(NODE_AREA) do
-				
-				local pos1 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y, z=bpos.z+spawn_pos[2]}, true)
-				local pos2 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y+1, z=bpos.z+spawn_pos[2]})
-				local pos3 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y+2, z=bpos.z+spawn_pos[2]})
-				
-				if (pos1.result and pos2.result and pos3.result) then
-					validSpawnPosFound = true
-					
-					-- Arbitrarily chose pos3. Values for x and z are same for pos1 and pos2 too.
-					valid_spawn_pos = {pos3.pos.x, pos3.pos.z} 
-					break
-				end
-			end
-			
-			if validSpawnPosFound then
-				--io.write("VALID SPAWN POS FOUND! ")
-				
-				-- calculate villager spawn position
-				local spawn_pos = {x=valid_spawn_pos[1], y=bpos.y+1.5, z=valid_spawn_pos[2]}
-				local spwan_pos_str = minetest.pos_to_string(spawn_pos,1)
-				
-				-- spawn the actual villager entity
-				local luaEntity = spawnVillager(spawn_pos, building_data.typ, region_type)
-				local vName = luaEntity.vName
-				
-				-- preliminary code for villager trading behavior
-				minetest.after(3, function() 
-					-- node metadata for trading inventory
-					local meta = minetest.get_meta(luaEntity.vNodeMetaPos)
-					local inv = meta:get_inventory()
-					inv:set_size("main", 9)
-					--local stack = ItemStack("default:apple 1")
-					--local extra = inv:add_item("main", stack)
-				end)
-				
-				local traders = {vName.."_"..math.random(1000)}
-				bpos.traders = vName
-			else
-				--io.write("Spawn POS blocked. Retry next cycle. ")
-			end
-			
-			
+			return false
 		end
+	end
+	
+	local function locationOutOfRange()
+		
+		-- how many players are out of range
+		local count = 0
+		
+		-- cycle through all connected players
+		for _,player in ipairs(minetest.get_connected_players()) do
+			if player ~= nil then			
+				
+				-- calculate distance between villager spawn position and current player position
+				local distance = getDistance(player:getpos(), {x=bpos.x, y=bpos.y, z=bpos.z})
+				if distance > 50 then 
+					count = count + 1 
+				end
+				
+			else 
+				if log5 then io.write("noPlayersExist ") end
+			end
+		end
+		
+		if count > 0 then return true
+		else return false end
+	end
+	
+	local function notBuildingLocation()
+		if (building_data and building_type) then
+			return false
+		else
+			return true
+		end
+	end
+	
+	local error_message
+	local function invalidLocation()
+		if bpos.x > maxp.x then
+			error_message = "bpos.x("..bpos.x..") > maxp.x("..maxp.x..")"
+			return true
+		elseif (bpos.x + bpos.bsizex) < minp.x then
+			error_message = "bpos.x("..bpos.x..") + bpos.bsizex("..bpos.bsizex..") < minp.x("..minp.x..")" 
+			return true
+		elseif bpos.z > maxp.z then
+			error_message = "bpos.z("..bpos.z..") > maxp.z("..maxp.z..")"
+			return true
+		elseif (bpos.z + bpos.bsizez) < minp.z then
+			error_message = "bpos.z("..bpos.z..") + bpos.bsizez("..bpos.bsizez..") < minp.z("..minp.z..")"
+			return true
+		else
+			return false
+		end
+	end
+	
+	local function validateSpawnPosition(pos, checkNodeBelowVillager)
+		local node_name = getNodeName(pos)[2]
+		local result = {["pos"]=pos, ["name"]=node_name, ["result"]=false}
+		local nodeIsWalkable = minetest.registered_nodes[getNodeName(pos)[1]].walkable
+		local nodeIsLiquid = false
+		local nodeIsSnow = false
+		
+		-- check if node is a liquid
+		if string.find(node_name, "WATER") then nodeIsLiquid = true
+		elseif string.find(node_name, "LAVA") then nodeIsLiquid = true
+		elseif string.find(node_name, "SNOW") then nodeIsSnow = true
+		end
+		
+		-- verifying node below villager's feet
+		if checkNodeBelowVillager then
+			if nodeIsWalkable then result.result = true end
+			
+		else -- verifying node at villager's upper or lower body
+			if node_name == "IGNORE" then -- 'result' remains false
+			elseif nodeIsSnow then result.result = true
+			elseif nodeIsWalkable then -- 'result' remains false
+			elseif nodeIsLiquid then -- 'result' remains false
+			else result.result = true end
+		end
+		
+		return result
+	end
+	
+	local bpos_str = minetest.pos_to_string({x=bpos.x, y=bpos.y, z=bpos.z})
+	
+	if log5 then io.write("spawn_pos #1 "..bpos_str.." ") end
+	
+	if villagerAlreadySpawned() then -- villager already spawned, skip.
+		if log5 then io.write(existing_villager_name.." already spawned @ "..bpos_str.." ") end
+	
+	elseif notBuildingLocation() then -- not a building structure, but a road, etc.
+		if log5 then io.write("Not a building plot: "..bpos_str.." ") end
+		
+	elseif locationOutOfRange() then -- plot is too far away from player, skip.
+		if log5 then io.write("Distance to "..building_type.." "..bpos_str.." too far. ") end
+		
+	else
+		if log5 then io.write("Location OK so far. "..bpos_str.." ") end
+		
+		local validSpawnPosFound = false
+		local valid_spawn_pos
+		
+		-- At each position surrounding initial building spawn location, inspect a 
+		-- column of 3 vertical nodes: below villagers feet, at lower body, and at upper body.
+		-- If all three nodes are a valid spawn point, then spawn villager there.
+		for direction, spawn_pos in pairs(NODE_AREA) do
+			
+			local pos1 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y, z=bpos.z+spawn_pos[2]}, true)
+			local pos2 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y+1, z=bpos.z+spawn_pos[2]})
+			local pos3 = validateSpawnPosition({x=bpos.x+spawn_pos[1], y=bpos.y+2, z=bpos.z+spawn_pos[2]})
+			
+			if (pos1.result and pos2.result and pos3.result) then
+				validSpawnPosFound = true
+				
+				-- Arbitrarily chose pos3. Values for x and z are same for pos1 and pos2 too.
+				valid_spawn_pos = {pos3.pos.x, pos3.pos.z} 
+				break
+			end
+		end
+		
+		if validSpawnPosFound then
+			if log5 then io.write("VALID SPAWN POS FOUND! ") end
+			
+			-- calculate villager spawn position
+			local spawn_pos = {x=valid_spawn_pos[1], y=bpos.y+1.5, z=valid_spawn_pos[2]}
+			local spwan_pos_str = minetest.pos_to_string(spawn_pos,1)
+			
+			-- spawn the actual villager entity
+			local luaEntity = spawnVillager(spawn_pos, building_type, region_type)
+			local vName = luaEntity.vName
+			
+			-- set infotext
+			luaEntity.vDoorPos = {x=spawn_pos.x, y=spawn_pos.y, z=spawn_pos.z}
+			local door = luaEntity.vDoorPos
+			luaEntity.object:set_properties({infotext=
+				luaEntity.vName.." ["..building_type.."]\n"..
+				luaEntity.vAge.." "..luaEntity.vGender.." in "..region_type.." region\n"..
+				"door("..door.x..","..door.y..","..door.z..")"
+			})
+			
+			setTradingMeta(luaEntity) -- set metadata for later formspec use
+			
+			local traders = {vName.."_"..math.random(1000)}
+			bpos.traders = vName
+		else
+			if log5 then io.write("Spawn POS blocked. Retry next cycle. ") end
+		end
+		
+		
+	end
 	
 	
 end
@@ -2653,15 +2719,15 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	local village_type  = village.village_type;
 	
 	-- debug output
-	--[[
-	io.write("\n## ")
-	io.write("village loc("..village.vx..","..village.vz..") ")
-	io.write("type="..village_type.." ")
-	io.write("radius="..village.vs.." ")
-	io.write("height="..village.vh.." ")
-	io.write("snow="..tostring(snowCover).." ")
-	io.write("buildings="..#village.to_add_data.bpos.." ")
-	--]]
+	if log5 then
+		io.write("\n## ")
+		io.write("village loc("..village.vx..","..village.vz..") ")
+		io.write("type="..village_type.." ")
+		io.write("radius="..village.vs.." ")
+		io.write("height="..village.vh.." ")
+		io.write("snow="..tostring(snowCover).." ")
+		io.write("buildings="..#village.to_add_data.bpos.." ")
+	end
 	
 	-- different village types determine region type (climate)
 	-- which determines type of clothing villager will wear
@@ -2669,7 +2735,7 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 		
 	if snowCover == 1 then
 		region_type = "cold"
-		--io.write("region_type="..region_type.." ")
+		
 	-- included in mg_villages
 	elseif village_type == "nore" then region_type = "normal"
 	elseif village_type == "taoki" then region_type = "normal"
@@ -2680,7 +2746,11 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	elseif village_type == "lumberjack" then region_type = "cold"
 	elseif village_type == "claytrader" then region_type = "desert"
 	elseif village_type == "logcabin" then region_type = "cold"
-	--elseif village_type == "grasshut" then region_type = "native" -- requires 
+	
+	-- ** Currently untested for 'grasshut' village type
+	-- as it requires biome_lib mod
+	elseif village_type == "grasshut" then region_type = "native" 
+	
 	elseif village_type == "tent" then region_type = "hot"
 		
 	-- single lone buildings
@@ -2711,15 +2781,18 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	for building_index,bpos in pairs(village.to_add_data.bpos) do		
 		local building_type = mg_villages.BUILDINGS[bpos.btype].typ
 		local building_pos = {x=bpos.x, y=bpos.y, z=bpos.z}
-		--io.write("\n  building #"..building_index.." ")
-		--io.write("loc"..minetest.pos_to_string(building_pos).." ")
-		--io.write("type_id="..bpos.btype.." ")
-		if bpos.btype == "road" then
-			--io.write("type=n/a ")
-			--io.write("beds=n/a ")
-		else
-			--io.write("type="..building_type.." ")
-			--io.write("beds="..#bpos.beds.." ")
+		
+		if log5 then
+			io.write("\n  building #"..building_index.." ")
+			io.write("loc"..minetest.pos_to_string(building_pos).." ")
+			io.write("type_id="..bpos.btype.." ")
+		end
+		
+		if log5 then
+			if bpos.btype ~= "road" then
+				io.write("type="..building_type.." ")
+				io.write("beds="..#bpos.beds.." ")
+			end
 		end
 		
 		-- get mob spawner positions for this building
@@ -2734,8 +2807,8 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 			
 		elseif building_type == "house" or building_type == "tavern" or building_type == "library" or
 			building_type == "mill" or building_type == "farm_full" or building_type == "farm_tiny" or
-			building_type == "forge" or
-			building_type == "hut" or building_type == "lumberjack" or building_type == "trader" then
+			building_type == "forge" or building_type == "hut" or building_type == "lumberjack" or 
+			building_type == "trader" then
 			spawnOnResidential(bpos, building_type, region_type, village.vx, village.vz, building_pos)
 		else
 			spawnOnNonResidential(bpos, mg_villages.BUILDINGS[bpos.btype], minp, maxp, region_type)
@@ -2745,48 +2818,3 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	end --end for loop
 	--io.write("\n")
 end
-
---[[ NOTES ON DATA STRUCTURE OF VILLAGES OBJECT
-
-villages = mg_villages.all_villages[ village_id ]
-villages = {
-	v_nbr = {
-		vx = x, 
-		vz = z, 
-		vs = size, 
-		vh = height, 
-		village_type,
-		*village_name,
-		is_single_house, 
-		artificial_snow,
-		optimal_height,
-		*nr,
-		anz_buildings, --inhabited buildings
-		extra_calls = {},
-		to_add_data = {
-			extranodes = {},
-			bpos = {
-				[1] = { btype, road_material, beds = {{p2, x, y, z, typ}, {p2, x, y, z, typ}, etc.}, traders, x, y, z, },
-				[2] = { btype, road_material, beds = {{p2, x, y, z, typ}, {p2, x, y, z, typ}, etc.}, traders, x, y, z, },
-				[3] = { btype, road_material, beds = {{p2, x, y, z, typ}, {p2, x, y, z, typ}, etc.}, traders, x, y, z, },
-				ect..
-			},
-			replacements = mg_villages.get_replacement_table().list,
-			dirt_roads,
-			plantlist,
-			extra_calls = {
-				on_constr = {},
-				trees = {},
-				chests = {},
-				signs = {},
-				traders = {},
-				door_a = {},
-				door_b = {},
-				scaffolding = {},
-				clear_meta = {},
-				beds = {}
-			},
-		}, 
-	},
-}
---]]

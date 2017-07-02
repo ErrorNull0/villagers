@@ -1,28 +1,28 @@
 local DEFAULT_ITEMS = { 
-	{"default:apple 1", "villagers:coins 1"}, 
-	{"farming:bread 1", "villagers:coins 2"} 
+	{"default:apple", "villagers:coins 1"}, 
+	{"farming:bread", "villagers:coins 2"} 
 }
 
 villagers.trade = {
 
-	allmende = { DEFAULT_ITEMS }, 
+	allmende = DEFAULT_ITEMS, 
 	
 	bakery = {
-		{"farming:flour", "villagers:coins 1"},
-		{"farming:wheat", "villagers:coins 1"},
+		{"farming:flour", "villagers:coins 4"},
+		{"farming:wheat", "villagers:coins 3"},
 		{"farming:bread", "villagers:coins 1"},
 		{"default:apple", "villagers:coins 1"}
 	}, 
 	
-	bench = { DEFAULT_ITEMS }, 
-	chateau = { DEFAULT_ITEMS }, 
-	church = { DEFAULT_ITEMS }, 
-	deco = { DEFAULT_ITEMS }, 
-	empty = { DEFAULT_ITEMS }, 
-	empty5x5 = { DEFAULT_ITEMS }, 
-	empty6x12 = { DEFAULT_ITEMS }, 
-	empty8x8 = { DEFAULT_ITEMS }, 
-	empty16x16 = { DEFAULT_ITEMS }, 
+	bench = DEFAULT_ITEMS, 
+	chateau = DEFAULT_ITEMS, 
+	church = DEFAULT_ITEMS, 
+	deco = DEFAULT_ITEMS, 
+	empty = DEFAULT_ITEMS, 
+	empty5x5 = DEFAULT_ITEMS, 
+	empty6x12 = DEFAULT_ITEMS, 
+	empty8x8 = DEFAULT_ITEMS, 
+	empty16x16 = DEFAULT_ITEMS, 
 	
 	farm_full =	{
 		{"default:apple", "villagers:coins 1"},
@@ -73,10 +73,10 @@ villagers.trade = {
 		{"default:gold_ingot", "villagers:coins 1"}
 	}, 
 	
-	fountain = { DEFAULT_ITEMS }, 
-	house = { DEFAULT_ITEMS }, 
-	hut = { DEFAULT_ITEMS }, 
-	library = { DEFAULT_ITEMS }, 
+	fountain = DEFAULT_ITEMS, 
+	house = DEFAULT_ITEMS, 
+	hut = DEFAULT_ITEMS, 
+	library = DEFAULT_ITEMS, 
 	
 	lumberjack = {
 		{"default:tree", "villagers:coins 1"},
@@ -117,9 +117,9 @@ villagers.trade = {
 		{"default:aspen_wood", "villagers:coins 1"}
 	}, 
 	
-	school = { DEFAULT_ITEMS }, 
-	secular = { DEFAULT_ITEMS }, 
-	shed =	{ DEFAULT_ITEMS }, 
+	school = DEFAULT_ITEMS, 
+	secular = DEFAULT_ITEMS, 
+	shed =	DEFAULT_ITEMS, 
 	shop = { 
 		{"default:key", "villagers:coins 1"},
 		{"default:torch", "villagers:coins 1"},
@@ -157,9 +157,9 @@ villagers.trade = {
 		{"boats:boat", "villagers:coins 1"},
 		{"bucket:bucket_empty", "villagers:coins 1"}
 	}, 
-	spawn = { DEFAULT_ITEMS }, 
-	tavern = { DEFAULT_ITEMS }, 
-	tent = { DEFAULT_ITEMS }, 
+	spawn = DEFAULT_ITEMS, 
+	tavern = DEFAULT_ITEMS, 
+	tent = DEFAULT_ITEMS, 
 	
 	tower =	{ 
 		{"default:sword_steel", "villagers:coins 1"},
@@ -171,18 +171,18 @@ villagers.trade = {
 		{"default:clay_lump", "villagers:coins 1"}
 	}, 
 	
-	village_square = { DEFAULT_ITEMS }, 
-	wagon = { DEFAULT_ITEMS }, 
-	well = { DEFAULT_ITEMS },
+	village_square = DEFAULT_ITEMS, 
+	wagon = DEFAULT_ITEMS, 
+	well = DEFAULT_ITEMS,
 
 	-- village towntest: castle
-	castle = { DEFAULT_ITEMS },
-	park = { DEFAULT_ITEMS }, 
+	castle = DEFAULT_ITEMS,
+	park = DEFAULT_ITEMS, 
 
 	-- village gambit: cementry, lamp, hotel, pub, stable, 
-	cementry = { DEFAULT_ITEMS },
-	lamp = { DEFAULT_ITEMS },
-	hotel = { DEFAULT_ITEMS },
-	pub = { DEFAULT_ITEMS },
-	stable = { DEFAULT_ITEMS }
+	cementry = DEFAULT_ITEMS,
+	lamp = DEFAULT_ITEMS,
+	hotel = DEFAULT_ITEMS,
+	pub = DEFAULT_ITEMS,
+	stable = DEFAULT_ITEMS
 }
