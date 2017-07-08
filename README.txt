@@ -2,27 +2,61 @@ VILLAGERS
 
 BY:             ErrorNull
 DESCRIPTION:    Villagers for Minetest
-VERSION:        0.14
+VERSION:        0.15
 LICENCE:        WTFPL
 
 REQUIRES: Sokomine's mg_villages mod.
 Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
+
 CHAT COMMAND:
 
-/villager <region> <building type>
+/villager <region> <village> <building> <schem>
 
 <region> are the climate/region types that dictate villager ethnicity and clothing style: hot, cold, normal, native, desert
 
-<building type> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco, empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
+<village> 
 
-Example: /villager cold tower
+<building> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco, empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
+
+<schem> refers to theare the actual schem mts files of plots. This also determines the villager's dialogue and also what they trade.
+
+Example: /villager
+Example: /villager hot medieval field
+Example: /villager cold nore field cotton_field
+
+If no parameters are provided, the chat command defaults to region=normal, village=nore, building=empty
+
 
 NOTE ABOUT 'GRASSHUT' VILLAGE TYPE:
 This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is installed with 'mg_villages' mod - both by Sokomine. At this time, my villagers mod do not support the GRASSHUT village type because it requires Mossmanikin's 'dryplants' mod which depends on Venessa's 'biome_lib' mod. Venessa's biome_lib mod and her beautiful mods 'plantlife_modpack' and 'moretrees' are amazing mods that make the world look so much more lush and realistic. However, in my experience so far with biome_lib and other mods that depend on it, it becomes fairly processing intensive and detracks from my goal of having a lightweight, server and multiplayer friendly villagers mod. If you have a fast computer and primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
 
 CHANGELOG:
+
+v0.15
+[fixed]
+- removed crash on non-players punching villagers
+
+[added]
+- completed main trading formspec
+- added coins as the main form of buying goods
+- completed cost table based on coins for common items villagers will trade
+- 'quest' traders who give ingots for a large number of items
+- 'simplejob' traders who give a coin for small amount of resources
+- if player tries to chat/trade while villager is busy (walking, turning about, etc) villager will say 'pardon', 'excuse me', etc.
+- added lots of gameplay facts as dialogue that all villagers may say
+
+[improved]
+- formspec shows goods based on village and plot schem type
+- formspec shows correct values for cost, stock, etc.
+- only certain villagers trade (farmers, smiths, barkeeps, etc)
+- can trade while in the middle of chatting now
+- improved chat bubble interaction a bit
+- villager tells player they are busy if player tries to chat or trade while another player is doing so first
+- added <village> and <schem> parameter to chat command
+- organized all code into their own lua files
+
 
 v0.14
 [improved]

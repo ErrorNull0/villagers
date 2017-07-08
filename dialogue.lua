@@ -17,17 +17,15 @@ local DEFAULT_BYE = {
 }
 	
 local DEFAULT_MAIN = {
-	"My name is VILLAGER_NAME.", 
-	"That is my BUILDING_TYPE.", 
+	"I spawned near a BUILDING_TYPE.", 
 	"I am a AGE GENDER.",
-	"This is a REGION region.",
-	"I like to trade random things."
+	"I haven't been assigned any\n"..
+	"custom dialgue yet."
 }
-
 
 villagers.chat = {
 
-	-- SPAM_CHAT
+	-- chat spamming when chatting too fast
 	spam = {
 		"Say again?", "Come again?", 
 		"I'm sorry?", "Sorry?", 
@@ -96,6 +94,15 @@ villagers.chat = {
 			"Interested in these?"
 		},
 		
+		none = {
+			"Sorry, no interest in trading.",
+			"Nothing to sell you, sorry.",
+			"I don't have anything to sell.",
+			"Trade? Not today.",
+			"I have no trades today.",
+			"Sorry, nothing to trade."
+		},
+		
 		bye = {
 			"Thanks for looking.",
 			"Come back again!",
@@ -113,6 +120,32 @@ villagers.chat = {
 		"walk around a bit.", 
 		"Oh! I was about to go.\n"..
 		"How's it going?"
+	},
+	
+	walking = {
+		"Pardon me..",
+		"Excuse me..",
+		"Going through..",
+		"Make way.. sorry..",
+		"Sorry, just walking..",
+		"On my way..",
+		"Moving onward..",
+		"Pardon, moving through..",
+		"Walking through.. pardon.."
+	},
+	
+	walkback = {
+		"Going the other way..",
+		"Turning back..",
+		"Other way.."
+	},
+	
+	busy = {
+		"Pardon me..",
+		"Excuse me.",
+		"Ah, pardon..",
+		"Oh, excuse me..",
+		"Pardon..",
 	},
 
 	-- DIG_CHAT
@@ -380,38 +413,6 @@ villagers.chat = {
 			
 			"If you have the required metals,\n"..
 			"I can sell weapons you need.",
-			
-			"There are wolves in the forests.\n"..
-			"If you leave them alone they\n"..
-			"will not hurt you.",
-			
-			"If you have raw meats like\n"..
-			"rabbit or mutton, you might be\n"..
-			"able to tame a wolf!",
-			
-			"Many of the dangerous creatures\n"..
-			"hunt only at night - except\n"..
-			"for creepers.",
-			
-			"The snowlands have less creatures\n"..
-			"that hunt you. But that also\n"..
-			"means you have less food to hunt.",
-			
-			"There are creatures called a\n"..
-			"Yeti that live in the snow.",
-			
-			"Want to know an interesting thing\n"..
-			"about Yetis? They like potatoes!",
-			
-			"The snow can be a peaceful place.\n"..
-			"But watch out for Yetis!",
-			
-			"Yetis like the peace a quiet too.\n"..
-			"They only like to roam about at\n"..
-			"night when the sun is not high.",
-			
-			"Mese is hard to find. But watch\n"..
-			"out for the Mese monster!",
 		}
 	}, 
 	
@@ -446,6 +447,12 @@ villagers.chat = {
 			
 			"Make a wish!"
 		}
+	}, 
+	
+	horsestable = {
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
 	}, 
 	
 	hotel =	{
@@ -543,13 +550,7 @@ villagers.chat = {
 	lumberjack = {
 		greetings = DEFAULT_HI,
 		goodbyes = DEFAULT_BYE,
-		mainchat = {
-			"My name is VILLAGER_NAME.", 
-			"That's my home as a BUILDING_TYPE.", 
-			"I am a AGE GENDER.",
-			"This is a REGION region.",
-			"I like to trade random things."
-		}
+		mainchat = DEFAULT_MAIN
 	}, 
 	
 	library = {
@@ -569,31 +570,6 @@ villagers.chat = {
 			
 			"The more you know, the better\n"..
 			"prepared you will be out there.",
-			
-			"Did you know you can find many\n"..
-			"beautiful coral in the sea?",
-			
-			"Many colorful plants grow at\n"..
-			"the bottom of the seas.",
-			
-			"Have you ever seen a jellyfish\n"..
-			"in the ocean?",
-			
-			"Sea kelp can grow very long!",
-			
-			"Did you know sea kelp can grow\n"..
-			"up to 20 meters longs?",
-			
-			"You can find kelp keep\n"..
-			"in the oceans!",
-			
-			"Some travelers told me that they\n"..
-			"saw old sunkin ships and under\n"..
-			"water boats on the sea bed.",
-			
-			"I heard you can find treasure\n"..
-			"in the ships and boats that sank\n"..
-			"to the bottom of the sea.",
 		}
 	}, 
 	
@@ -788,138 +764,12 @@ villagers.chat = {
 			
 			"Yes, that is a guard tower!",
 			
-			"I patro this area.",
+			"I patrol this area.",
 			
-			"I have bows and arrows if you\n"..
-			"needs some.",
+			"Do you know how to\n"..
+			"use a bow?",
 			
-			"Keep the creepers at a distance\n"..
-			"with a bow.",
-			
-			"Ever since the creepers started\n"..
-			"to appear, I'm afraid to be in\n"..
-			"the forests where they can hide.",
-			
-			"I heard creepers don't\n"..
-			"like the snow.",
-			
-			"Attacking a creeper is easy since\n"..
-			"they don't have arms. But, run\n"..
-			"before their deathly explosion!",
-			
-			"Creapers only appear during the\n"..
-			"day. It's like they want to blow\n"..
-			"you up in broad daylight.",
-			
-			"Watch out for zombies! They\n"..
-			"like to hide near places with\n"..
-			"lots of cover.",
-			
-			"Zombies like to hide near trees,\n"..
-			"bushes, and tall grass.",
-			
-			"Zombies come out mostly after\n"..
-			"sunset and hide then when\n"..
-			"twilight arrives.",
-			
-			"Be careful at night while\n"..
-			"exploring the forests and\n"..
-			"tall brush. It's zombies!",
-			
-			"I saw some zombies wearing\n"..
-			"steel armor!",
-			
-			"If you ever encounter a zombie\n"..
-			"wearing armor, you need a\n"..
-			"strong sword and good armor too!",
-			
-			"There are ghostly mages that\n"..
-			"like to wander the forests\n"..
-			"and dungeons at night.",
-			
-			"Mages hate firelight and so\n"..
-			"will steal any nearby torches.\n"..
-			"They're definitely spooky!",
-			
-			"The Mese monster's shards\n"..
-			"fly so fast.",
-			
-			"The way to defeat a Mese monster\n"..
-			"is to dart up close, strike,\n"..
-			"then dart away from each shard.",
-			
-			"Did you know Mese monsters live\n"..
-			"in stone caves and dungeons?",
-			
-			"Mese monsters only come out\n"..
-			"after the sun sets.",
-			
-			"Have you hunted slimes before?\n"..
-			"You can find them in jungles\n"..
-			"and near tall grass and bushes.",
-			
-			"Green slimes are more common\n"..
-			"in forests and jungles.",
-			
-			"At night the big slimes\n"..
-			"roam about!",
-			
-			"Green slimes can be found\n"..
-			"hiding near tall grass.",
-			
-			"Green slimes also like humid\n"..
-			"places like jungles.",
-			
-			"Only the tiny green slimes\n"..
-			"appear during the day.",
-			
-			"The huge slimes appear only\n"..
-			"at night. Watch out for them!",
-			
-			"Did you know you can get\n"..
-			"gelatin from green slimes?",
-			
-			"Tiny slimes are not that\n"..
-			"difficult to kill, but you\n"..
-			"usually get less gelatin.",
-			
-			"The medium and giant slimes\n"..
-			"have gelatin every time, but\n"..
-			"be careful not to get hurt!",
-			
-			"Have you heard about a huge\n"..
-			"headless monster with no skin?",
-			
-			"There is a headless, skinless\n"..
-			"monster where all its flesh\n"..
-			"is exposed. Scary!",
-			
-			"The headless monster has\n"..
-			"muscles and tendons that\n"..
-			"squishes around as it walks!",
-			
-			"There's an tale about an evil\n"..
-			"tree that uproots itself every\n"..
-			"night to find little children!",
-			
-			"I heard there are skeletons\n"..
-			"in the abandoned dungeons.\n"..
-			"hope they don't dome up here!",
-			
-			"I love the beaches and open\n"..
-			"seas. There's so much to\n"..
-			"explore out there!",
-			
-			"Swimming across a lake can be\n"..
-			"a good shortcut. Just don't\n"..
-			"get eaten by a shark!",
-			
-			"If you plan to explore the open\n"..
-			"seas, be sure to use a raft.",
-			
-			"Sharks are usually seen near\n"..
-			"sea plant life and also roaming\n"..
-			"about sunken shipwrecks!"
+			"Have a look at my armor!"
 		}
 	}, 
 	
@@ -992,6 +842,309 @@ villagers.chat = {
 			"water. You just need a bucket!"
 		}
 		
-	}
+	},
+	
+	gamefacts = {
+		"There are wolves in the forests.\n"..
+		"If you leave them alone they\n"..
+		"will not hurt you.",
+		
+		"If you have raw meats like\n"..
+		"rabbit or mutton, you might be\n"..
+		"able to tame a wolf!",
+		
+		"Many of the dangerous creatures\n"..
+		"hunt only at night - except\n"..
+		"for creepers.",
+		
+		"The snowlands have less creatures\n"..
+		"that hunt you. But that also\n"..
+		"means you have less food to hunt.",
+		
+		"There are creatures called a\n"..
+		"Yeti that live in the snow.",
+		
+		"Want to know an interesting thing\n"..
+		"about Yetis? They like potatoes!",
+		
+		"The snow can be a peaceful place.\n"..
+		"But watch out for Yetis!",
+		
+		"Yetis like the peace a quiet too.\n"..
+		"They only like to roam about at\n"..
+		"night when the sun is not high.",
+		
+		"Mese is hard to find. But watch\n"..
+		"out for the Mese monster!",
+		
+		"Skeleton key default left-click\n"..
+		"action is to create a key for\n"..
+		"the locked object.",
+
+		"right-click for opening\n"..
+		"stuff with keys.",
+
+		"one gold ingot makes\n"..
+		"a skeleton key.",
+
+		"The owner of locked things\n"..
+		"never needs to use keys\n"..
+		"for own things.",
+
+		"You need steel ingots\n"..
+		"to make carts.",
+
+		"To make a cart, you do\n"..
+		"a 'U' shape like boat with\n"..
+		"steel ingots!",
+		 
+		"Carts will only move on rails.",
+
+		"You need to be 'sneaky' to\n"..
+		"pickup a mine cart.",
+
+		"You can drop items in a\n"..
+		"minecart to transport items!",
+
+		"Powered rails can automatically\n"..
+		"accellerate moving carts.",
+
+		"Sese crytsal fragments is\n"..
+		"the important ingredient to\n"..
+		"make powered rails.",
+
+		"You can make a skeleton key\n"..
+		"from a gold ingot.",
+
+		"If you want to share a\n"..
+		"locked item with a friend,\n"..
+		"just give them a key.",
+
+		"Use a skeleton key on a locked\n"..
+		"item and it will turn into a\n"..
+		"key that you can share!",
+
+		"If you remove a locked item,\n"..
+		"then any keys you shared for it\n"..
+		"will no longer work.",
+
+		"You can smelt any key back into\n"..
+		"a gold ingot - it's like magic!",
+
+		"Did you know common bushes grow\n"..
+		"in grasslands, decidious\n"..
+		"forests and snowy places?",
+
+		"Acacia bushes grow in"..
+		"savannahs.",
+
+		"Bush leaves defy gravity -\n"..
+		"they never fall if you greak\n"..
+		"off their stems!",
+
+		"Did you know a bush stem can be\n"..
+		"crafted into 1 wooden plank?",
+
+		"Corals live in warm, shallow\n"..
+		"oceans - maybe near deserts or\n"..
+		"savannahs. Not sure!",
+
+		"You can harvest coral skeletons\n"..
+		"from the orage and brown coral.",
+
+		"If coral is expose to air,\n"..
+		"they will die and turn into\n"..
+		"skeleton coral.",
+
+		"You need pickaxes to\n"..
+		"dig up coral!",
+
+		"You can use flint and steel\n"..
+		"on a coal block to create a\n"..
+		"permanent flame.",
+
+		"If you have TNT, don't get too\n"..
+		"close to any torches or to\n"..
+		"flint and steel.. boom!",
+
+		"Moss like to glow on anything\n"..
+		"that is cobblestone when there\n"..
+		"is water near it.",
+
+		"If you pour water into lava\n"..
+		"you can sometimes get obsidian!",
+
+		"Snow blocks and ice will cool\n"..
+		"down lava and if it's just\n"..
+		"right it will make obsidian.",
+		
+		"Did you know you can find many\n"..
+		"beautiful coral in the sea?",
+		
+		"Many colorful plants grow at\n"..
+		"the bottom of the seas.",
+		
+		"Have you ever seen a jellyfish\n"..
+		"in the ocean?",
+		
+		"Sea kelp can grow very long!",
+		
+		"Did you know sea kelp can grow\n"..
+		"up to 20 meters longs?",
+		
+		"You can find kelp deep\n"..
+		"in the oceans!",
+		
+		"Some travelers told me that they\n"..
+		"saw old sunkin ships and under\n"..
+		"water boats on the sea bed.",
+		
+		"I heard you can find treasure\n"..
+		"in the ships and boats that sank\n"..
+		"to the bottom of the sea.",
+		
+		"No one sells lumps like iron\n"..
+		"copper, tin, or gold. You have\n"..
+		"to dig them up yourself.",
+		
+		"Look for village leaders who\n"..
+		"will trade an ingot for some"..
+		"resources they need!",
+		
+		"People cannot hear you if\n"..
+		"you chat too fast!",
+
+		"Keep the creepers at a distance\n"..
+		"with a bow.",
+		
+		"Ever since the creepers started\n"..
+		"to appear, I'm afraid to be in\n"..
+		"the forests where they can hide.",
+		
+		"I heard creepers don't\n"..
+		"like the snow.",
+		
+		"Attacking a creeper is easy since\n"..
+		"they don't have arms. But, run\n"..
+		"before their deathly explosion!",
+		
+		"Creapers only appear during the\n"..
+		"day. It's like they want to blow\n"..
+		"you up in broad daylight.",
+		
+		"Watch out for zombies! They\n"..
+		"like to hide near places with\n"..
+		"lots of cover.",
+		
+		"Zombies like to hide near trees,\n"..
+		"bushes, and tall grass.",
+		
+		"Zombies come out mostly after\n"..
+		"sunset and hide then when\n"..
+		"twilight arrives.",
+		
+		"Be careful at night while\n"..
+		"exploring the forests and\n"..
+		"tall brush. It's zombies!",
+		
+		"I saw some zombies wearing\n"..
+		"steel armor!",
+		
+		"If you ever encounter a zombie\n"..
+		"wearing armor, you need a\n"..
+		"strong sword and good armor too!",
+		
+		"There are ghostly mages that\n"..
+		"like to wander the forests\n"..
+		"and dungeons at night.",
+		
+		"Mages hate firelight and so\n"..
+		"will steal any nearby torches.\n"..
+		"They're definitely spooky!",
+		
+		"The Mese monster's shards\n"..
+		"fly so fast.",
+		
+		"The way to defeat a Mese monster\n"..
+		"is to dart up close, strike,\n"..
+		"then dart away from each shard.",
+		
+		"Did you know Mese monsters live\n"..
+		"in stone caves and dungeons?",
+		
+		"Mese monsters only come out\n"..
+		"after the sun sets.",
+		
+		"Have you hunted slimes before?\n"..
+		"You can find them in jungles\n"..
+		"and near tall grass and bushes.",
+		
+		"Green slimes are more common\n"..
+		"in forests and jungles.",
+		
+		"At night the big slimes\n"..
+		"roam about!",
+		
+		"Green slimes can be found\n"..
+		"hiding near tall grass.",
+		
+		"Green slimes also like humid\n"..
+		"places like jungles.",
+		
+		"Only the tiny green slimes\n"..
+		"appear during the day.",
+		
+		"The huge slimes appear only\n"..
+		"at night. Watch out for them!",
+		
+		"Did you know you can get\n"..
+		"gelatin from green slimes?",
+		
+		"Tiny slimes are not that\n"..
+		"difficult to kill, but you\n"..
+		"usually get less gelatin.",
+		
+		"The medium and giant slimes\n"..
+		"have gelatin every time, but\n"..
+		"be careful not to get hurt!",
+		
+		"Have you heard about a huge\n"..
+		"headless monster with no skin?",
+		
+		"There is a headless, skinless\n"..
+		"monster where all its flesh\n"..
+		"is exposed. Scary!",
+		
+		"The headless monster has\n"..
+		"muscles and tendons that\n"..
+		"squishes around as it walks!",
+		
+		"There's an tale about an evil\n"..
+		"tree that uproots itself every\n"..
+		"night to find little children!",
+		
+		"I heard there are skeletons\n"..
+		"in the abandoned dungeons.\n"..
+		"hope they don't dome up here!",
+		
+		"I love the beaches and open\n"..
+		"seas. There's so much to\n"..
+		"explore out there!",
+		
+		"Swimming across a lake can be\n"..
+		"a good shortcut. Just don't\n"..
+		"get eaten by a shark!",
+		
+		"If you plan to explore the open\n"..
+		"seas, be sure to use a raft.",
+		
+		"Sharks are usually seen near\n"..
+		"sea plant life and also roaming\n"..
+		"about sunken shipwrecks!",
+		
+		"Tin is not used in making many\n"..
+		"tools. But, you need tin with\n"..
+		"copper to make bronze."
+	},
 
 }

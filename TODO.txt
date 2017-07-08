@@ -5,15 +5,38 @@ COMPLETED:
 - initial trading farmspec with each item containing random stock 1 - 10, and each item just costsing 1 coin
 - currently all villager types have test/dummy items to trade (which will change later)
 
+- completed premliminary cost table for common/default items based on coin
+- completed assigning prelim 'quest' items
+- trading formspec now display random goods that are also based on villager and schem type of each plot.
+- complete basic trading with coins
+- proper values now display for item stock, cost and cost amount
+
+- only certain villager types will have items for trade (farmers, smiths, barkeeps, priests, etc)
+- if there are multiple villagers to a particular plot, only one (and not all) will have something to trade
+- added more chat dialgue to 'home' villagers for now
+- updated chat command for following params '/villagers <region> <village> <building> <schem>'
+- organized all lua code into their own lua files
+- initiate trade while in the middle of chatting. Before you had to first end chat by walking away or finishing chat dialogue.
+- villagers says 'pardon', 'excuse me', if they are in the middle of an uninterruptable action when player trying to chat/trade
+- willagers say 'coming through', 'excuse me', ect when player tries to chat while they are walking
+- all villagers may provide one or two game facts when chatting
+
+- improved chat bubble display
+
 TODO:
-- complete detailing cost and available stock for goods that villagers can sell to players
+- minetest.after removing chat bubbles when many are in screen. 
+- create mystery merchants that sell only one valueable items at a time (only one in each village)
+
+- prevent manual spawning if in water
+- villagers in snowy region will offer some snow for free
+- create custom main dialogue for traders
+- make metalsmith use only mineral and metal related dialogue from 'game facts'
+- make chat dialogue based on scm type and not building type anymore
+-- for now, only librarians, smith, tower gaurds, and house residents give random game facts.
+- slightly reduce the chance for smalltalk chat for each villager
 - make item stock based on the item type: expensive items have less stock, but bigger villages have more stock.
-- complete item cost system. each item will have random cost but will be high cost in general for bigger villages.
-- make certain villagers have nothing to trade at all.
 
-- test when alert message when player tries to trade with villager who is currently trading with another player
-
-- ensure homes with multiple inhabitants follow these patterns:
+- make villagers who spawn in homes with multiple inhabitants follow these patterns:
 -- 1 inhab: a) adult male b) adult female c) old male d) old female
 -- 2 inhab: a) adult male and female b) old male and female c) more to come
 -- 3 inhab: a) adult male and female and young b) old male and female and young
@@ -23,9 +46,9 @@ TODO:
 - make custom dialogue also based on village type. Ex: huts in medieval are larger and have beds and huts in cornernote do not.
 
 - make the village region type (hot, cold, normal, native, desert) not based purely on the village type, but instead
--- based on the surrounding blocks from the village spawn point. 
+-- based on the surrounding blocks and village tree types from the village spawn point. 
 
-- allow villagers to walk through doors
+- allow villagers to open/close and walk through doors and gates
 - while villager is walking and attempting to chat, show chat bubble 'pardon me', 'excuse me', 'sorry', 'coming through', 'walking here', etc.
 - due to many more spawned villagers matching each bed, make most of these villagers walk the roads instead of randomly wandering around the plot
 
@@ -43,6 +66,9 @@ TODO:
 - make field villagers stay near their fields and not wander off
 - villager wields the tool depending on what item digging - shovel for snow, hoe for crops and soil, etc
 
+- add unique chat dialogue for remaining villager types
+- add better clothing textures for 'church' villager types
+- add clothing textures that match old aged villagers
 - make church villagers look for and stay inside the church
 
 - add support for weather mod
@@ -56,6 +82,11 @@ TODO:
 - add different dress type of males (currently using slightly modified texture of female full dress)
 - add more full dress styles for females
 
+- tower guard spawn atop the tower too!
+- free roaming villagers that just walk the streets and chat
+- villagers climb stairs and villagers sit on furniture
+- support for Farming Redo items for trading
+
 - allow villagers to kill mobs
 - allow villagers to get 'knocked out' (but not die) from attackes
 - knocked out villagers will automatically recover and stand back up after some time
@@ -63,11 +94,8 @@ TODO:
 - knocked out villager can only respond like 'uuuhg', 'ouch', 'help', etc when knocked out
 - player can right-click on villager with a healing item to help recovery
 
-- complete a simple trading system
-- upon trading, formspec also pulls from villager's inventory of dug/harvested crops
-
-
 ISSUES/BUGS:
-- gambit and sandcity village types have no beds
-- cornernote village type does not have beds in their huts
+
+- player who initiated a chat or trade might have chat bubble stick when 
+-- another player chats same villager
 - on very rare occasions villagers seen to walk diagonally
