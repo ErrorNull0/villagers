@@ -40,6 +40,7 @@ v0.15
 
 [added]
 - completed main trading formspec
+- traders will show **trader** on their infospec
 - added coins as the main form of buying goods
 - completed cost table based on coins for common items villagers will trade
 - 'quest' traders who give ingots for a large number of items
@@ -56,6 +57,7 @@ v0.15
 - villager tells player they are busy if player tries to chat or trade while another player is doing so first
 - added <village> and <schem> parameter to chat command
 - organized all code into their own lua files
+- infospec on villager has useful info (and some not)
 
 
 v0.14
