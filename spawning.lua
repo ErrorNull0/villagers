@@ -338,21 +338,24 @@ minetest.register_entity("villagers:villager", {
 
 -- main villager spawning function
 function villagers.spawnVillager(pos, region, village_type, building_type, schem_type, trading_allowed, yaw_data, bed_data)
-	
-	if villagers.log5 then io.write("\n      spawnVillager() ") end
+	io.write("\n    spawnVillager() ")
+	if building_type == nil then io.write("building_type is NIL. ")
+	else io.write("building_type="..building_type.." ") end
 	
 	if villagers.log5 then 
+		io.write("\n      spawnVillager() ")
 		io.write("buildType="..building_type.." ")
-		if schem_type then
-			io.write("schemType="..schem_type.." ") 
-		else
-			io.write("schemType=NIL ") 
-		end
+		if schem_type then io.write("schemType="..schem_type.." ") 
+		else io.write("schemType=NIL ") end
 	end
 	
 	-- SPAWN THE ACTUAL VILLAGER ENTITY!!!!
 	local objectRef = minetest.add_entity(pos, "villagers:villager")
 	local self = objectRef:get_luaentity()	
+	
+	if villagers.plots[building_type] == nil then
+		print("## ERROR Unexpected building_type="..building_type)
+	end
 	
 	--get GENDER and save to 'vGender' object custom field
 	local gender = "male"
@@ -826,8 +829,7 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 	elseif village_type == "cornernote" then region_type = "normal"
 		
 	else print("\n## ERROR Invalid village_type="..village_type) end
-		
-		
+	
 	-- for each building in the village
 	for building_index,bpos in pairs(village.to_add_data.bpos) do
 	
@@ -835,7 +837,7 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 		local building_type = building_data.typ
 		local building_scm = building_data.scm
 		local building_pos = {x=bpos.x, y=bpos.y, z=bpos.z}
-		
+		--[[
 		if villagers.log5 then
 			io.write("\n  building #"..building_index.." ")
 			io.write("loc"..minetest.pos_to_string(building_pos).." ")
@@ -847,8 +849,25 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 				io.write("type="..building_type.." ")
 				io.write("beds="..#bpos.beds.." ")
 			end
-		end
+		end--]]
+
+		io.write("\n  #"..building_index.." ")
+		io.write("type_id="..bpos.btype.." ")
 		
+		if bpos.btype ~= "road" then
+			io.write("scm="..dump(building_scm).." ")
+			io.write("type="..building_type.." ")
+			io.write("beds="..#bpos.beds.." ")
+			
+			if #bpos.beds > 0 then
+				spawnOnBedPlot(bpos, region_type, village_type, building_type, building_data.scm, village.vx, village.vz)
+			else
+				spawnOnJobPlot(bpos, region_type, village_type, building_type, building_data.scm, minp, maxp)
+			end
+			
+		end
+
+		--[[
 		-- get mob spawner positions for this building
 		if bpos.btype == "road" then
 			--io.write("mob_spawners: n/a ")
@@ -864,12 +883,15 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 		elseif building_type == "house" or building_type == "tavern" or building_type == "library" or
 			building_type == "mill" or building_type == "farm_full" or building_type == "farm_tiny" or
 			building_type == "forge" or building_type == "hut" or building_type == "lumberjack" or 
-			building_type == "trader" then
+			building_type == "school" or building_type == "inn" or building_type == "trader" or
+			building_type == "tent" or building_type == "chateau" or building_type == "forge" 
+			
+			then
 			spawnOnBedPlot(bpos, region_type, village_type, building_type, building_data.scm, village.vx, village.vz)
 		else
 			spawnOnJobPlot(bpos, region_type, village_type, building_type, building_data.scm, minp, maxp)
 		end
-		
+		--]]
 		
 	end --end for loop
 	--io.write("\n")
