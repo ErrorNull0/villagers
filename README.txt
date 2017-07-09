@@ -16,7 +16,7 @@ CHAT COMMAND:
 
 <region> are the climate/region types that dictate villager ethnicity and clothing style: hot, cold, normal, native, desert
 
-<village> 
+<village> are the types of supported villages: tent, charachoal, claytrader, lumberjack, logcabin, nore, medieval, gambit, taoki, cornernote, sandcity
 
 <building> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco, empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
 
