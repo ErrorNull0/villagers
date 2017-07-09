@@ -9,16 +9,17 @@ REQUIRES: Sokomine's mg_villages mod.
 Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
-
 CHAT COMMAND:
-
 /villager <region> <village> <building> <schem>
 
 <region> are the climate/region types that dictate villager ethnicity and clothing style: hot, cold, normal, native, desert
 
-<village> are the types of supported villages: tent, charachoal, claytrader, lumberjack, logcabin, nore, medieval, gambit, taoki, cornernote, sandcity
+<village> are the types of supported villages: tent, charachoal, claytrader, lumberjack, logcabin, nore, medieval, gambit, 
+taoki, cornernote, sandcity
 
-<building> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco, empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
+<building> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco,
+empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, 
+secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
 
 <schem> refers to theare the actual schem mts files of plots. This also determines the villager's dialogue and also what they trade.
 
@@ -30,7 +31,13 @@ If no parameters are provided, the chat command defaults to region=normal, villa
 
 
 NOTE ABOUT 'GRASSHUT' VILLAGE TYPE:
-This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is installed with 'mg_villages' mod - both by Sokomine. At this time, my villagers mod do not support the GRASSHUT village type because it requires Mossmanikin's 'dryplants' mod which depends on Venessa's 'biome_lib' mod. Venessa's biome_lib mod and her beautiful mods 'plantlife_modpack' and 'moretrees' are amazing mods that make the world look so much more lush and realistic. However, in my experience so far with biome_lib and other mods that depend on it, it becomes fairly processing intensive and detracks from my goal of having a lightweight, server and multiplayer friendly villagers mod. If you have a fast computer and primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
+This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is
+installed with 'mg_villages' mod - both by Sokomine. At this time, my villagers mod do not support the GRASSHUT village type
+because it requires Mossmanikin's 'dryplants' mod which depends on Venessa's 'biome_lib' mod. Venessa's biome_lib mod and her 
+beautiful mods 'plantlife_modpack' and 'moretrees' are amazing mods that make the world look so much more lush and realistic. 
+However, in my experience so far with biome_lib and other mods that depend on it, it becomes fairly processing intensive and 
+detracks from my goal of having a lightweight, server and multiplayer friendly villagers mod. If you have a fast computer and 
+primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
 
 CHANGELOG:
 
