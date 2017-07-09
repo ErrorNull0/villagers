@@ -435,7 +435,7 @@ function villagers.chatVillager(self, player, chat_type)
 		local next_dialogue
 		
 		-- pop/remove one random dialogue from 'smalltalk' table
-		random_num = math.random(6)
+		local random_num = math.random(6)
 		if random_num == 1 then
 			local dialogue_count = #self.vScriptSmalltalk
 			if villagers.log2 then io.write("getDialogue:smalltalk fromRemain="..dialogue_count.." ") end
