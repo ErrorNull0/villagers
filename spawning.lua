@@ -338,7 +338,7 @@ minetest.register_entity("villagers:villager", {
 
 -- main villager spawning function
 function villagers.spawnVillager(pos, region, village_type, building_type, schem_type, trading_allowed, yaw_data, bed_data)
-	io.write("\n    spawnVillager() ")
+	--io.write("\n    spawnVillager() ")
 	if building_type == nil then io.write("building_type is NIL. ")
 	else io.write("building_type="..building_type.." ") end
 	
@@ -850,15 +850,17 @@ mg_villages.part_of_village_spawned = function( village, minp, maxp, data, param
 				io.write("beds="..#bpos.beds.." ")
 			end
 		end--]]
-
+		--[[
 		io.write("\n  #"..building_index.." ")
 		io.write("type_id="..bpos.btype.." ")
+		--]]
 		
 		if bpos.btype ~= "road" then
+			--[[
 			io.write("scm="..dump(building_scm).." ")
 			io.write("type="..building_type.." ")
 			io.write("beds="..#bpos.beds.." ")
-			
+			--]]
 			if #bpos.beds > 0 then
 				spawnOnBedPlot(bpos, region_type, village_type, building_type, building_data.scm, village.vx, village.vz)
 			else
