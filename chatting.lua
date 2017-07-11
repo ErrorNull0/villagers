@@ -184,7 +184,7 @@ function villagers.showMessageBubble(self, player, message_text, message_locatio
 		
 		table.insert(self.vHudIds[player_name], 1, {chat_box_id, chat_name_id, chat_text_id})
 		minetest.after(clear_timer, function() 
-			io.write("\n## MINETEST.AFTER()!! deleting chat IDs..")
+			--io.write("\n## MINETEST.AFTER()!! deleting chat IDs..")
 			villagers.removeTextHud(self, player)
 		end)
 		
