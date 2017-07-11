@@ -83,7 +83,7 @@ function villagers.removeTextHud(self, player)
 		for i = 1, #hud_id_data do
 			local hud_id = hud_id_data[i]
 			player:hud_remove(hud_id)
-			io.write(hud_id.." ")
+			--io.write(hud_id.." ")
 		end
 	else
 		if villagers.log2 then io.write("NoTextHudsShowing doNothing ") end
