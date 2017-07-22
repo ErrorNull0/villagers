@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 TODO:
 - finish detailing villagers.GOODS table for all other job titles
 - ensure /villagers list command and /villagers spawn command is okay
