@@ -301,6 +301,7 @@ acacia_bush_leaves, acacia_bush_sapling
 
 
 -- main villager spawning function
+<<<<<<< HEAD
 function villagers.spawnVillager(pos, homeplace, player_name, trading_allowed, yaw_data, bed_data)
 	local log = false
 	
@@ -311,12 +312,25 @@ function villagers.spawnVillager(pos, homeplace, player_name, trading_allowed, y
 		if yaw_data then io.write("tradAllow="..tostring(trading_allowed).." ") end
 		if yaw_data then io.write("tradAllow="..tostring(trading_allowed).." ") end
 		io.write("spawningVillager{ ")
+=======
+function villagers.spawnVillager(pos, region, village_type, building_type, schem_type, trading_allowed, yaw_data, bed_data)
+	--io.write("\n    spawnVillager() ")
+	if building_type == nil then io.write("building_type is NIL. ")
+	else io.write("building_type="..building_type.." ") end
+	
+	if villagers.log5 then 
+		io.write("\n      spawnVillager() ")
+		io.write("buildType="..building_type.." ")
+		if schem_type then io.write("schemType="..schem_type.." ") 
+		else io.write("schemType=NIL ") end
+>>>>>>> fa0bd14a66f7bf50ffe842cf02029a973b72e1d6
 	end
 	
 	-- SPAWN THE ACTUAL VILLAGER ENTITY!!!!
 	local objectRef = minetest.add_entity(pos, "villagers:villager")
 	local self = objectRef:get_luaentity()	
 	
+<<<<<<< HEAD
 	-- If village type is unknown in ITEMS table,
 	-- apply 'nore' as the default village type
 	local v_type = homeplace.village
@@ -338,6 +352,10 @@ function villagers.spawnVillager(pos, homeplace, player_name, trading_allowed, y
 	if villagers.error then
 		table.insert(self.vUnknown, "Unknown topnode: "..villagers.error.."\n")
 		villagers.error = nil -- reset for next villager spawning
+=======
+	if villagers.plots[building_type] == nil then
+		print("## ERROR Unexpected building_type="..building_type)
+>>>>>>> fa0bd14a66f7bf50ffe842cf02029a973b72e1d6
 	end
 	
 	--get GENDER and save to 'vGender' object custom field
@@ -1306,6 +1324,7 @@ local function spawnVillager(
 	end
 	self.vGender = gender
 	
+<<<<<<< HEAD
 	--get AGE and save to 'vAge' object custom field
 	local age_chance = villagers.plots[building_type].age
 	local age = age_chance[math.random(#age_chance)]
@@ -1319,9 +1338,97 @@ local function spawnVillager(
 	else
 		if age == "young" then
 			self.vName = villagers.getVillagerName(gender, age)
+=======
+	elseif village_type == "tent" then region_type = "hot"
+		
+	-- single lone buildings
+	elseif village_type == "tower" then region_type = "normal"
+	elseif village_type == "chateau" then region_type = "normal"
+	elseif village_type == "forge" then region_type = "hot"
+	elseif village_type == "tavern" then region_type = "normal"
+	elseif village_type == "well" then region_type = "native"
+	elseif village_type == "trader" then region_type = "desert"
+	elseif village_type == "sawmill" then region_type = "cold"
+	elseif village_type == "farm_tiny" then region_type = "normal"
+	elseif village_type == "farm_full" then region_type = "normal"
+	elseif village_type == "single" then region_type = "normal"
+		
+	-- included in 'village_sandcity'
+	elseif village_type == "sandcity" then region_type = "desert"
+		
+	-- included in 'village_gambit'
+	elseif village_type == "gambit" then region_type = "native"
+		
+	-- included in 'village_towntest'
+	elseif village_type == "cornernote" then region_type = "normal"
+		
+	else print("\n## ERROR Invalid village_type="..village_type) end
+	
+	-- for each building in the village
+	for building_index,bpos in pairs(village.to_add_data.bpos) do
+	
+		local building_data = mg_villages.BUILDINGS[bpos.btype]
+		local building_type = building_data.typ
+		local building_scm = building_data.scm
+		local building_pos = {x=bpos.x, y=bpos.y, z=bpos.z}
+		--[[
+		if villagers.log5 then
+			io.write("\n  building #"..building_index.." ")
+			io.write("loc"..minetest.pos_to_string(building_pos).." ")
+			io.write("type_id="..bpos.btype.." ")
+			
+			
+			if bpos.btype ~= "road" then
+				io.write("scm="..dump(building_scm).." ")
+				io.write("type="..building_type.." ")
+				io.write("beds="..#bpos.beds.." ")
+			end
+		end--]]
+		--[[
+		io.write("\n  #"..building_index.." ")
+		io.write("type_id="..bpos.btype.." ")
+		--]]
+		
+		if bpos.btype ~= "road" then
+			--[[
+			io.write("scm="..dump(building_scm).." ")
+			io.write("type="..building_type.." ")
+			io.write("beds="..#bpos.beds.." ")
+			--]]
+			if #bpos.beds > 0 then
+				spawnOnBedPlot(bpos, region_type, village_type, building_type, building_data.scm, village.vx, village.vz)
+			else
+				spawnOnJobPlot(bpos, region_type, village_type, building_type, building_data.scm, minp, maxp)
+			end
+			
+		end
+
+		--[[
+		-- get mob spawner positions for this building
+		if bpos.btype == "road" then
+			--io.write("mob_spawners: n/a ")
+			
+		-- for homes that don't yet have beds, force a villager to spawn anyway
+		elseif (village_type == "sandcity" and building_type == "house") or
+			(village_type == "cornernote" and building_type == "hut") or
+			(village_type == "gambit" and building_type == "house") then
+			--spawnOnNonResidential(bpos, region_type, village_type, building_type, building_data.scm, minp, maxp)
+			spawnOnJobPlot(bpos, region_type, village_type, building_type, building_data.scm, minp, maxp)
+			
+		-- spawn a villager for each # of beds in that building
+		elseif building_type == "house" or building_type == "tavern" or building_type == "library" or
+			building_type == "mill" or building_type == "farm_full" or building_type == "farm_tiny" or
+			building_type == "forge" or building_type == "hut" or building_type == "lumberjack" or 
+			building_type == "school" or building_type == "inn" or building_type == "trader" or
+			building_type == "tent" or building_type == "chateau" or building_type == "forge" 
+			
+			then
+			spawnOnBedPlot(bpos, region_type, village_type, building_type, building_data.scm, village.vx, village.vz)
+>>>>>>> fa0bd14a66f7bf50ffe842cf02029a973b72e1d6
 		else
 			self.vName = villagers.getVillagerName(gender)
 		end
+<<<<<<< HEAD
 	end
 
 	--### update below function to incorporate above 3 functions in there
@@ -1380,3 +1487,10 @@ minetest.register_lbm({
 
 
 
+=======
+		--]]
+		
+	end --end for loop
+	--io.write("\n")
+end
+>>>>>>> fa0bd14a66f7bf50ffe842cf02029a973b72e1d6
