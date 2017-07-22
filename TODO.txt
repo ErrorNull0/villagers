@@ -1,4 +1,5 @@
 TODO:
+- remove references to villagers.villager_ids
 - finish detailing villagers.GOODS table for all other job titles
 - ensure /villagers list command and /villagers spawn command is okay
 - make unique chat for 'single' houses and for region type
