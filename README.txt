@@ -2,7 +2,7 @@ VILLAGERS
 
 BY:             ErrorNull
 DESCRIPTION:    Villagers for Minetest
-VERSION:        0.15
+VERSION:        0.16
 LICENCE:        WTFPL
 
 REQUIRES: Sokomine's mg_villages mod.
@@ -10,25 +10,19 @@ Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
 CHAT COMMAND:
-/villager <region> <village> <building> <schem>
-
-<region> are the climate/region types that dictate villager ethnicity and clothing style: hot, cold, normal, native, desert
-
-<village> are the types of supported villages: tent, charachoal, claytrader, lumberjack, logcabin, nore, medieval, gambit, 
-taoki, cornernote, sandcity
-
-<building> are the numerous building types available from mg_villagers mod: allmende, bakery, bench, chateau, church, deco,
-empty, farm_full, farm_tiny, field, forge, fountain, house, hut, library, lumberjack, mill, pasture, pit, sawmill, school, 
-secular, shed, shop, spawn, tavern, tent, tower, trader, village_square, wagon, well
-
-<schem> refers to theare the actual schem mts files of plots. This also determines the villager's dialogue and also what they trade.
-
-Example: /villager
-Example: /villager hot medieval field
-Example: /villager cold nore field cotton_field
-
-If no parameters are provided, the chat command defaults to region=normal, village=nore, building=empty
-
+/villagers list
+Displays a formspec that lists all villagers currently spawned nearby that has a job title. Villagers with no job title are not shown. In addition to some details about each trader, there is a GO button that will teleport you to that trader. This tool is meant to quickly find traders for testing. The following details are shown for each trader:
+- Village: village type that the trader resides in
+- Plot: Plot number that the trader initially spawned in
+- Bed: Bed number (or spawn sequence#) of the trader
+- Name: Trader's name
+- Title: Trader's job title
+- Origin: x and z coordinates of villager's initial spawn point
+- Current: The currentx and z coordinates of villager
+- Walked: How many meters the villager has walked
+- Dist: Distance the villager is from the player
+GO button: Teleports player to the trader/villager
+REFRESH button: Updates numbers for Current, Walked and Dist to the present moment.
 
 NOTE ABOUT 'GRASSHUT' VILLAGE TYPE:
 This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is
@@ -40,6 +34,25 @@ detracks from my goal of having a lightweight, server and multiplayer friendly v
 primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
 
 CHANGELOG:
+v0.16
+[fixed]
+- Eliminated more NIL errors that crash the game
+- Stop any ongoing digging anim by villager when trading
+
+[added]
+- Young children villagers tell you they don't know much about trading
+- New chat command to list all nearby traders and teleport to them
+- Created node metadata formspec at village pos that shows any 'soft' errors
+
+[improved]
+- Re-worked entire spawning algorithm to use LBMs!
+-- if some villagers do not spawn immediately on the mob spawner,
+-- unload/reload map block by walking away about 40m and returning
+- Calculate 'region' type based on surrounding nodes at village position
+- Villagers adopt attributes from mg_villagers: gender, age, and job title!
+- Trader items/goods are now determined by the villager's job title, 
+-- and is no longer determined by building/schem type.
+
 
 v0.15
 [fixed]
