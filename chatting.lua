@@ -85,8 +85,9 @@ function villagers.showMessageBubble(self, player, message_text, message_locatio
 			return
 		end
 		
-		local nameAndTitleString = "~ "..self.vName.." "
+		local nameAndTitleString = "~ "..self.vName.." ~"
 		
+		--[[
 		if self.vType == "bakery" then
 			nameAndTitleString = nameAndTitleString .. "(baker) ~"
 			
@@ -150,6 +151,8 @@ function villagers.showMessageBubble(self, player, message_text, message_locatio
 		else
 			nameAndTitleString = nameAndTitleString .. " ~"
 		end
+		--]]
+		
 		
 		-- show chat bubble
 		local chat_box_id = player:hud_add({
@@ -184,7 +187,7 @@ function villagers.showMessageBubble(self, player, message_text, message_locatio
 		
 		table.insert(self.vHudIds[player_name], 1, {chat_box_id, chat_name_id, chat_text_id})
 		minetest.after(clear_timer, function() 
-			io.write("\n## MINETEST.AFTER()!! deleting chat IDs..")
+			--io.write("\n## MINETEST.AFTER()!! deleting chat IDs..")
 			villagers.removeTextHud(self, player)
 		end)
 		
@@ -346,8 +349,13 @@ function villagers.endVillagerChat(self, player, end_type)
 	
 	-- villager has nothing to trade, so 'got to go'
 	elseif end_type == 3 then
-		goodbyes = villagers.chat.trade.none
-		villagers.showMessageBubble(self, player, goodbyes[math.random(#goodbyes)], message_location, 1.5)
+		if self.vAge == "young" then
+			goodbyes = villagers.chat.trade.none_young
+		else
+			goodbyes = villagers.chat.trade.none
+		end
+		
+		villagers.showMessageBubble(self, player, goodbyes[math.random(#goodbyes)], message_location, 2.5)
 		
 	else
 		print("## ERROR Invalid end_type: "..end_type.." ##")
@@ -379,15 +387,16 @@ function villagers.endVillagerChat(self, player, end_type)
 end
 
 function villagers.chatVillager(self, player, chat_type)
-	if villagers.log2 then io.write("chat() ") end
+	local log = false
+	if log then io.write("chat() ") end
 	
 	-- if player initiated chat when villager was about to start 
 	-- walking or digging. save this state to continue action once chat ends
 	if self.vAction == "WALK" then
-		if villagers.log2 then io.write("villagerAboutToWalk ") end
+		if log then io.write("villagerAboutToWalk ") end
 		self.vWalkReady = true
 	elseif self.vAction == "DIG" then
-		if villagers.log2 then io.write("villagerAboutToDig ") end
+		if log then io.write("villagerAboutToDig ") end
 		self.vDigReady = true
 		minetest.sound_stop(self.vSoundHandle)
 		self.object:set_animation(
@@ -395,7 +404,7 @@ function villagers.chatVillager(self, player, chat_type)
 			self.animation_speed + math.random(10)
 		)
 	elseif self.vAction == "RESUMEDIG" then
-		if villagers.log2 then io.write("villagerAboutToResumeDig ") end
+		if log then io.write("villagerAboutToResumeDig ") end
 		self.vDigReady = true
 	end
 	
@@ -435,7 +444,7 @@ function villagers.chatVillager(self, player, chat_type)
 		local next_dialogue
 		
 		-- pop/remove one random dialogue from 'smalltalk' table
-		random_num = math.random(6)
+		local random_num = math.random(6)
 		if random_num == 1 then
 			local dialogue_count = #self.vScriptSmalltalk
 			if villagers.log2 then io.write("getDialogue:smalltalk fromRemain="..dialogue_count.." ") end

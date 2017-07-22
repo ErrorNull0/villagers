@@ -96,11 +96,19 @@ villagers.chat = {
 		
 		none = {
 			"Sorry, no interest in trading.",
-			"Nothing to sell you, sorry.",
-			"I don't have anything to sell.",
+			"Nothing to trade you, sorry.",
+			"I don't have anything to trade.",
 			"Trade? Not today.",
 			"I have no trades today.",
 			"Sorry, nothing to trade."
+		},
+		
+		none_young = {
+			"Trading? What is that?",
+			"Do I have anything you like?\nUmm. What's 'trading'?",
+			"You want to trade stuff?\nAsk my mom or dad..",
+			"I don't have anything.\nMaybe ask some grownups!",
+			"Trading things? I'm not\nallowed to with strangers.\nBye!",
 		},
 		
 		bye = {
@@ -244,18 +252,6 @@ villagers.chat = {
 	},
 	
 	bench =	{
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
-	}, 
-	
-	castle =	{
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
-	}, 
-	
-	cementry =	{
 		greetings = DEFAULT_HI,
 		goodbyes = DEFAULT_BYE,
 		mainchat = DEFAULT_MAIN
@@ -455,12 +451,6 @@ villagers.chat = {
 		mainchat = DEFAULT_MAIN
 	}, 
 	
-	hotel =	{
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
-	}, 
-	
 	house = {
 		greetings = DEFAULT_HI,
 		goodbyes = DEFAULT_BYE,
@@ -541,13 +531,7 @@ villagers.chat = {
 		}
 	}, 
 	
-	lamp =	{
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
-	}, 
-	
-	lumberjack = {
+	inn =	{
 		greetings = DEFAULT_HI,
 		goodbyes = DEFAULT_BYE,
 		mainchat = DEFAULT_MAIN
@@ -572,6 +556,12 @@ villagers.chat = {
 			"prepared you will be out there.",
 		}
 	}, 
+
+	lumberjack = {
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
 	
 	mill = {
 		greetings = DEFAULT_HI,
@@ -592,12 +582,6 @@ villagers.chat = {
 			"get ground up with the flour.\n"..
 			"It's all protein anyway!"
 		}, 
-	}, 
-	
-	park = {
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
 	}, 
 	
 	pasture = {
@@ -623,12 +607,6 @@ villagers.chat = {
 			"clay tastes like play-doh.\n"..
 			"What is this 'play-doh'?"
 		}
-	}, 
-	
-	pub =	{
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
 	}, 
 	
 	sawmill = {
@@ -715,12 +693,6 @@ villagers.chat = {
 		goodbyes = DEFAULT_BYE,
 		mainchat = DEFAULT_MAIN	
 		},
- 
- 	stable = {
-		greetings = DEFAULT_HI,
-		goodbyes = DEFAULT_BYE,
-		mainchat = DEFAULT_MAIN
-	}, 
 	
 	tavern = {
 		greetings = DEFAULT_HI,
@@ -772,6 +744,12 @@ villagers.chat = {
 			"Have a look at my armor!"
 		}
 	}, 
+	
+	townhall =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	},
 	
 	trader = {
 		greetings = DEFAULT_HI,
@@ -843,6 +821,48 @@ villagers.chat = {
 		}
 		
 	},
+	
+	castle =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+	park = {
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+	cementry =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+	lamp =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+	hotel =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+	pub =	{
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
+	
+ 	stable = {
+		greetings = DEFAULT_HI,
+		goodbyes = DEFAULT_BYE,
+		mainchat = DEFAULT_MAIN
+	}, 
 	
 	gamefacts = {
 		"There are wolves in the forests.\n"..

@@ -18,10 +18,11 @@ villagers.REGIONS = { "hot", "cold", "normal", "navtive", "desert" }
 
 villagers.VILLAGES = { 
 	"tent", "charachoal", "claytrader", "lumberjack", "logcabin", "nore", 
-	"medieval", "gambit", "taoki", "cornernote", "sandcity"
+	"medieval", "gambit", "taoki", "cornernote", "sandcity", 
+	"chateau", "single", "tower"
 }
 
-villagers.PLOTS = {
+villagers.BUILDINGS = {
 	"allmende", "bakery", "bench", "chateau", "church", "deco", "empty", 
 	"farm_full", "farm_tiny", "field", "forge", "fountain", "house", "hut", 
 	"library", "lumberjack", "mill", "pasture", "pit", "sawmill", "school", 

@@ -161,6 +161,10 @@ local function walkVillagerEnd(self)
 	)
 	self.vAction = "STAND"
 	
+	-- update total distance travelled by villager
+	local travelDistance = vector.distance(self.vPos, {x=self.vTargetPos.x, y=self.vPos.y, z=self.vTargetPos.z})
+	self.vTotalDistance = self.vTotalDistance + travelDistance
+	
 	-- teleport villager to exact target position to makeup for any
 	-- discrepencies in movement time and distance
 	self.vPos.x = self.vTargetPos.x

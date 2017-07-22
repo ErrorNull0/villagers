@@ -1,7 +1,6 @@
-
-
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if villagers.log4 then
+	local log = false
+	if log then
 		io.write("\nonReceivFields() ")
 		io.write("formname="..formname.." ")
 		io.write("fields:"..dump(fields).."\n")
@@ -10,24 +9,14 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if player == nil then print("\n## ERROR Player = NIL ##") return end
 	if formname == nil then print("\n## ERROR formname = NIL ##") return end
 
-	local formname_data = string.split(formname, "_")
+	local formname_data = string.split(formname, "|")
 	local form_type = formname_data[1]
 	
 	if form_type == "villagers:trade" then
 		
+		-- obtain villager entity 'self' given the villager ID .. 'vID'
 		local villager_id = formname_data[2]
-		
-		-- obtain villager entity
-		local self
-		for _,luaentity in pairs(minetest.luaentities) do
-			if luaentity.object then
-				if luaentity.vID then
-					if luaentity.vID == villager_id then 
-						self = luaentity 
-					end
-				else print("\n## ERROR Invalid vID: "..luaentity.vID.." ##") end
-			else print("\n## ERROR luaentity.object = NIL ##") end
-		end
+		local self = villagers.getEntity(villager_id)
 		
 		if fields == nil then print("\n## ERROR fields = NIL ##") return
 		elseif fields.quit then
@@ -35,11 +24,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		else
 			local key_data
 			for k,v in pairs(fields) do
-				print("k="..k)
+				if log then print("k="..k) end
 				key_data = k
 			end
 			
-			print("key_data="..key_data)
+			if log then print("key_data="..key_data) end
 			local fields_data = string.split(key_data, "|")
 			local villager_name = fields_data[1]
 			local item_name = fields_data[2]
@@ -49,7 +38,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local player_quant = fields_data[6]
 			local row_index = tonumber(fields_data[7])
 			
-			if villagers.log4 then
+			if log then
 				io.write("vName="..villager_name.." ")
 				io.write("item_name="..item_name.." ")
 				io.write("cost_amount="..cost_amount.." ")
@@ -77,20 +66,54 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				local leftover = player_inv:add_item("main", stack)
 			end
 			
-			if villagers.log4 then 
+			if log then 
 				print("## self.vSell: "..minetest.serialize(self.vSell).." ")
 			end
 			
 			-- remove stock from villager
 			self.vSell[row_index][2] = item_stock - 1
-			if villagers.log4 then
+			if log then
 				io.write("current_item_stock_detail: "..minetest.serialize(current_item).." ")
 			end
 			
-			
 			minetest.sound_play("coins", {pos = player_pos, gain = 0.4, max_hear_distance = 8} )
-			minetest.show_formspec(player_name, "villagers:trade_"..self.vID, villagers.getTradingFormspec(self, player))
+			minetest.show_formspec(player_name, "villagers:trade|"..self.vID, villagers.getTradingFormspec(self, player_name))
 			
+		end
+		
+	elseif form_type == "villagers:list" then
+		local log = false
+		
+		if log then io.write("\n## FIELDS: "..minetest.serialize(fields).." ") end
+		
+		local button_data
+		for key,value in pairs(fields) do
+			button_data = key
+		end
+		
+		local form_data = string.split(button_data, "_")
+		local form_action = form_data[1]
+		
+		if log then io.write("form_action="..form_action.." ") end
+		
+		if fields == nil then 
+			if log then io.write("\n## ERROR fields = NIL ##") end
+			return
+			
+		elseif form_action == "exit" or form_action == "quit" then
+			if log then io.write("\n## EXITED FROM VILLAGER LIST ##") end
+			
+		elseif form_action == "teleport" then
+			local teleport_destination = form_data[2]
+			player:set_pos(minetest.string_to_pos(teleport_destination))
+			if log then io.write("\n## TELEPORTED TO VILLAGER: "..teleport_destination.." ##") end
+			
+		elseif form_action == "refresh" then
+			if log then io.write("\n## REFRESHED VILLAGER LIST ##") end
+			minetest.show_formspec(player:get_player_name(), "villagers:list", villagers.getVillagerListFormspec(player))
+			
+		else
+			if log then io.write("\n## ERROR unexpected field: "..minetest.serialize(fields)) end
 		end
 		
 	else

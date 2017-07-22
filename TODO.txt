@@ -1,31 +1,20 @@
-COMPLETED:
-- fixed crash on non-players punching villagers
-- show an alert and prevent trading if villager is still trading with another player
-- added coins for villagers to accept payment (and to give payment when buying item from player)
-- initial trading farmspec with each item containing random stock 1 - 10, and each item just costsing 1 coin
-- currently all villager types have test/dummy items to trade (which will change later)
-
-- completed premliminary cost table for common/default items based on coin
-- completed assigning prelim 'quest' items
-- trading formspec now display random goods that are also based on villager and schem type of each plot.
-- complete basic trading with coins
-- proper values now display for item stock, cost and cost amount
-
-- only certain villager types will have items for trade (farmers, smiths, barkeeps, priests, etc)
-- if there are multiple villagers to a particular plot, only one (and not all) will have something to trade
-- added more chat dialgue to 'home' villagers for now
-- updated chat command for following params '/villagers <region> <village> <building> <schem>'
-- organized all lua code into their own lua files
-- initiate trade while in the middle of chatting. Before you had to first end chat by walking away or finishing chat dialogue.
-- villagers says 'pardon', 'excuse me', if they are in the middle of an uninterruptable action when player trying to chat/trade
-- willagers say 'coming through', 'excuse me', ect when player tries to chat while they are walking
-- all villagers may provide one or two game facts when chatting
-
-- improved chat bubble display
-
 TODO:
-- minetest.after removing chat bubbles when many are in screen. 
+- finish detailing villagers.GOODS table for all other job titles
+- ensure /villagers list command and /villagers spawn command is okay
+- make unique chat for 'single' houses and for region type
+- enable villager 'list' command to sort by village and then by plot#
+
+-- use the nodemetadata to track how many mystery and simplejob traders will spawn..
+-- then can spawn mystery trader and coin exchange trader
 - create mystery merchants that sell only one valueable items at a time (only one in each village)
+
+- ensure chat command validates village, building and schem type directly against mg_villages parameters
+
+- add 'rosetta stone' item. if player does not hold in inventory, speeach from native and desert 
+-- villagers will not display in a legible format
+
+- add check for unsupported mods. do not load villager's mod if unsupported mods are present
+- minetest.after removing chat bubbles when many are in screen. 
 
 - prevent manual spawning if in water
 - villagers in snowy region will offer some snow for free

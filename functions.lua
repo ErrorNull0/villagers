@@ -34,8 +34,6 @@ end
 
 -- get direction (N, NE, E, SE, S, SW, W, NW) from yaw
 -- yaw can be radians or degrees (0-360)
---local YAWS = { 0, -0.785, -1.571, -2.356, 3.141, 2.356, 1.571, 0.785}
---local villagers.DIRECTIONS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW"}
 function villagers.getDirectionFromYaw(yaw)
 	local direction
 		if yaw == 0 then direction = "N"
@@ -83,7 +81,7 @@ function villagers.removeTextHud(self, player)
 		for i = 1, #hud_id_data do
 			local hud_id = hud_id_data[i]
 			player:hud_remove(hud_id)
-			io.write(hud_id.." ")
+			--io.write(hud_id.." ")
 		end
 	else
 		if villagers.log2 then io.write("NoTextHudsShowing doNothing ") end
@@ -91,6 +89,17 @@ function villagers.removeTextHud(self, player)
 	
 end
 
+-- return villager entity object when provided the entity 'vID'
+function villagers.getEntity(villager_id)
+	for _,luaentity in pairs(minetest.luaentities) do
+		if luaentity.vID == nil then
+			print("\n## ERROR luaentity.vID = NIL ##")
+		elseif luaentity.vID == villager_id then 
+			return luaentity 
+		end
+	end
+end
+		
 function villagers.showAlert(self, player, alert_text, timer)
 
 	if self.vHudIds.alert_text then
