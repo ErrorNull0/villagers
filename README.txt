@@ -9,8 +9,8 @@ REQUIRES: Sokomine's mg_villages mod.
 Github - https://github.com/Sokomine/mg_villages
 Forum - https://forum.minetest.net/viewtopic.php?f=9&t=13588
 
-SILVER COINS:
-This mod primarily uses coins for trading. Ten silver coins equal 1 gold coin. A new player will start with a few coins - if that setting was not disabled from config.lua. To get more coins, look for villagers of the following job types that will trade you coins for certain items: ore_seller, potterer, saddler, stoneminer, servant, and schoolteacher. Also, villagers with jobs types of "major" can exchange silver coins for gold coins and vice versa. 
+COINS:
+This mod primarily uses coins for trading. Ten silver coins equal 1 gold coin. A new player will start with a few coins - if that setting was not disabled from config.lua. To get more coins, look for villagers of the following job types that will trade you coins for certain items: ore_seller, potterer, saddler, stoneminer, servant, and schoolteacher. Use the '/villagers list' command below to quickly find some traders while in a village. Also, villagers with job types of "major" can exchange silver coins for gold coins and vice versa. 
 
 CHAT COMMAND:
 /villagers list
