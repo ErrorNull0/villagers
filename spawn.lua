@@ -45,8 +45,10 @@ function getRegionFromArea(pos, radius, errors)
 			if nodename == "ROAD" or 
 				nodename == "DIRT" or 
 				nodename == "STONE" or 
+				nodename == "STONEBRICK" or 
 				nodename == "COBBLE" or 
 				nodename == "AIR" or 
+				nodename == "WATER_SOURCE" or 
 				nodename == "IGNORE" then
 				if log then io.write("[skipped] ") end
 			else 
@@ -139,23 +141,22 @@ function getRegionFromArea(pos, radius, errors)
 		region_type = "cold"
 	elseif top_nodename == "DIRT_WITH_DRY_GRASS" then 
 		region_type = "hot"
-	elseif top_nodename == "SAND" then 
-		region_type = "hot"
 	elseif top_nodename == "DIRT_WITH_GRASS" then 
 		region_type = "normal"
 	elseif top_nodename == "DIRT_WITH_RAINFOREST_LITTER" then 
 		region_type = "native"
 	elseif top_nodename == "SOIL_WET" then 
 		region_type = "native"
-	elseif top_nodename == "DESERT_SAND" then 
-		if math.random(3) == 1 then region_type = "hot"
-		else region_type = "desert" end
-	elseif top_nodename == "DESERT_STONE" then 
-		if math.random(3) == 1 then region_type = "hot"
-		else region_type = "desert" end
-	elseif top_nodename == "SILVER_SAND" then 
-		if math.random(3) == 1 then region_type = "hot"
-		else region_type = "desert" end
+	elseif top_nodename == "SAND" or
+		top_nodename == "DESERT_SAND" or
+		top_nodename == "SILVER_SAND" or
+		top_nodename == "DESERT_STONE" or
+		top_nodename == "SANDSTONE" then 
+		if math.random(2) == 1 then 
+			region_type = "hot"
+		else 
+			region_type = "desert" 
+		end
 	else 
 		io.write(" #ERROR IN getRegionFromArea()# ")
 		local error_message = "getRegionFromArea(): Unrecognized value for top_nodename = "..top_nodename.." "..
@@ -268,14 +269,18 @@ minetest.register_lbm({
 		if b_type == nil then b_type = "NIL" end
 		if b_bedcount == nil then b_bedcount = "NIL" end
 		
-		local beds_data_count = #plot_data.beds
+		local beds_data_count = 0
+		for k,v in pairs(plot_data.beds) do
+			beds_data_count = beds_data_count + 1
+		end
+		
 		if log then 
 			io.write(string.upper(b_type).."["..b_schem.."] inh="..b_inhab.." ")
 			io.write("bedcount="..b_bedcount.." beds_data_count="..beds_data_count.." ") 
 		end
 		--if log then io.write("plot_data.beds["..bed_num.."]: "..minetest.serialize(plot_data.beds).." ") end
 		if bed_num > beds_data_count then
-			io.write(" #ERROR IN bed_num vs beds_data_count# ")
+			if log then io.write(" #ERROR IN bed_num vs beds_data_count# ") end
 			local error_message = "to_add_data.bpos(meta.fields.plot_nr="..plot_num..")(meta.fields.bed_nr="..bed_num..") NIL. "..
 			"BUILDINGS(btype).bed_count="..b_bedcount.." and inh="..b_inhab..". Wait next cycle.." 
 			table.insert(errors, error_message)
@@ -340,17 +345,17 @@ minetest.register_lbm({
 		local objectRef = minetest.add_entity(pos, "villagers:villager")
 		local self = objectRef:get_luaentity()	
 		
-		io.write("\n  ** SPAWNING VILLAGER ** ")
+		if log then io.write("\n  ** SPAWNING VILLAGER ** ") end
 		
 		self.vName = villager_name
 		self.vGender = gender
-		io.write(self.vGender.." ")
+		if log then io.write(self.vGender.." ") end
 		
 		if gen == 1 then age = "young"
 		elseif gen == 2 then age = "adult"
 		else age = "old" end
 		self.vAge = age
-		io.write(self.vAge.." ")
+		if log then io.write(self.vAge.." ") end
 		
 		-- assigned trading goods to villagers who
 		-- possess the appropriate title		
@@ -403,13 +408,12 @@ minetest.register_lbm({
 		
 		-- use for villager trading formspec callbacks and for chat commands
 		self.vID = final_pos.x.."_"..final_pos.y.."_"..final_pos.z
-		villagers.villager_ids[self.vID] = self.vName
 		
 		-- copy chat dialogue scripts from villagers.chat global var
 		-- and save it into villager entity for more quicker access	
 		local hi_script, bye_script, main_script
 		if villagers.chat[b_type] == nil then
-			io.write(" #ERROR IN LOADING Chat Scripts# ")
+			if log then io.write(" #ERROR IN LOADING Chat Scripts# ") end
 			local error_message = "villagers.chat('"..b_type.."') = NIL for "..
 				"plot#"..plot_num.." bed#"..bed_num.." villager. Fallback to default scripts."
 			table.insert(errors, error_message)
@@ -471,13 +475,13 @@ minetest.register_lbm({
 		
 		-- save any found errors into the node metadata field 'errors'
 		if #errors > 0 then
-			io.write("\n  "..#errors.." ERRORS DETECTED: "..minetest.serialize(errors).." ")
+			if log then io.write("\n  "..#errors.." ERRORS DETECTED: "..minetest.serialize(errors).." ") end
 			local prev_errors = village_meta:get_string("errors")
 			if prev_errors == "" then
-				io.write("\n  noPrevErrors insertingNewErrors ")
+				if log then io.write("\n  noPrevErrors insertingNewErrors ") end
 				village_meta:set_string("errors", minetest.serialize(errors))
 			else
-				io.write("\n  prevErros: "..prev_errors.." ")
+				if log then io.write("\n  prevErros: "..prev_errors.." ") end
 				local all_errors = {}
 				for i = 1, #errors do table.insert(all_errors, errors[i]) end
 				
@@ -485,13 +489,13 @@ minetest.register_lbm({
 				for i = 1, #prev_err_table do table.insert(all_errors, prev_err_table[i]) end
 				
 				local all_err_str = minetest.serialize(all_errors)
-				io.write("\n  combinedErrors: "..all_err_str.." ")
+				if log then io.write("\n  combinedErrors: "..all_err_str.." ") end
 				village_meta:set_string("errors", all_err_str)
 			end
-			io.write("\n  meta_errors: "..village_meta:get_string("errors").." ")
+			if log then io.write("\n  meta_errors: "..village_meta:get_string("errors").." ") end
 			
 		else
-			io.write("\n  No Errors detected.\n")
+			if log then io.write("\n  No Errors detected.\n") end
 		end
 		
 		
@@ -624,6 +628,7 @@ minetest.register_entity("villagers:villager", {
 	vBuy = {},
 	vSell = {},
 	vTitle = nil,
+	vTraded = false,
 	
 	-- debugging
 	vTextureString = nil,
@@ -704,7 +709,6 @@ minetest.register_entity("villagers:villager", {
 			self.vScriptGameFacts = data.vScriptGameFacts
 			self.vScriptGameFactsSaved = data.vScriptGameFactsSaved
 			
-			
 			-- trading
 			self.vID = data.vID
 			self.vIsTrader = data.vIsTrader
@@ -713,6 +717,7 @@ minetest.register_entity("villagers:villager", {
 			self.vBuy = data.vBuy
 			self.vSell = data.vSell
 			self.vTitle = data.vTitle
+			self.vTraded = false
 			
 			-- debugging
 			self.vTextureString = data.vTextureString
@@ -786,9 +791,7 @@ minetest.register_entity("villagers:villager", {
 		if self.vDespawned == false then
 			if log then
 				io.write("DESPAWNED plot #"..self.vPlot.." person #"..self.vBed.." "..self.vName.." "..string.upper(self.vVillage).." ")
-				io.write("[removed vID from villager_ids] ")
 			end
-			villagers.villager_ids[self.vID] = nil
 			
 			
 		else
@@ -801,13 +804,7 @@ minetest.register_entity("villagers:villager", {
 				
 			-- this is an existing villager re-spawning
 			else
-				-- required by trading formspec callback and chat commands
-				villagers.villager_ids[self.vID] = self.vName
-				if log then 
-					io.write("vID("..self.vID..") savedTo villager_ids table ") 
-					--io.write("  villager_ids: "..minetest.serialize(villagers.villager_ids).." ")
-					
-				end
+			
 			end
 			
 			-- show standing animation while waiting
@@ -891,6 +888,7 @@ minetest.register_entity("villagers:villager", {
 			vBuy = self.vBuy,
 			vSell = self.vSell,
 			vTitle = self.vTitle,
+			vTraded = false,
 			
 			-- debugging
 			vTextureString = self.vTextureString,
@@ -901,4 +899,3 @@ minetest.register_entity("villagers:villager", {
 	end,
 
 })
-

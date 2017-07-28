@@ -458,7 +458,7 @@ function villagers.spawnVillager(pos, region, village_type, building_type, schem
 	
 	-- use for villager trading formspec callbacks and for chat commands
 	self.vID = pos.x.."_"..pos.y.."_"..pos.z
-	villagers.villager_ids[self.vID] = self.vName	
+	--villagers.villager_ids[self.vID] = self.vName	
 	
 	-- position of nodemeta for inventory trading
 	self.vNodeMetaPos = {x=pos.x, y=self.vTargetHeight-1, z=pos.z+1}

@@ -113,11 +113,22 @@ villagers.chat = {
 		
 		bye = {
 			"Thanks for looking.",
-			"Come back again!",
-			"Trade again later!",
-			"I might have more later.",
-			"Come again next time."
-		}
+			"Not interested? ok.",
+			"Ok. Maybe next time.",
+			"Sure. Maybe later.",
+			"Maybe interested later."
+		},
+		
+		bye_buy = {
+			"Thanks for the trade!",
+			"Hope you like it!",
+			"Thank you!",
+			"Thanks! Come back again!",
+			"Thanks! Great choice.",
+			"Great! Thanks!",
+			"Good trade!"
+		},
+		
 	},
 
 	-- WALK_CHAT

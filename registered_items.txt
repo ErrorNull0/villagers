@@ -1,0 +1,601 @@
+air								Air (you hacker you!)
+beds:bed_bottom					Simple Bed
+beds:bed_top		
+beds:fancy_bed_bottom			Fancy Bed
+beds:fancy_bed_top		
+cottages:anvil					anvil
+cottages:barrel_lying_open		barrel (opened)		 lying somewhere
+cottages:barrel_lying			barrel (closed)		 lying somewhere
+cottages:barrel_open			barrel (open)
+cottages:barrel					barrel (closed)
+cottages:bed_foot				Bed (foot region)
+cottages:bed_head				Bed (head region)
+cottages:bench					simple wooden bench
+cottages:feldweg_crossing		dirt road crossing
+cottages:feldweg_curve			dirt road curve
+cottages:feldweg_end			dirt road end
+cottages:feldweg_slope_long		dirt road slope long
+cottages:feldweg_slope			dirt road slope
+cottages:feldweg_t_junction		dirt road t junction
+cottages:feldweg				dirt road
+cottages:fence_corner			small fence corner
+cottages:fence_end				small fence end
+cottages:fence_small			small fence
+cottages:gate_closed			closed fence gate
+cottages:gate_open				opened fence gate
+cottages:glass_pane_side		simple glass pane
+cottages:glass_pane				simple glass pane (centered)
+cottages:half_door_inverted		half door inverted
+cottages:half_door				half door
+cottages:hammer					Steel hammer for repairing tools on the anvil
+cottages:handmill				mill		 powered by punching
+cottages:hatch_steel			metal hatch
+cottages:hatch_wood				wooden hatch
+cottages:ladder_with_rope_and_rail		Ladder with rail support
+cottages:loam					loam
+cottages:reet					Reet for thatching
+cottages:roof_black				Roof black
+cottages:roof_brown				Roof brown
+cottages:roof_connector_black	Roof connector black
+cottages:roof_connector_brown	Roof connector brown
+cottages:roof_connector_red		Roof connector red
+cottages:roof_connector_reet	Roof connector reet
+cottages:roof_connector_slate	Roof connector slate
+cottages:roof_connector_straw	Roof connector straw
+cottages:roof_connector_wood	Roof connector wood
+cottages:roof_flat_black		Roof (flat) black
+cottages:roof_flat_brown		Roof (flat) brown
+cottages:roof_flat_red			Roof (flat) red
+cottages:roof_flat_reet			Roof (flat) reet
+cottages:roof_flat_slate		Roof (flat) slate
+cottages:roof_flat_straw		Roof (flat) straw
+cottages:roof_flat_wood			Roof (flat) wood
+cottages:roof_red				Roof red
+cottages:roof_reet				Roof reet
+cottages:roof_slate				Roof slate
+cottages:roof_straw				Roof straw
+cottages:roof_wood				Roof wood
+cottages:rope					rope for climbing
+cottages:shelf					open storage shelf
+cottages:slate_vertical			Vertical Slate
+cottages:sleeping_mat_head		sleeping mat with pillow
+cottages:sleeping_mat			sleeping mat
+cottages:stovepipe				stovepipe
+cottages:straw_bale				straw bale
+cottages:straw_ground			straw ground for animals
+cottages:straw_mat				layer of straw
+cottages:straw					straw
+cottages:table					table
+cottages:threshing_floor		threshing floor
+cottages:tub					tub
+cottages:wagon_wheel			wagon wheel
+cottages:washing				washing place
+cottages:window_shutter_closed		closed window shutters
+cottages:window_shutter_open		opened window shutters
+cottages:wood_flat				flat wooden planks
+cottages:wool_tent				wool for tents
+cottages:wool					Wool
+craftguide:book					Crafting Guide
+craftguide:sign					Crafting Guide Sign
+default:acacia_bush_leaves		Acacia Bush Leaves
+default:acacia_bush_sapling		Acacia Bush Sapling
+default:acacia_bush_stem		Acacia Bush Stem
+default:acacia_leaves			Acacia Leaves
+default:acacia_sapling			Acacia Tree Sapling
+default:acacia_tree				Acacia Tree
+default:acacia_wood				Acacia Wood Planks
+default:apple					Apple
+default:aspen_leaves			Aspen Leaves
+default:aspen_sapling			Aspen Tree Sapling
+default:aspen_tree				Aspen Tree
+default:aspen_wood				Aspen Wood Planks
+default:axe_bronze				Bronze Axe
+default:axe_diamond				Diamond Axe
+default:axe_mese				Mese Axe
+default:axe_steel				Steel Axe
+default:axe_stone				Stone Axe
+default:axe_wood				Wooden Axe
+default:book_written			Book With Text
+default:book					Book
+default:bookshelf				Bookshelf
+default:brick					Brick Block
+default:bronze_ingot			Bronze Ingot
+default:bronzeblock				Bronze Block
+default:bush_leaves				Bush Leaves
+default:bush_sapling			Bush Sapling
+default:bush_stem				Bush Stem
+default:cactus					Cactus
+default:chest_locked_open		Locked Chest
+default:chest_locked			Locked Chest
+default:chest_open				Chest
+default:chest					Chest
+default:clay_brick				Clay Brick
+default:clay_lump				Clay Lump
+default:clay					Clay
+default:cloud					Cloud
+default:coal_lump				Coal Lump
+default:coalblock				Coal Block
+default:cobble					Cobblestone
+default:copper_ingot			Copper Ingot
+default:copper_lump				Copper Lump
+default:copperblock				Copper Block
+default:coral_brown				Brown Coral
+default:coral_orange			Orange Coral
+default:coral_skeleton			Coral Skeleton
+default:desert_cobble			Desert Cobblestone
+default:desert_sand				Desert Sand
+default:desert_sandstone_block		Desert Sandstone Block
+default:desert_sandstone_brick		Desert Sandstone Brick
+default:desert_sandstone		Desert Sandstone
+default:desert_stone_block		Desert Stone Block
+default:desert_stone			Desert Stone
+default:desert_stonebrick		Desert Stone Brick
+default:diamond					Diamond
+default:diamondblock			Diamond Block
+default:dirt_with_dry_grass		Dirt with Dry Grass
+default:dirt_with_grass_footsteps		Dirt with Grass and Footsteps
+default:dirt_with_grass			Dirt with Grass
+default:dirt_with_rainforest_litter		Dirt with Rainforest Litter
+default:dirt_with_snow			Dirt with Snow
+default:dirt					Dirt
+default:dry_grass_1				Dry Grass
+default:dry_grass_2				Dry Grass
+default:dry_grass_3				Dry Grass
+default:dry_grass_4				Dry Grass
+default:dry_grass_5				Dry Grass
+default:dry_shrub				Dry Shrub
+default:fence_acacia_wood		Acacia Fence
+default:fence_aspen_wood		Aspen Fence
+default:fence_junglewood		Jungle Wood Fence
+default:fence_pine_wood			Pine Fence
+default:fence_wood				Wooden Fence
+default:flint					Flint
+default:furnace_active			Furnace
+default:furnace					Furnace
+default:glass					Glass
+default:gold_ingot				Gold Ingot
+default:gold_lump				Gold Lump
+default:goldblock				Gold Block
+default:grass_1					Grass
+default:grass_2					Grass
+default:grass_3					Grass
+default:grass_4					Grass
+default:grass_5					Grass
+default:gravel					Gravel
+default:ice						Ice
+default:iron_lump				Iron Lump
+default:junglegrass				Jungle Grass
+default:jungleleaves			Jungle Leaves
+default:junglesapling			Jungle Sapling
+default:jungletree				Jungle Tree
+default:junglewood				Jungle Wood Planks
+default:key						Key
+default:ladder_steel			Steel Ladder
+default:ladder_wood				Wooden Ladder
+default:lava_flowing			Flowing Lava
+default:lava_source				Lava Source
+default:leaves					Leaves
+default:mese_crystal_fragment		Mese Crystal Fragment
+default:mese_crystal			Mese Crystal
+default:mese_post_light			Mese Post Light
+default:mese				Mese Block
+default:meselamp			Mese Lamp
+default:mossycobble			Mossy Cobblestone
+default:obsidian_block		Obsidian Block
+default:obsidian_glass		Obsidian Glass
+default:obsidian_shard		Obsidian Shard
+default:obsidian		Obsidian
+default:obsidianbrick		Obsidian Brick
+default:paper		Paper
+default:papyrus		Papyrus
+default:pick_bronze		Bronze Pickaxe
+default:pick_diamond		Diamond Pickaxe
+default:pick_mese		Mese Pickaxe
+default:pick_steel		Steel Pickaxe
+default:pick_stone		Stone Pickaxe
+default:pick_wood		Wooden Pickaxe
+default:pine_needles		Pine Needles
+default:pine_sapling		Pine Sapling
+default:pine_tree		Pine Tree
+default:pine_wood		Pine Wood Planks
+default:river_water_flowing		Flowing River Water
+default:river_water_source		River Water Source
+default:sand		Sand
+default:sandstone_block		Sandstone Block
+default:sandstone		Sandstone
+default:sandstonebrick		Sandstone Brick
+default:sapling		Sapling
+default:shovel_bronze		Bronze Shovel
+default:shovel_diamond		Diamond Shovel
+default:shovel_mese		Mese Shovel
+default:shovel_steel		Steel Shovel
+default:shovel_stone		Stone Shovel
+default:shovel_wood		Wooden Shovel
+default:sign_wall_steel		Steel Sign
+default:sign_wall_wood		Wooden Sign
+default:silver_sand		Silver Sand
+default:silver_sandstone_block		Silver Sandstone Block
+default:silver_sandstone_brick		Silver Sandstone Brick
+default:silver_sandstone		Silver Sandstone
+default:skeleton_key		Skeleton Key
+default:snow		Snow
+default:snowblock		Snow Block
+default:steel_ingot		Steel Ingot
+default:steelblock		Steel Block
+default:stick		Stick
+default:stone_block		Stone Block
+default:stone_with_coal		Coal Ore
+default:stone_with_copper		Copper Ore
+default:stone_with_diamond		Diamond Ore
+default:stone_with_gold		Gold Ore
+default:stone_with_iron		Iron Ore
+default:stone_with_mese		Mese Ore
+default:stone_with_tin		Tin Ore
+default:stone		Stone
+default:stonebrick		Stone Brick
+default:sword_bronze		Bronze Sword
+default:sword_diamond		Diamond Sword
+default:sword_mese		Mese Sword
+default:sword_steel		Steel Sword
+default:sword_stone		Stone Sword
+default:sword_wood		Wooden Sword
+default:tin_ingot		Tin Ingot
+default:tin_lump		Tin Lump
+default:tinblock		Tin Block
+default:torch_ceiling		
+default:torch_wall		
+default:torch		Torch
+default:tree		Tree
+default:water_flowing		Flowing Water
+default:water_source		Water Source
+default:wood		Wooden Planks
+doors:door_glass_a		Glass Door
+doors:door_glass_b		Glass Door
+doors:door_glass		Glass Door
+doors:door_obsidian_glass_a		Obsidian Glass Door
+doors:door_obsidian_glass_b		Obsidian Glass Door
+doors:door_obsidian_glass		Obsidian Glass Door
+doors:door_steel_a		Steel Door
+doors:door_steel_b		Steel Door
+doors:door_steel		Steel Door
+doors:door_wood_a		Wooden Door
+doors:door_wood_b		Wooden Door
+doors:door_wood		Wooden Door
+doors:gate_acacia_wood_closed		Acacia Fence Gate
+doors:gate_acacia_wood_open		Acacia Fence Gate
+doors:gate_aspen_wood_closed		Aspen Fence Gate
+doors:gate_aspen_wood_open		Aspen Fence Gate
+doors:gate_junglewood_closed		Jungle Wood Fence Gate
+doors:gate_junglewood_open		Jungle Wood Fence Gate
+doors:gate_pine_wood_closed		Pine Fence Gate
+doors:gate_pine_wood_open		Pine Fence Gate
+doors:gate_wood_closed		Wooden Fence Gate
+doors:gate_wood_open		Wooden Fence Gate
+doors:hidden		Hidden Door Segment
+doors:trapdoor_open		Trapdoor
+doors:trapdoor_steel_open		Steel Trapdoor
+doors:trapdoor_steel		Steel Trapdoor
+doors:trapdoor		Trapdoor
+dye:black		Black dye
+dye:blue		Blue dye
+dye:brown		Brown dye
+dye:cyan		Cyan dye
+dye:dark_green		Dark green dye
+dye:dark_grey		Dark grey dye
+dye:green		Green dye
+dye:grey		Grey dye
+dye:magenta		Magenta dye
+dye:orange		Orange dye
+dye:pink		Pink dye
+dye:red		Red dye
+dye:violet		Violet dye
+dye:white		White dye
+dye:yellow		Yellow dye
+ethereal:banana		Banana
+ethereal:orange		Orange
+ethereal:strawberry		Strawberry
+farming:baked_potato		Baked Potato
+farming:barley_1		
+farming:barley_2		
+farming:barley_3		
+farming:barley_4		
+farming:barley_5		
+farming:barley_6		
+farming:barley_7		
+farming:barley		Barley
+farming:beanbush		
+farming:beanpole_1		
+farming:beanpole_2		
+farming:beanpole_3		
+farming:beanpole_4		
+farming:beanpole_5		
+farming:beanpole		Bean Pole (place on soil before planting beans)
+farming:beans		Green Beans
+farming:blueberries		Blueberries
+farming:blueberry_1		
+farming:blueberry_2		
+farming:blueberry_3		
+farming:blueberry_4		
+farming:bottle_ethanol		Bottle of Ethanol
+farming:bread		Bread
+farming:carrot_1		
+farming:carrot_2		
+farming:carrot_3		
+farming:carrot_4		
+farming:carrot_5		
+farming:carrot_6		
+farming:carrot_7		
+farming:carrot_8		
+farming:carrot_gold		Golden Carrot
+farming:carrot		Carrot
+farming:chocolate_dark		Bar of Dark Chocolate
+farming:cocoa_1		
+farming:cocoa_2		
+farming:cocoa_3		
+farming:cocoa_beans		Cocoa Beans
+farming:coffee_1		
+farming:coffee_2		
+farming:coffee_3		
+farming:coffee_4		
+farming:coffee_5		
+farming:coffee_beans		Coffee Beans
+farming:coffee_cup_hot		Hot Cup of Coffee
+farming:coffee_cup		Cold Cup of Coffee
+farming:cookie		Cookie
+farming:corn_1		
+farming:corn_2		
+farming:corn_3		
+farming:corn_4		
+farming:corn_5		
+farming:corn_6		
+farming:corn_7		
+farming:corn_8		
+farming:corn_cob		Corn on the Cob
+farming:corn		Corn
+farming:cotton_1		
+farming:cotton_2		
+farming:cotton_3		
+farming:cotton_4		
+farming:cotton_5		
+farming:cotton_6		
+farming:cotton_7		
+farming:cotton_8		
+farming:cotton		Cotton
+farming:cucumber_1		
+farming:cucumber_2		
+farming:cucumber_3		
+farming:cucumber_4		
+farming:cucumber		Cucumber
+farming:donut_apple		Apple Donut
+farming:donut_chocolate		Chocolate Donut
+farming:donut		Donut
+farming:drinking_cup		Drinking Cup (empty)
+farming:flour		Flour
+farming:grapebush		
+farming:grapes_1		
+farming:grapes_2		
+farming:grapes_3		
+farming:grapes_4		
+farming:grapes_5		
+farming:grapes_6		
+farming:grapes_7		
+farming:grapes_8		
+farming:grapes		Grapes
+farming:hemp_1		
+farming:hemp_2		
+farming:hemp_3		
+farming:hemp_4		
+farming:hemp_5		
+farming:hemp_6		
+farming:hemp_7		
+farming:hemp_8		
+farming:hemp_fibre		Hemp Fibre
+farming:hemp_leaf		Hemp Leaf
+farming:hemp_oil		Bottle of Hemp Oil
+farming:hemp_rope		Hemp Rope
+farming:hoe_bronze		Bronze Hoe
+farming:hoe_diamond		Diamond Hoe
+farming:hoe_mese		Mese Hoe
+farming:hoe_steel		Steel Hoe
+farming:hoe_stone		Stone Hoe
+farming:hoe_wood		Wooden Hoe
+farming:jackolantern_on		
+farming:jackolantern		Jack 'O Lantern (punch to turn on and off)
+farming:melon_1		
+farming:melon_2		
+farming:melon_3		
+farming:melon_4		
+farming:melon_5		
+farming:melon_6		
+farming:melon_7		
+farming:melon_8		Melon
+farming:melon_slice		Melon Slice
+farming:muffin_blueberry		Blueberry Muffin
+farming:potato_1		
+farming:potato_2		
+farming:potato_3		
+farming:potato_4		
+farming:potato		Potato
+farming:pumpkin_1		
+farming:pumpkin_2		
+farming:pumpkin_3		
+farming:pumpkin_4		
+farming:pumpkin_5		
+farming:pumpkin_6		
+farming:pumpkin_7		
+farming:pumpkin_8		
+farming:pumpkin_bread		Pumpkin Bread
+farming:pumpkin_dough		Pumpkin Dough
+farming:pumpkin_slice		Pumpkin Slice
+farming:pumpkin		Pumpkin
+farming:raspberries		Raspberries
+farming:raspberry_1		
+farming:raspberry_2		
+farming:raspberry_3		
+farming:raspberry_4		
+farming:rhubarb_1		
+farming:rhubarb_2		
+farming:rhubarb_3		
+farming:rhubarb_pie		Rhubarb Pie
+farming:rhubarb		Rhubarb
+farming:seed_barley		Barley Seed
+farming:seed_cotton		Cotton Seed
+farming:seed_hemp		Hemp Seed
+farming:seed_wheat		Wheat Seed
+farming:smoothie_raspberry		Raspberry Smoothie
+farming:soil_wet		Wet Soil
+farming:soil		Soil
+farming:straw		Straw
+farming:sugar		Sugar
+farming:tomato_1		
+farming:tomato_2		
+farming:tomato_3		
+farming:tomato_4		
+farming:tomato_5		
+farming:tomato_6		
+farming:tomato_7		
+farming:tomato_8		
+farming:tomato		Tomato
+farming:trellis		Trellis (place on soil before planting grapes)
+farming:wheat_1		
+farming:wheat_2		
+farming:wheat_3		
+farming:wheat_4		
+farming:wheat_5		
+farming:wheat_6		
+farming:wheat_7		
+farming:wheat_8		
+farming:wheat		Wheat
+fire:basic_flame		
+fire:flint_and_steel		Flint and Steel
+fire:permanent_flame		Permanent Flame
+flowers:dandelion_white		White dandelion
+flowers:dandelion_yellow		Yellow Dandelion
+flowers:geranium		Blue Geranium
+flowers:mushroom_brown		Brown Mushroom
+flowers:mushroom_red		Red Mushroom
+flowers:rose		Rose
+flowers:tulip		Orange Tulip
+flowers:viola		Viola
+flowers:waterlily		Waterlily
+handle_schematics:build		Building-Spawner
+handle_schematics:dig_here		dig the node below this one
+handle_schematics:support_setup		support structure for buildings (configured)
+handle_schematics:support		support structure for buildings
+ignore		Ignore (you hacker you!)
+mg_villages:desert_sand_soil		Desert Sand
+mg_villages:lava_flowing_tamed		Flowing Lava (tame)
+mg_villages:lava_source_tamed		Lava Source (tame)
+mg_villages:mob_spawner		Mob spawner
+mg_villages:plotmarker		Plot marker
+mg_villages:road		village road
+mg_villages:soil		Soil found on a field
+screwdriver:screwdriver		Screwdriver (left-click rotates face		 right-click rotates axis)
+stairs:slab_acacia_wood		Acacia Wood Slab
+stairs:slab_aspen_wood		Aspen Wood Slab
+stairs:slab_brick		Brick Slab
+stairs:slab_bronzeblock		Bronze Block Slab
+stairs:slab_clay		Clay Slab
+stairs:slab_cobble		Cobblestone Slab
+stairs:slab_copperblock		Copper Block Slab
+stairs:slab_desert_cobble		Desert Cobblestone Slab
+stairs:slab_desert_sandstone_block		Desert Sandstone Block Slab
+stairs:slab_desert_sandstone_brick		Desert Sandstone Brick Slab
+stairs:slab_desert_sandstone		Desert Sandstone Slab
+stairs:slab_desert_stone_block		Desert Stone Block Slab
+stairs:slab_desert_stone		Desert Stone Slab
+stairs:slab_desert_stonebrick		Desert Stone Brick Slab
+stairs:slab_feldweg		Dirt Road		 half height
+stairs:slab_goldblock		Gold Block Slab
+stairs:slab_ice		Ice Slab
+stairs:slab_junglewood		Jungle Wood Slab
+stairs:slab_loam		Loam Slab
+stairs:slab_mossycobble		Mossy Cobblestone Slab
+stairs:slab_obsidian_block		Obsidian Block Slab
+stairs:slab_obsidian		Obsidian Slab
+stairs:slab_obsidianbrick		Obsidian Brick Slab
+stairs:slab_pine_wood		Pine Wood Slab
+stairs:slab_sandstone_block		Sandstone Block Slab
+stairs:slab_sandstone		Sandstone Slab
+stairs:slab_sandstonebrick		Sandstone Brick Slab
+stairs:slab_silver_sandstone_block		Silver Sandstone Block Slab
+stairs:slab_silver_sandstone_brick		Silver Sandstone Brick Slab
+stairs:slab_silver_sandstone		Silver Sandstone Slab
+stairs:slab_snowblock		Snow Block Slab
+stairs:slab_steelblock		Steel Block Slab
+stairs:slab_stone_block		Stone Block Slab
+stairs:slab_stone		Stone Slab
+stairs:slab_stonebrick		Stone Brick Slab
+stairs:slab_straw		Straw Slab
+stairs:slab_wood		Wooden Slab
+stairs:stair_acacia_wood		Acacia Wood Stair
+stairs:stair_aspen_wood		Aspen Wood Stair
+stairs:stair_brick		Brick Stair
+stairs:stair_bronzeblock		Bronze Block Stair
+stairs:stair_clay		Clay Stairs
+stairs:stair_cobble		Cobblestone Stair
+stairs:stair_copperblock		Copper Block Stair
+stairs:stair_desert_cobble		Desert Cobblestone Stair
+stairs:stair_desert_sandstone_block		Desert Sandstone Block Stair
+stairs:stair_desert_sandstone_brick		Desert Sandstone Brick Stair
+stairs:stair_desert_sandstone		Desert Sandstone Stair
+stairs:stair_desert_stone_block		Desert Stone Block Stair
+stairs:stair_desert_stone		Desert Stone Stair
+stairs:stair_desert_stonebrick		Desert Stone Brick Stair
+stairs:stair_feldweg		Dirt Road Stairs
+stairs:stair_goldblock		Gold Block Stair
+stairs:stair_ice		Ice Stair
+stairs:stair_junglewood		Jungle Wood Stair
+stairs:stair_loam		Loam Stairs
+stairs:stair_mossycobble		Mossy Cobblestone Stair
+stairs:stair_obsidian_block		Obsidian Block Stair
+stairs:stair_obsidian		Obsidian Stair
+stairs:stair_obsidianbrick		Obsidian Brick Stair
+stairs:stair_pine_wood		Pine Wood Stair
+stairs:stair_sandstone_block		Sandstone Block Stair
+stairs:stair_sandstone		Sandstone Stair
+stairs:stair_sandstonebrick		Sandstone Brick Stair
+stairs:stair_silver_sandstone_block		Silver Sandstone Block Stair
+stairs:stair_silver_sandstone_brick		Silver Sandstone Brick Stair
+stairs:stair_silver_sandstone		Silver Sandstone Stair
+stairs:stair_snowblock		Snow Block Stair
+stairs:stair_steelblock		Steel Block Stair
+stairs:stair_stone_block		Stone Block Stair
+stairs:stair_stone		Stone Stair
+stairs:stair_stonebrick		Stone Brick Stair
+stairs:stair_straw		Straw Stair
+stairs:stair_wood		Wooden Stair
+tnt:boom		
+tnt:gunpowder_burning		
+tnt:gunpowder		Gun Powder
+tnt:tnt_burning		
+unknown		Unknown Item
+vessels:drinking_glass		Drinking Glass (empty)
+vessels:glass_bottle		Glass Bottle (empty)
+vessels:glass_fragments		Pile of Glass Fragments
+vessels:shelf		Vessels Shelf
+vessels:steel_bottle		Heavy Steel Bottle (empty)
+villagers:coins_gold		Gold Coin
+villagers:coins		Silver Coin
+walls:cobble		Cobblestone Wall
+walls:desertcobble		Desert Cobblestone Wall
+walls:mossycobble		Mossy Cobblestone Wall
+wool:black		Black Wool
+wool:blue		Blue Wool
+wool:brown		Brown Wool
+wool:cyan		Cyan Wool
+wool:dark_green		Dark Green Wool
+wool:dark_grey		Dark Grey Wool
+wool:green		Green Wool		
+wool:grey		Grey Wool
+wool:magenta		Magenta Wool
+wool:orange		Orange Wool
+wool:pink		Pink Wool
+wool:red		Red Wool
+wool:violet		Violet Wool
+wool:white		White Wool
+wool:yellow		Yellow Wool
+xpanes:bar_flat		Iron bar
+xpanes:bar		Iron bar
+xpanes:pane_flat		Glass Pane
+xpanes:pane		Glass Pane

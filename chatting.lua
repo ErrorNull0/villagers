@@ -85,74 +85,7 @@ function villagers.showMessageBubble(self, player, message_text, message_locatio
 			return
 		end
 		
-		local nameAndTitleString = "~ "..self.vName.." ~"
-		
-		--[[
-		if self.vType == "bakery" then
-			nameAndTitleString = nameAndTitleString .. "(baker) ~"
-			
-		elseif self.vType == "church" then
-			if self.vGender == "male" then nameAndTitleString = nameAndTitleString .. "(priest) ~"
-			else nameAndTitleString = nameAndTitleString .. "(priestess) ~" end
-			
-		elseif self.vType == "empty" then
-			nameAndTitleString = nameAndTitleString .. "(traveler) ~"
-			
-		elseif self.vType == "farm_full" or self.vType == "farm_tiny" then
-			if self.vSell == "none" then nameAndTitleString = nameAndTitleString .. "(farmhand) ~"
-			else nameAndTitleString = nameAndTitleString .. "(farmer) ~" end
-			
-		elseif self.vType == "forge" then
-			nameAndTitleString = nameAndTitleString .. "(metalsmith) ~"
-			
-		elseif self.vType == "lumberjack" then
-			if self.vSell == "none" then nameAndTitleString = nameAndTitleString .. " ~"
-			else nameAndTitleString = nameAndTitleString .. "(lumberjack) ~" end
-			
-		elseif self.vType == "mill" or self.vType == "sawmill" then
-			nameAndTitleString = nameAndTitleString .. "(mill owner) ~"
-			
-		elseif self.vType == "school" then
-			if self.vAge == "young" then nameAndTitleString = nameAndTitleString .. "(student) ~"
-			else nameAndTitleString = nameAndTitleString .. "(teacher) ~" end
-			
-		elseif self.vType == "library" then
-			nameAndTitleString = nameAndTitleString .. "(librarian) ~"
-			
-		elseif self.vType == "shop" then
-			nameAndTitleString = nameAndTitleString .. "(shopkeep) ~"
-			
-		elseif self.vType == "tavern" then
-			if self.vSell == "none" then nameAndTitleString = nameAndTitleString .. "(guest) ~"
-			else nameAndTitleString = nameAndTitleString .. "(barkeep) ~" end
-			
-		elseif self.vType == "tower" then
-			nameAndTitleString = nameAndTitleString .. "(guard) ~"
-			
-		elseif self.vType == "trader" then
-			if self.vSell == "none" then nameAndTitleString = nameAndTitleString .. " ~"
-			else nameAndTitleString = nameAndTitleString .. "(trader) ~" end
-			
-		-- village towntest mod
-		elseif self.vType == "castle" then
-			nameAndTitleString = nameAndTitleString .. "(royalty) ~"
-			
-		-- village gambit mod
-		elseif self.vType == "hotel" then
-			if self.vSell == "none" then nameAndTitleString = nameAndTitleString .. "(guest) ~"
-			else nameAndTitleString = nameAndTitleString .. "(innkeep) ~" end
-			
-		elseif self.vType == "pub" then
-			nameAndTitleString = nameAndTitleString .. "(barkeep) ~"
-			
-		elseif self.vType == "horsestable" or self.vType == "stable" then
-			nameAndTitleString = nameAndTitleString .. "(stable owner) ~"	
-			
-		else
-			nameAndTitleString = nameAndTitleString .. " ~"
-		end
-		--]]
-		
+		local nameAndTitleString = "~ "..self.vName.." ~"		
 		
 		-- show chat bubble
 		local chat_box_id = player:hud_add({
@@ -415,19 +348,27 @@ function villagers.chatVillager(self, player, chat_type)
 	-- show a quick greeting bubble for when player right clicks
 	-- on villager for trading
 	if chat_type == 1 then
-		if villagers.log2 then io.write("startTrading ") end
+		if log then io.write("startTrading ") end
 		
 		--formspec cuts into chatbubble. figure out later
 		--villagers.showMessageBubble(self, player, villagers.chat.trade.hi[math.random(#villagers.chat.trade.hi)], "TRADING", 4)
 		
 	-- player ended trading with villager, so villager says custom trading goodbyes
 	elseif chat_type == 2 then
-		if villagers.log2 then io.write("playerEndedTrade ") end
-		villagers.showMessageBubble(self, player, villagers.chat.trade.bye[math.random(#villagers.chat.trade.bye)], "TRADINGBYE", 2)
+		if log then io.write("playerEndedTrade vTraded="..tostring(self.vTraded).." ") end
+		local bye_text
+		if self.vTraded then
+			bye_text = villagers.chat.trade.bye_buy
+			villagers.showMessageBubble(self, player, bye_text[math.random(#bye_text)], "TRADINGBYE", 2)
+			self.vTraded = false
+		else
+			bye_text = villagers.chat.trade.bye
+			villagers.showMessageBubble(self, player, bye_text[math.random(#bye_text)], "TRADINGBYE", 2)
+		end
 		
 	-- villager has no items to trade, and will state as such and say they got to go
 	elseif chat_type == 3 then
-		if villagers.log2 then io.write("VillageNothingToSell ") end
+		if log then io.write("VillageNothingToSell ") end
 		
 		self.vChatting = player_name
 		self.vYawSaved = self.vYaw
@@ -440,57 +381,57 @@ function villagers.chatVillager(self, player, chat_type)
 		
 	-- player continuing ongoing dialogue with villager
 	elseif self.vChatting then
-		if villagers.log2 then io.write("continuingConversation ") end
+		if log then io.write("continuingConversation ") end
 		local next_dialogue
 		
 		-- pop/remove one random dialogue from 'smalltalk' table
 		local random_num = math.random(6)
 		if random_num == 1 then
 			local dialogue_count = #self.vScriptSmalltalk
-			if villagers.log2 then io.write("getDialogue:smalltalk fromRemain="..dialogue_count.." ") end
+			if log then io.write("getDialogue:smalltalk fromRemain="..dialogue_count.." ") end
 			if dialogue_count == 0 then
 				local full_dialgue_table = villagers.copytable(villagers.chat.smalltalk)
 				villagers.getRandomChatText(self, full_dialgue_table, "vScriptSmalltalk", 3)
-				if villagers.log2 then io.write("tableReloaded:smalltalk ") end
+				if log then io.write("tableReloaded:smalltalk ") end
 			end
 			
 			next_dialogue = table.remove(self.vScriptSmalltalk, math.random(dialogue_count))
 			villagers.showMessageBubble(self, player, next_dialogue, "FRONT", 3)
-			if villagers.log2 then io.write("dialogueDisplayedOK remain="..#self.vScriptSmalltalk.." ") end
+			if log then io.write("dialogueDisplayedOK remain="..#self.vScriptSmalltalk.." ") end
 			
 		-- pop/remove one random dialogue from 'mainchat' table
 		elseif random_num > 3 then
 			local dialogue_count = #self.vScriptMain
-			if villagers.log2 then io.write("getDialogue:main fromRemain="..dialogue_count.." ") end
+			if log then io.write("getDialogue:main fromRemain="..dialogue_count.." ") end
 			if dialogue_count == 0 then
 				local full_dialgue_table = villagers.copytable(villagers.chat[self.vType].mainchat)
 				villagers.getRandomChatText(self, full_dialgue_table, "vScriptMain", 3)
-				if villagers.log2 then io.write("tableReloaded:main ") end
+				if log then io.write("tableReloaded:main ") end
 				villagers.endVillagerChat(self, player, 2)
-				if villagers.log2 then io.write("chatEnded ") end
+				if log then io.write("chatEnded ") end
 			else
 				next_dialogue = table.remove(self.vScriptMain, math.random(dialogue_count))
 				villagers.showMessageBubble(self, player, next_dialogue, "FRONT", 3)
-				if villagers.log2 then io.write("dialogueDisplayedOK remain="..#self.vScriptMain.." ") end
+				if log then io.write("dialogueDisplayedOK remain="..#self.vScriptMain.." ") end
 			end
 			
 		else
 			local dialogue_count = #self.vScriptGameFacts
-			if villagers.log2 then io.write("getDialogue:gamefacts fromRemain="..dialogue_count.." ") end
+			if log then io.write("getDialogue:gamefacts fromRemain="..dialogue_count.." ") end
 			if dialogue_count == 0 then
 				local full_dialgue_table = villagers.copytable(villagers.chat.gamefacts)
 				villagers.getRandomChatText(self, full_dialgue_table, "vScriptGameFacts", 2)
-				if villagers.log2 then io.write("tableReloaded:gamefacts ") end
+				if log then io.write("tableReloaded:gamefacts ") end
 			end
 			
 			next_dialogue = table.remove(self.vScriptGameFacts, math.random(dialogue_count))
 			villagers.showMessageBubble(self, player, next_dialogue, "FRONT", 3)
-			if villagers.log2 then io.write("dialogueDisplayedOK remain="..#self.vScriptGameFacts.." ") end
+			if log then io.write("dialogueDisplayedOK remain="..#self.vScriptGameFacts.." ") end
 		end
 		
 	-- player starting new conversation with villager
 	else
-		if villagers.log2 then io.write("\nnewConversation ") end
+		if log then io.write("\nnewConversation ") end
 		
 		self.vChatting = player_name
 		self.vYawSaved = self.vYaw
@@ -506,17 +447,17 @@ function villagers.chatVillager(self, player, chat_type)
 		
 		-- if player chats while villager was about to walk
 		if self.vWalkReady then
-			if villagers.log2 then io.write("villagerAboutToWalk ") end
+			if log then io.write("villagerAboutToWalk ") end
 			greeting_text = villagers.chat.walk[math.random(#villagers.chat.walk)]
 		
 		-- if player chats while villager was digging
 		elseif self.vDigReady then
-			if villagers.log2 then io.write("villagerDigging ") end
+			if log then io.write("villagerDigging ") end
 			greeting_text = villagers.chat.dig[self.vDigging][math.random(#villagers.chat.dig[self.vDigging])]
 			
 		-- show one of the random default greetings for this villager type
 		else
-			if villagers.log2 then io.write("showDefaultHI ") end
+			if log then io.write("showDefaultHI ") end
 			local greetings = self.vScriptHi
 			greeting_text = greetings[math.random(#greetings)]
 		end
@@ -525,5 +466,5 @@ function villagers.chatVillager(self, player, chat_type)
 		
 	end
 	
-	if villagers.log2 then io.write("\n") end
+	if log then io.write("\n") end
 end

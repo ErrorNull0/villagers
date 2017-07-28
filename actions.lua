@@ -217,7 +217,8 @@ local function walkVillager(self)
 end
 
 local function digVillager(self)
-	if villagers.log then io.write("dig() ") end
+	local log = false
+	if log then io.write("dig() ") end
 	
 	-- skip remaining code if villager already standing
 	if self.vAction == "DIG" then
@@ -239,7 +240,8 @@ local function digVillager(self)
 end
 
 local function replaceNode(self)
-	if villagers.log then io.write("replace() ") end
+	local log = false
+	if log then io.write("replace() ") end
 	self.vAction = "REPLACE"
 	
 	local dugNodeData = villagers.getFacingNodeInfo(self, 3)
@@ -356,7 +358,6 @@ local function verifyPath(self, forced_step_distance, walking_back)
 		
 	end
  
-	
 	if facingDeadEnd then
 		
 		-- villager is trying to walk back but is apparently
@@ -419,18 +420,21 @@ local function turnBack(self)
 end
 
 local function randomAct(self)
-	if villagers.log then io.write("randomAct() ") end
+	local log = false
+	if log then io.write("randomAct() ") end
 	
 	local face_dir = self.vFacingDirection	
 	if (face_dir == "N" or face_dir == "E" or face_dir == "S" or face_dir == "W") then
+		if log then io.write(face_dir.." ") end
 		local targetNode = villagers.getFacingNodeInfo(self)
 		local tNodeName = targetNode[2]
 		local tNodeNickname = targetNode[3]	
 		local tNodeDrawtype = minetest.registered_nodes[tNodeName].drawtype
 		
+		if log then io.write(tNodeDrawtype.." "..tNodeNickname.." plot="..self.vType.." ") end
+		
 		-- air, ladders/signs, and torches
 		if tNodeDrawtype == "airlike" or tNodeDrawtype == "signlike" or tNodeDrawtype == "torchlike" then
-				
 			-- villager can walk further distance from origin
 			if self.vOriginDistance < self.vOriginDistMax then 
 				local random_num = math.random(5)
@@ -442,8 +446,7 @@ local function randomAct(self)
 			
 		-- plants or crops
 		-- only farmers and field workers will walk into fields and and dig crops
-		elseif tNodeDrawtype == "plantlike" then
-			
+		elseif tNodeDrawtype == "plantlike" then			
 			if tNodeNickname == "COTTON_8" then
 				if self.vType == "field" or self.vType == "farm_tiny" or self.vType == "farm_full" then
 					self.vDigging = "cotton"
@@ -515,9 +518,12 @@ end
 
 
 local function animateVillager(self)
-	if villagers.log then io.write("\nANIM ") end
+	local log = false
+	if log then 
+		--io.write("\nANIM ") 
+		io.write(string.upper("\n"..self.vName).." ")
+	end
 	
-	if villagers.log then io.write(self.vName.." "..self.vFacingDirection.." prev="..self.vAction.." ") end
 	
 	local current_action = self.vAction
 	if current_action == "STAND" then -- tested ok!
@@ -537,7 +543,7 @@ local function animateVillager(self)
 		walkVillager(self)
 		
 	elseif current_action == "WALKING" then	-- tested ok!
-		if villagers.log then io.write("walking.. ") end
+		if log then io.write("walking.. ") end
 		
 	elseif current_action == "TURNBACK" then -- test ok!
 		turnBack(self)
@@ -546,13 +552,13 @@ local function animateVillager(self)
 		verifyPath(self, 1, true)
 		
 	elseif current_action == "ENDCHAT" then
-		if villagers.log then io.write("chatEnding.. ") end
+		if log then io.write("chatEnding.. ") end
 		
 	else
-		if villagers.log then io.write("error vAction="..current_action.." ") end
+		if log then io.write("error vAction="..current_action.." ") end
 	end
 		
-	if villagers.log then io.write("ANIM_END") end
+	if log then io.write("ANIM_END") end
 end
 
 

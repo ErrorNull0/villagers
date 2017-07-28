@@ -1,27 +1,17 @@
-<<<<<<< HEAD
 TODO:
-- finish detailing villagers.GOODS table for all other job titles
-- ensure /villagers list command and /villagers spawn command is okay
+- add support for farming redo in trading goods
+- finish details trade items for remaining job titles
+- add support for 3d armor in trading goods
+- incorporate new params item_desc and item_quant into trading formspec
+
+- redo /villagers spawn chat command into formspec instead
+- remove dependancy on mg_villagers mod.
+
 - make unique chat for 'single' houses and for region type
-- enable villager 'list' command to sort by village and then by plot#
 
 -- use the nodemetadata to track how many mystery and simplejob traders will spawn..
 -- then can spawn mystery trader and coin exchange trader
-=======
-COMPLETED:
-- coded to search surroundings to determine region/clothing type
-
-TODO:
-- look into spawning villagers AFTER all the village has spawned
-- add check for unsupported mods. do not load villager's mod if unsupported mods are present
-- rename 'region' and 'region_type' to 'clothing'
-- use nodemetadata to track how mand mystery and simplyjob traders will spawn..
--- then can spawn mystery trader and coin exchange trader
-- minetest.after removing chat bubbles when many are in screen. 
->>>>>>> fa0bd14a66f7bf50ffe842cf02029a973b72e1d6
 - create mystery merchants that sell only one valueable items at a time (only one in each village)
-
-- ensure chat command validates village, building and schem type directly against mg_villages parameters
 
 - add 'rosetta stone' item. if player does not hold in inventory, speeach from native and desert 
 -- villagers will not display in a legible format

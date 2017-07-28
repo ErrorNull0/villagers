@@ -1,3 +1,29 @@
+minetest.register_on_newplayer(function(ObjectRef) 
+	if villagers.startup_coins == false then return end
+	local log = false
+	
+	if log then print("## NEW PLAYER SPAWNED: "..ObjectRef:get_player_name()) end
+	local items = {
+		"villagers:coins "..math.random(20,30),
+		"villagers:coins_gold "..math.random(1,5)
+	}
+	local player_inv = minetest.get_inventory({type="player", name=ObjectRef:get_player_name()})
+	
+	-- add some startup coins
+	for i=1, #items do
+		local itemstring = items[i]
+		local stack = ItemStack(itemstring)
+		if not player_inv:room_for_item("main", stack) then
+			minetest.env:add_item(ObjectRef:get_pos(), itemstring)
+		else
+			local leftover_items = player_inv:add_item("main", stack)
+			minetest.env:add_item(ObjectRef:get_pos(), leftover_items)
+		end
+	end
+	
+end)
+
+
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local log = false
 	if log then
@@ -24,7 +50,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		else
 			local key_data
 			for k,v in pairs(fields) do
-				if log then print("k="..k) end
 				key_data = k
 			end
 			
@@ -32,19 +57,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local fields_data = string.split(key_data, "|")
 			local villager_name = fields_data[1]
 			local item_name = fields_data[2]
-			local cost_amount = fields_data[3]
-			local item_stock = fields_data[4]
-			local cost_name = fields_data[5]
-			local player_quant = fields_data[6]
-			local row_index = tonumber(fields_data[7])
+			local item_quant = fields_data[3]
+			local cost_name = fields_data[4]
+			local cost_quant = fields_data[5]
+			local item_stock = fields_data[6]
+			local inv_quant = fields_data[7]
+			local row_index = tonumber(fields_data[8])
 			
 			if log then
 				io.write("vName="..villager_name.." ")
 				io.write("item_name="..item_name.." ")
-				io.write("cost_amount="..cost_amount.." ")
-				io.write("item_stock="..item_stock.." ")
+				io.write("item_quant="..item_quant.." ")
 				io.write("cost_name="..cost_name.." ")
-				io.write("player_quant="..player_quant.." ")
+				io.write("cost_quant="..cost_quant.." ")
+				io.write("item_stock="..item_stock.." ")
+				io.write("inv_quant="..inv_quant.." ")
 				io.write("row_index="..row_index.." ")
 			end
 			
@@ -54,11 +81,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			
 			-- remove cost items from player inv
 			local stack
-			stack = ItemStack(cost_name.." "..cost_amount)
+			stack = ItemStack(cost_name.." "..cost_quant)
 			player_inv:remove_item("main", stack)
 			
 			-- add item to player inventory
-			stack = ItemStack(item_name.." 1")
+			stack = ItemStack(item_name.." "..item_quant)
 			if not player_inv:room_for_item("main", stack) then
 				-- throw item at player's feet
 				minetest.env:add_item(player_pos, item_name)
@@ -71,10 +98,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			end
 			
 			-- remove stock from villager
-			self.vSell[row_index][2] = item_stock - 1
-			if log then
-				io.write("current_item_stock_detail: "..minetest.serialize(current_item).." ")
-			end
+			self.vSell[row_index][7] = item_stock - item_quant
+			
+			-- ensure to show dialogue recognizing player traded
+			-- instead of dialogue that player just cancelled the trade.
+			self.vTraded = true
 			
 			minetest.sound_play("coins", {pos = player_pos, gain = 0.4, max_hear_distance = 8} )
 			minetest.show_formspec(player_name, "villagers:trade|"..self.vID, villagers.getTradingFormspec(self, player_name))
@@ -121,3 +149,4 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 
 end)
+

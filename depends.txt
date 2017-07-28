@@ -1,1 +1,6 @@
 mg_villages
+cottages?
+village_gambit?
+village_sandcity?
+village_towntest?
+farming?
