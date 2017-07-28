@@ -2,11 +2,9 @@ TODO:
 - add support for farming redo in trading goods
 - finish details trade items for remaining job titles
 - add support for 3d armor in trading goods
-- incorporate new params item_desc and item_quant into trading formspec
 
 - redo /villagers spawn chat command into formspec instead
 - remove dependancy on mg_villagers mod.
-
 - make unique chat for 'single' houses and for region type
 
 -- use the nodemetadata to track how many mystery and simplejob traders will spawn..
