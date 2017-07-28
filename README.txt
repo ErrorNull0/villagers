@@ -27,5 +27,8 @@ Displays a formspec that lists all villagers currently spawned nearby that has a
 GO button: Teleports player to the trader/villager
 REFRESH button: Updates numbers for Current, Walked and Dist to the present moment.
 
+UN-SPAWNED VILLAGERS?
+Some villagers may not appear immediately when a player spawns or teleports directly into a new village. If this happens, walk (or fly) about 40 blocks away from the village, then walk back and the villager should appear and remain as a permanent resident of the village.
+
 NOTE ABOUT 'GRASSHUT' VILLAGE TYPE:
 This is a village type that is available when the very nice 'cottages' mod (https://forum.minetest.net/viewtopic.php?t=5120) is installed with 'mg_villages' mod - both by Sokomine. At this time, my villagers mod do not support the GRASSHUT village type because it requires Mossmanikin's 'dryplants' mod which depends on Venessa's 'biome_lib' mod. Venessa's biome_lib mod and her beautiful mods 'plantlife_modpack' and 'moretrees' are amazing mods that make the world look so much more lush and realistic. However, in my experience so far with biome_lib and other mods that depend on it, it becomes fairly processing intensive and detracks from my goal of having a lightweight, server and multiplayer friendly villagers mod. If you have a fast computer and primarily play singleplayer, then I would highly recommend installing Venessa's plantlife and moretrees mods for sure!
