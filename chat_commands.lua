@@ -76,7 +76,7 @@ function villagers.getVillagerListFormspec(player)
 	
 	local entities = {}
 	for _, self in pairs(minetest.luaentities) do
-		if self.vTitle then
+		if self.vSell ~= "none" then
 			table.insert(entities, self)
 		end
 	end
