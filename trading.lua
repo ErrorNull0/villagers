@@ -145,7 +145,7 @@ local GOODS_DATA = {
 	["screwdriver:screwdriver"] = {"villagers:coins_gold", 11, math.random(30,50)},
 	["default:chest_locked"] 	= {"villagers:coins_gold", 15, math.random(30,50)},
 	["default:skeleton_key"] 	= {"villagers:coins_gold", 19, math.random(30,50)},
-	--["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
+	["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
 	["default:door_steel"] 		= {"villagers:coins_gold", 62, math.random(20,40)},
 	["vessels:steel_bottle"] 	= {"villagers:coins_gold", 55, math.random(20,40)},
 	
@@ -382,7 +382,7 @@ villagers.GOODS = {
 		getGoodsData("farming:cotton", 1),
 		getGoodsData("flowers:mushroom_red", 1),
 		getGoodsData("flowers:mushroom_brown", 1),
-		getGoodsData("flowers:straw", 1),
+		getGoodsData("farming:straw", 1),
 		getGoodsData("farming:string", 1),
 	},
 	flower_seller = {
@@ -565,7 +565,7 @@ villagers.GOODS = {
 
 	servant = {
 		{split=0, min=1, max=2},
-		--getGoodsData("bucket:bucket_empty", 1, true),
+		getGoodsData("bucket:bucket_empty", 1, true),
 		getGoodsData("default:torch", 1, true),
 		getGoodsData("vessels:drinking_glass", 1, true),
 		getGoodsData("default:ice", 1, true),
@@ -767,6 +767,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 	while( item_count > 0 ) do
 		local index_to_pop = math.random(#all_items)
 		local popped_item = table.remove(all_items, index_to_pop)
+		local default_item = {"default:dirt", "Dirt", 1, "villagers:coins", "Silver Coin", 1, 1}
 		
 		-- error handling
 		if popped_item[1] == "invalid_item" then
@@ -774,9 +775,9 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 				io.write(" #ERROR Item #"..item_count.." - not a registered item '"..popped_item[2].."'.") 
 			end
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
-			"' not registered for plot#"..plot.." bed#"..bed
+			"' not registered for plot#"..plot.." bed#"..bed..". Replaced w/ Dirt."
 			table.insert(errors, error_message)
-			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
+			popped_item = default_item
 			
 		elseif popped_item[1] == "no_description" then
 			if log then 
@@ -785,7 +786,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
 			"' has no desc for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
+			popped_item = default_item
 			
 		elseif popped_item[1] == "naming_error" then
 			if log then 
@@ -794,7 +795,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
 			"' not in GOODS_DATA for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
+			popped_item = default_item
 			
 		elseif popped_item == nil then
 			if log then 
@@ -804,7 +805,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 				"is NIL for villager @ plot#"..plot.." bed#"..bed
 			local error_message = "Item #"..item_count.." is NIL for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
+			popped_item = default_item
 		end
 		
 		if log then  io.write("\n  adding: "..minetest.serialize(popped_item).." ") end
