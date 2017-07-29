@@ -108,15 +108,23 @@ local GOODS_DATA = {
 	["stairs:stair_desert_sandstone_block"] 	= {"villagers:coins", 5, math.random(40,60)},
 	["stairs:stair_desert_sandstone_brick"] 	= {"villagers:coins", 5, math.random(40,60)},
 	
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
-	["stairs:stair_"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_desert_stone_block"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_silver_sandstone_block"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_desert_stonebrick"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_silver_sandstone_brick"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_snowblock"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_cobble"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_stone"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_brick"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_stonebrick"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_bronzeblock"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_copperblock"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_steelblock"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_desert_cobble"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_desert_stone"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_silver_sandstone"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_loam"] 	= {"villagers:coins", 5, math.random(40,60)},
+	["stairs:stair_mossycobble"] 	= {"villagers:coins", 5, math.random(40,60)},
 	
 	
 	["default:coal_lump"] 		= {"villagers:coins", 20, math.random(60,80)},
@@ -145,7 +153,7 @@ local GOODS_DATA = {
 	["screwdriver:screwdriver"] = {"villagers:coins_gold", 11, math.random(30,50)},
 	["default:chest_locked"] 	= {"villagers:coins_gold", 15, math.random(30,50)},
 	["default:skeleton_key"] 	= {"villagers:coins_gold", 19, math.random(30,50)},
-	["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
+	--["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
 	["default:door_steel"] 		= {"villagers:coins_gold", 62, math.random(20,40)},
 	["vessels:steel_bottle"] 	= {"villagers:coins_gold", 55, math.random(20,40)},
 	
@@ -283,12 +291,12 @@ local function getGoodsData(item_name, quantity, buyback)
 end
 
 -- temporary default goods for villagers until appropriate items are assigned
-local DEFAULT_GOODS = { {split=0, min=1, max=1}, getGoodsData("default:dirt", 1) }
+local DEFAULT_GOODS = { {prob=1, split=0, min=1, max=1}, getGoodsData("default:dirt", 1) }
 
-if log then io.write("\n## Creating villagers.GOODS table..\n") end
+--io.write("\n## Creating villagers.GOODS table..\n")
 villagers.GOODS = {
 	baker = {
-		{split=2, min=2, max=4},			
+		{prob=1, split=2, min=2, max=4},			
 		getGoodsData("farming:bread", 1),
 		getGoodsData("farming:flour", 1),
 		getGoodsData("default:apple", 1),
@@ -296,13 +304,13 @@ villagers.GOODS = {
 		getGoodsData("flowers:mushroom_brown", 1),
 	},
 	barkeeper = {
-		{split=1, min=1, max=3},
+		{prob=1, split=1, min=1, max=3},
 		getGoodsData("vessels:drinking_glass", 1),
 		getGoodsData("default:apple", 1),
 		getGoodsData("farming:bread", 1),
 	},
 	blacksmith = {
-		{split=1, min=3, max=4},
+		{prob=1, split=1, min=3, max=4},
 		getGoodsData("default:sword_steel", 1),
 		getGoodsData("default:axe_steel", 1),
 		getGoodsData("default:pick_steel", 1),
@@ -310,7 +318,7 @@ villagers.GOODS = {
 		getGoodsData("farming:hoe_steel", 1),
 	},
 	bricklayer = {
-		{split=2, min=2, max=3},
+		{prob=1, split=2, min=2, max=3},
 		getGoodsData("default:stonebrick", 1),
 		getGoodsData("default:sandstonebrick", 1),
 		getGoodsData("default:clay_brick", 1),
@@ -319,7 +327,7 @@ villagers.GOODS = {
 		getGoodsData("default:silver_sandstone_brick", 1),
 	},
 	carpenter = {
-		{split=3, min=4, max=5},
+		{prob=1, split=3, min=4, max=5},
 		getGoodsData("default:ladder_wood", 1),
 		getGoodsData("default:fence_wood", 1),
 		getGoodsData("doors:gate_wood_closed", 1),
@@ -330,20 +338,20 @@ villagers.GOODS = {
 		getGoodsData("default:chest", 1),
 	},
 	charachoal_burner = {
-		{split=1, min=2, max=3},
+		{prob=1, split=1, min=2, max=3},
 		getGoodsData("default:coal_lump", 1),
 		getGoodsData("default:sand", 1),
 		getGoodsData("default:dirt", 1),
 		getGoodsData("default:gravel", 1),
 	},
 	cooper = {
-		{split=1, min=1, max=2},
+		{prob=1, split=1, min=1, max=2},
 		getGoodsData("cottages:barrel", 1),
 		getGoodsData("cottages:tub", 1),
 		getGoodsData("cottages:barrel_lying", 1),
 	},
 	coppersmith = {
-		{split=1, min=3, max=4},
+		{prob=1, split=1, min=3, max=4},
 		getGoodsData("default:sword_bronze", 1),
 		getGoodsData("default:axe_bronze", 1),
 		getGoodsData("default:pick_bronze", 1),
@@ -351,13 +359,13 @@ villagers.GOODS = {
 		getGoodsData("farming:hoe_bronze", 1),
 	},
 	doormaker = {
-		{split=1, min=1, max=3},
+		{prob=1, split=1, min=1, max=3},
 		getGoodsData("doors:door_wood_a", 1),
 		getGoodsData("doors:trapdoor", 1),
 		getGoodsData("doors:gate_wood_closed", 1),
 	},
 	dyemaker = {
-		{split=0, min=3, max=5},
+		{prob=1, split=0, min=3, max=5},
 		getGoodsData("dye:brown", 1),
 		getGoodsData("dye:dark_green", 1),
 		getGoodsData("dye:black", 1),
@@ -375,7 +383,7 @@ villagers.GOODS = {
 		getGoodsData("dye:pink", 1),
 	},
 	farmer = {
-		{split=3, min=3, max=5},
+		{prob=1, split=3, min=3, max=5},
 		getGoodsData("default:apple", 1),
 		getGoodsData("farming:bread", 1),
 		getGoodsData("farming:wheat", 1),
@@ -386,7 +394,7 @@ villagers.GOODS = {
 		getGoodsData("farming:string", 1),
 	},
 	flower_seller = {
-		{split=0, min=3, max=5},
+		{prob=1, split=0, min=3, max=5},
 		getGoodsData("flowers:rose", 1),
 		getGoodsData("flowers:tulip", 1),
 		getGoodsData("flowers:dandelion_yellow", 1),
@@ -395,11 +403,11 @@ villagers.GOODS = {
 		getGoodsData("flowers:dandelion_white", 1),
 	},
 	fruit_trader = {
-		{split=0, min=1, max=1},
+		{prob=1, split=0, min=1, max=1},
 		getGoodsData("default:apple", 1),
 	},
 	furnituremaker = {
-		{split=3, min=3, max=5},
+		{prob=1, split=3, min=3, max=5},
 		getGoodsData("cottages:table", 1),
 		getGoodsData("cottages:bench", 1),
 		getGoodsData("beds:bed", 1),
@@ -411,7 +419,7 @@ villagers.GOODS = {
 		getGoodsData("vessels:shelf", 1),
 	},
 	glassmaker = {
-		{split=0, min=3, max=5},
+		{prob=1, split=0, min=3, max=5},
 		getGoodsData("default:glass", 1),
 		getGoodsData("vessels:glass_bottle", 1),
 		getGoodsData("vessels:drinking_glass", 1),
@@ -420,27 +428,27 @@ villagers.GOODS = {
 		getGoodsData("cottages:glass_pane_side", 1),
 	},
 	goldsmith = {
-		{split=1, min=1, max=3},
+		{prob=1, split=1, min=1, max=3},
 		getGoodsData("default:goldblock", 1),
 		getGoodsData("stairs:stair_goldblock", 1),
 		getGoodsData("stairs:slab_goldblock", 1),
 	},
 	guard = {
-		{split=0, min=1, max=1},
+		{prob=1, split=0, min=1, max=1},
 		getGoodsData("default:sword_steel", 1),
 	},
 	horsekeeper = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("farming:straw", 1),
 		getGoodsData("farming:string", 1),
 	},
 	iceman = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("stairs:slab_ice", 1),
 		getGoodsData("stairs:stair_ice", 1),
 	},
 	innkeeper = {
-		{split=1, min=2, max=3},
+		{prob=1, split=1, min=2, max=3},
 		getGoodsData("beds:bed", 1),
 		getGoodsData("default:chest", 1),
 		getGoodsData("default:paper", 1),
@@ -448,17 +456,17 @@ villagers.GOODS = {
 		getGoodsData("default:book", 1),
 	},
 	librarian = {
-		{split=1, min=1, max=2},
+		{prob=1, split=1, min=1, max=2},
 		getGoodsData("default:book", 1),
 		getGoodsData("default:paper", 1),
 	},
 	lumberjack = {
-		{split=0, min=1, max=2},
+		{prob=3, split=0, min=1, max=2},
 		getGoodsData("default:wood", 1),
 		getGoodsData("default:tree", 1),
 	}, 
 	miller = {
-		{split=1, min=1, max=2},
+		{prob=1, split=1, min=1, max=2},
 		getGoodsData("farming:flour", 1),
 		getGoodsData("farming:straw", 1),
 	}, 
@@ -468,7 +476,7 @@ villagers.GOODS = {
 	roofer = DEFAULT_GOODS,
 	
 	sawmill_owner = {
-		{split=2, min=3, max=4},
+		{prob=1, split=2, min=3, max=4},
 		getGoodsData("default:wood", 1),
 		getGoodsData("default:tree", 1),
 		getGoodsData("default:stick", 1),
@@ -476,15 +484,22 @@ villagers.GOODS = {
 	}, 
 	
 	seed_seller = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("farming:seed_cotton", 1),
 		getGoodsData("farming:seed_wheat", 1),
+	}, 
+	
+	servant = {
+		{prob=3, split=0, min=1, max=2},
+		getGoodsData("default:apple", 1),
+		getGoodsData("farming:bread", 1),
+		getGoodsData("vessels:drinking_glass", 1),
 	}, 
 	
 	shopkeeper = DEFAULT_GOODS,
 	
 	smith = {
-		{split=1, min=3, max=4},
+		{prob=1, split=1, min=3, max=4},
 		getGoodsData("default:sword_steel", 1),
 		getGoodsData("default:axe_steel", 1),
 		getGoodsData("default:pick_steel", 1),
@@ -492,31 +507,86 @@ villagers.GOODS = {
 		getGoodsData("farming:hoe_steel", 1),
 	},
 	
-	stairmaker = DEFAULT_GOODS,
+	stairmaker = {
+		hot = {
+			{prob=1, split=0, min=3, max=5},
+			getGoodsData("stairs:stair_desert_sandstone_block", 1),
+			getGoodsData("stairs:stair_desert_stone_block", 1),
+			getGoodsData("stairs:stair_sandstone_block", 1),
+			getGoodsData("stairs:stair_silver_sandstone_block", 1),
+			getGoodsData("stairs:stair_desert_sandstone_brick", 1),
+			getGoodsData("stairs:stair_desert_stonebrick", 1),
+			getGoodsData("stairs:stair_sandstonebrick", 1),
+			getGoodsData("stairs:stair_silver_sandstone_brick", 1),
+		},
+		cold = {
+			{prob=1, split=2, min=2, max=4},
+			getGoodsData("stairs:stair_ice", 1),
+			getGoodsData("stairs:stair_snowblock", 1),
+			getGoodsData("stairs:stair_cobble", 1),
+			getGoodsData("stairs:stair_stone", 1),
+			getGoodsData("stairs:stair_wood", 1),
+		},
+		normal = {
+			{prob=1, split=3, min=3, max=5},
+			getGoodsData("stairs:stair_wood", 1),
+			getGoodsData("stairs:stair_cobble", 1),
+			getGoodsData("stairs:stair_stone", 1),
+			getGoodsData("stairs:stair_straw", 1),
+			getGoodsData("stairs:stair_brick", 1),
+			getGoodsData("stairs:stair_stonebrick", 1),
+			getGoodsData("stairs:stair_bronzeblock", 1),
+			getGoodsData("stairs:stair_copperblock", 1),
+			getGoodsData("stairs:stair_steelblock", 1),
+		},
+		desert = {
+			{prob=1, split=0, min=3, max=4},
+			getGoodsData("stairs:stair_desert_cobble", 1),
+			getGoodsData("stairs:stair_desert_sandstone", 1),
+			getGoodsData("stairs:stair_desert_stone", 1),
+			getGoodsData("stairs:stair_sandstone", 1),
+			getGoodsData("stairs:stair_silver_sandstone", 1),
+			getGoodsData("stairs:stair_loam", 1),
+		},
+		native = {
+			{prob=1, split=2, min=2, max=4},
+			getGoodsData("stairs:stair_junglewood", 1),
+			getGoodsData("stairs:stair_mossycobble", 1),
+			getGoodsData("stairs:stair_cobble", 1),
+			getGoodsData("stairs:stair_wood", 1),
+		}
+	},
+	
 	stonemason = DEFAULT_GOODS,
 	
 	tinsmith = {
-		{split=0, min=1, max=1},
+		{prob=1, split=0, min=1, max=1},
 		getGoodsData("default:tin_ingot", 1),
 	}, 
 	
 	toolmaker = {
-		{split=1, min=2, max=2},
+		{prob=1, split=1, min=2, max=2},
 		getGoodsData("screwdriver:screwdriver", 1),
 		getGoodsData("default:shovel_steel", 1),
 		getGoodsData("farming:hoe_steel", 1),
 		getGoodsData("default:skeleton_key", 1),
 	},
 	
-	trader = DEFAULT_GOODS,
+	trader = {
+		{prob=3, split=1, min=2, max=2},
+		getGoodsData("default:clay", 1),
+		getGoodsData("default:clay_brick", 1),
+		getGoodsData("stairs:slab_clay", 1),
+		getGoodsData("stairs:stair_clay", 1),
+	},
 	
 	wheelwright = {
-		{split=1, min=1, max=2},
+		{prob=1, split=1, min=1, max=2},
 		getGoodsData("cottages:wagon_wheel", 1),
 		getGoodsData("default:stick", 1),
 	}, 
 	wood_trader = {
-		{split=1, min=3, max=4},
+		{prob=1, split=1, min=3, max=4},
 		getGoodsData("default:stick", 1),
 		getGoodsData("default:wood", 1),
 		getGoodsData("stairs:slab_wood", 1),
@@ -524,20 +594,59 @@ villagers.GOODS = {
 		getGoodsData("cottages:hatch_wood", 1),
 	}, 
 	
+	
 	-- offers players to exchange coins for gold coins and vice versa
 	major = {
-		{split=0, min=2, max=2},
+		{prob=1, split=0, min=2, max=2},
 		{"villagers:coins_gold", "Gold Coin", 1, "villagers:coins", "Silver Coin", 11, math.random(800,999)},
 		{"villagers:coins", "Silver Coin", 9, "villagers:coins_gold", "Gold Coin", 1, math.random(800,999)},
 	}, 
 	
-	-- villagers who give coins to players for items
 	
-	--housemaid = {},
-	--landlord = {},
+	-- villagers who give coins to players for items
+	guest = {
+		{prob=4, split=0, min=1, max=1},
+		getGoodsData("flowers:mushroom_red", 1, true),
+		getGoodsData("flowers:mushroom_brown", 1, true),
+		getGoodsData("flowers:rose", 1, true),
+		getGoodsData("flowers:tulip", 1, true),
+		getGoodsData("flowers:dandelion_yellow", 1, true),
+		getGoodsData("flowers:geraniu", 1, true),
+		getGoodsData("flowers:viola", 1, true),
+		getGoodsData("flowers:dandelion_white", 1, true),
+		getGoodsData("dye:dark_grey", 1, true),
+		getGoodsData("dye:violet", 1, true),
+		getGoodsData("dye:blue", 1, true),
+		getGoodsData("dye:cyan", 1, true),
+		getGoodsData("dye:yellow", 1, true),
+		getGoodsData("dye:orange", 1, true),
+		getGoodsData("dye:red", 1, true),
+		getGoodsData("dye:magenta", 1, true),
+		getGoodsData("dye:pink", 1, true),
+		getGoodsData("default:papyrus", 1, true),
+		getGoodsData("default:ice", 1, true),
+		getGoodsData("vessels:glass_bottle", 1, true),
+		getGoodsData("default:torch", 1, true),
+		getGoodsData("vessels:steel_bottle", 1, true),
+		getGoodsData("default:sword_wood", 1, true),
+		getGoodsData("default:sword_stone", 1, true),
+		getGoodsData("default:axe_wood", 1, true),
+		getGoodsData("default:axe_stone", 1, true),
+	},
+	
+	landlord = {
+		{prob=2, split=0, min=1, max=2},
+		getGoodsData("default:paper", 1, true),
+		getGoodsData("default:book", 1, true),
+	},
+	housemaid = {
+		{prob=4, split=0, min=1, max=2},
+		getGoodsData("default:torch", 1, true),
+		getGoodsData("vessels:drinking_glass", 1, true),
+		getGoodsData("default:ice", 1, true),
+	},
 	ore_seller = {
-		{split=0, min=1, max=3},
-		{split=0, min=1, max=3},
+		{prob=1, split=0, min=1, max=3},
 		getGoodsData("default:coal_lump", 1, true),
 		getGoodsData("default:iron_lump", 1, true),
 		getGoodsData("default:copper_lump", 1, true),
@@ -546,39 +655,32 @@ villagers.GOODS = {
 		getGoodsData("default:mese_crystal_fragment", 1, true),
 	}, 
 	potterer = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("default:clay_lump", 1, true),
 		getGoodsData("default:clay", 1, true),
 	}, 
 	
 	saddler = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("farming:cotton", 1, true),
 		getGoodsData("farming:string", 1, true),
 	}, 
-
-	schoolteacher = {
-		{split=0, min=1, max=2},
-		getGoodsData("default:paper", 1, true),
-		getGoodsData("default:book", 1, true),
-	}, 
-
-	servant = {
-		{split=0, min=1, max=2},
-		getGoodsData("bucket:bucket_empty", 1, true),
-		getGoodsData("default:torch", 1, true),
-		getGoodsData("vessels:drinking_glass", 1, true),
-		getGoodsData("default:ice", 1, true),
-	}, 
 	
 	stoneminer = {
-		{split=0, min=1, max=2},
+		{prob=1, split=0, min=1, max=2},
 		getGoodsData("default:stone", 1, true),
 		getGoodsData("default:desert_stone", 1, true),
 		getGoodsData("default:sandstone", 1, true),
 		getGoodsData("default:desert_sandstone", 1, true),
 		getGoodsData("default:silver_sandstone", 1, true),
 	}, 
+	
+	schoolteacher = {
+		{prob=1, split=0, min=1, max=2},
+		getGoodsData("default:paper", 1, true),
+		getGoodsData("default:book", 1, true),
+	}, 
+	
 }
 
 
@@ -666,7 +768,7 @@ function villagers.getTradingFormspec(self, player_name)
 		
 	end
 		
-	formspec = formspec.. "button_exit[2.3,"..(height_form-0.8)..";2.5,"..height_exit_button..";"..self.vID..";I'm Done!]"
+	formspec = formspec.. "button_exit[2.3,"..(height_form - 1)..";2.5,"..height_exit_button..";"..self.vID..";I'm Done!]"
 		
 	return formspec
 end
@@ -720,25 +822,34 @@ end
 
 
 
-function villagers.getTradeInventory(title, plot, bed, errors)
+function villagers.getTradeInventory(title, region, plot, bed, errors)
 	local log = false
 	if log then 
-		io.write("\n## setTradeInv for "..string.upper(title).." @ plot#"..plot_num.."bed#"..bed.." ")
+		io.write("\n## setTradeInv for "..string.upper(title).." @ plot#"..plot.."bed#"..bed.." ")
 	end
 	
 	local new_trade_inventory = {}
 		
-	local source_trade_items = villagers.GOODS[title]
-	if source_trade_items == nil then
-		if log then io.write("NO-ITEMS-TO-SELL ") end
-		return "none"
+	local source_trade_items = villagers.GOODS[title][region]
+	if source_trade_items then
+		if log then io.write("gotRegionSpecificJobGoods ") end
+	else
+		source_trade_items = villagers.GOODS[title]
+		if log then io.write("gotDefaultJobGoods ") end
 	end
 	
-	if log then io.write("\n      ## Villager trader! ## ") end
-	
 	local all_items = villagers.copytable(source_trade_items)
-	
 	local selection_parameters = table.remove(all_items, 1)
+	
+	-- some job titles do not gauruntee, but only have
+	-- a probability that the villager will trade
+	if math.random(1, selection_parameters.prob) > 1 then
+		if log then io.write("chanceRollFailed ") end
+		return "none"
+	else
+		if log then io.write("chanceRollSuccess ") end
+	end
+	
 	local split_point = selection_parameters.split
 	local min_count = selection_parameters.min
 	local max_count = selection_parameters.max	
@@ -759,15 +870,14 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 			table.insert(new_trade_inventory, table.remove(all_items, i))
 			item_count = item_count - 1
 		end
-		if log then io.write(" .. no more mandatory items.\n") end
+		if log then io.write(" .. no more mandatory items.") end
 	end
 	
-	if log then io.write("  item_count="..item_count.." remainingCountOf_allItemsTable="..#all_items.." ") end
+	if log then io.write("\n  item_count="..item_count.." remainingCountOf_allItemsTable="..#all_items.." ") end
 	
 	while( item_count > 0 ) do
 		local index_to_pop = math.random(#all_items)
 		local popped_item = table.remove(all_items, index_to_pop)
-		local default_item = {"default:dirt", "Dirt", 1, "villagers:coins", "Silver Coin", 1, 1}
 		
 		-- error handling
 		if popped_item[1] == "invalid_item" then
@@ -775,9 +885,9 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 				io.write(" #ERROR Item #"..item_count.." - not a registered item '"..popped_item[2].."'.") 
 			end
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
-			"' not registered for plot#"..plot.." bed#"..bed..". Replaced w/ Dirt."
+			"' not registered for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = default_item
+			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
 			
 		elseif popped_item[1] == "no_description" then
 			if log then 
@@ -786,7 +896,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
 			"' has no desc for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = default_item
+			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
 			
 		elseif popped_item[1] == "naming_error" then
 			if log then 
@@ -795,7 +905,7 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 			local error_message = "Item #"..item_count.." '"..popped_item[2]..
 			"' not in GOODS_DATA for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = default_item
+			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
 			
 		elseif popped_item == nil then
 			if log then 
@@ -805,10 +915,10 @@ function villagers.getTradeInventory(title, plot, bed, errors)
 				"is NIL for villager @ plot#"..plot.." bed#"..bed
 			local error_message = "Item #"..item_count.." is NIL for plot#"..plot.." bed#"..bed
 			table.insert(errors, error_message)
-			popped_item = default_item
+			popped_item = {"default:dirt", "Dirt [error]", 1, "villagers:coins", 1, 1}
 		end
 		
-		if log then  io.write("\n  adding: "..minetest.serialize(popped_item).." ") end
+		if log then  io.write("\n    adding: "..minetest.serialize(popped_item).." ") end
 		table.insert(new_trade_inventory, popped_item)
 		item_count = item_count - 1
 	end
