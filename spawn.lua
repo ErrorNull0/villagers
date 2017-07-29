@@ -44,6 +44,7 @@ function getRegionFromArea(pos, radius, errors)
 			if log then io.write(nodename) end
 			if nodename == "ROAD" or 
 				nodename == "DIRT" or 
+				nodename == "FELDWEG" or 
 				nodename == "STONE" or 
 				nodename == "STONEBRICK" or 
 				nodename == "COBBLE" or 
@@ -159,8 +160,8 @@ function getRegionFromArea(pos, radius, errors)
 		end
 	else 
 		io.write(" #ERROR IN getRegionFromArea()# ")
-		local error_message = "getRegionFromArea(): Unrecognized value for top_nodename = "..top_nodename.." "..
-			"Falling back to region = NORMAL."
+		local error_message = "Unknown value for top_nodename = "..top_nodename.." "..
+			"Falling back to region=NORMAL."
 		table.insert(errors, error_message)
 		region_type = "normal"
 	end
@@ -342,6 +343,7 @@ minetest.register_lbm({
 		
 		-- 'pos' is currently location of mg_Villages mob spawner. 
 		-- Ensure villager spawns one node above this position.
+		--pos.y = pos.y + 1.5
 		pos.y = village_data.vh + 1.5
 		local objectRef = minetest.add_entity(pos, "villagers:villager")
 		local self = objectRef:get_luaentity()	
@@ -361,14 +363,15 @@ minetest.register_lbm({
 		-- assigned trading goods to villagers who
 		-- possess the appropriate title		
 		if title == nil then
-			self.vSell = "none"
-		elseif title == "guest" then
+			-- these are home/hut dwellers
 			self.vSell = "none"
 		elseif villagers.GOODS[title] == nil then
 			self.vSell = "none"
-			table.insert(errors, "Unknown job title '"..title.."' for plot#"..plot_num.." bed#"..bed_num.." villager.")
+			table.insert(errors, "villagers.GOODS: Unknown job title '"..title.."' for plot#"..plot_num.." bed#"..bed_num.." villager.")
 		else
-			self.vSell = villagers.getTradeInventory(title, plot_num, bed_num, errors) 
+			-- getTradeInventory() can also return "none" for job titles
+			-- that fail probability check of trading items
+			self.vSell = villagers.getTradeInventory(title, region, plot_num, bed_num, errors) 
 		end
 		self.vTitle = title
 		
