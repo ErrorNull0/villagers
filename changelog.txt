@@ -1,3 +1,10 @@
+v0.17 Hotfix 
+- removed references to bucket:bucket_empty to fix NIL errors
+- villager spawn y-pos now based on village y-pos
+- /villagers list command only shows villagers with trade items
+- trade items offered by villagers depend on surrounding region
+- village_ruins mod *seems* compatible now (more testing needed)
+
 v0.17
 [added]
 - Added item description to trading formspec
