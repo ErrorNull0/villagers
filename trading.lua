@@ -145,7 +145,7 @@ local GOODS_DATA = {
 	["screwdriver:screwdriver"] = {"villagers:coins_gold", 11, math.random(30,50)},
 	["default:chest_locked"] 	= {"villagers:coins_gold", 15, math.random(30,50)},
 	["default:skeleton_key"] 	= {"villagers:coins_gold", 19, math.random(30,50)},
-	["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
+	--["bucket:bucket_empty"] 	= {"villagers:coins_gold", 28, math.random(40,60)},
 	["default:door_steel"] 		= {"villagers:coins_gold", 62, math.random(20,40)},
 	["vessels:steel_bottle"] 	= {"villagers:coins_gold", 55, math.random(20,40)},
 	
@@ -532,6 +532,9 @@ villagers.GOODS = {
 	}, 
 	
 	-- villagers who give coins to players for items
+	
+	--housemaid = {},
+	--landlord = {},
 	ore_seller = {
 		{split=0, min=1, max=3},
 		{split=0, min=1, max=3},
@@ -553,6 +556,20 @@ villagers.GOODS = {
 		getGoodsData("farming:cotton", 1, true),
 		getGoodsData("farming:string", 1, true),
 	}, 
+
+	schoolteacher = {
+		{split=0, min=1, max=2},
+		getGoodsData("default:paper", 1, true),
+		getGoodsData("default:book", 1, true),
+	}, 
+
+	servant = {
+		{split=0, min=1, max=2},
+		--getGoodsData("bucket:bucket_empty", 1, true),
+		getGoodsData("default:torch", 1, true),
+		getGoodsData("vessels:drinking_glass", 1, true),
+		getGoodsData("default:ice", 1, true),
+	}, 
 	
 	stoneminer = {
 		{split=0, min=1, max=2},
@@ -562,19 +579,6 @@ villagers.GOODS = {
 		getGoodsData("default:desert_sandstone", 1, true),
 		getGoodsData("default:silver_sandstone", 1, true),
 	}, 
-	servant = {
-		{split=0, min=1, max=2},
-		getGoodsData("bucket:bucket_empty", 1, true),
-		getGoodsData("default:torch", 1, true),
-		getGoodsData("vessels:drinking_glass", 1, true),
-		getGoodsData("default:ice", 1, true),
-	}, 
-	schoolteacher = {
-		{split=0, min=1, max=2},
-		getGoodsData("default:paper", 1, true),
-		getGoodsData("default:book", 1, true),
-	}, 
-	
 }
 
 
