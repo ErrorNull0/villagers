@@ -311,6 +311,7 @@ minetest.register_lbm({
 		local owns_data = beds_data.owns
 		
 		if log then
+			pos.y = village_data.vh + 1.5
 			io.write("\nVillager: "..string.upper(villager_name).." "..minetest.pos_to_string(pos).." ")
 			io.write("gender="..gender.." age="..age.." gen="..gen.." bed#"..bed_num.." "..bed_pos_str.." ")
 			if title then io.write("*"..string.upper(title).."* ") end
@@ -341,7 +342,7 @@ minetest.register_lbm({
 		
 		-- 'pos' is currently location of mg_Villages mob spawner. 
 		-- Ensure villager spawns one node above this position.
-		pos.y = pos.y + 1.5
+		pos.y = village_data.vh + 1.5
 		local objectRef = minetest.add_entity(pos, "villagers:villager")
 		local self = objectRef:get_luaentity()	
 		
