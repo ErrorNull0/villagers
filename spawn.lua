@@ -343,8 +343,7 @@ minetest.register_lbm({
 		
 		-- 'pos' is currently location of mg_Villages mob spawner. 
 		-- Ensure villager spawns one node above this position.
-		--pos.y = pos.y + 1.5
-		pos.y = village_data.vh + 1.5
+		pos.y = village_data.vh + 0.5
 		local objectRef = minetest.add_entity(pos, "villagers:villager")
 		local self = objectRef:get_luaentity()	
 		
@@ -387,7 +386,7 @@ minetest.register_lbm({
 		
 		-- set final position that takes into account calc'd 
 		-- collision_box that was based on dynamic visual_size
-		final_pos.y = final_pos.y - (1-newSize)
+		final_pos.y = final_pos.y
 		objectRef:setpos(final_pos)
 		self.vPos = 		{x=final_pos.x,y=final_pos.y,z=final_pos.z}
 		self.vOriginPos = 	{x=final_pos.x,y=final_pos.y,z=final_pos.z}
