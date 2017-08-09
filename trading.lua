@@ -433,10 +433,6 @@ villagers.GOODS = {
 		getGoodsData("stairs:stair_goldblock", 1),
 		getGoodsData("stairs:slab_goldblock", 1),
 	},
-	guard = {
-		{prob=1, split=0, min=1, max=1},
-		getGoodsData("default:sword_steel", 1),
-	},
 	horsekeeper = {
 		{prob=1, split=0, min=1, max=2},
 		getGoodsData("farming:straw", 1),
@@ -487,13 +483,6 @@ villagers.GOODS = {
 		{prob=1, split=0, min=1, max=2},
 		getGoodsData("farming:seed_cotton", 1),
 		getGoodsData("farming:seed_wheat", 1),
-	}, 
-	
-	servant = {
-		{prob=3, split=0, min=1, max=2},
-		getGoodsData("default:apple", 1),
-		getGoodsData("farming:bread", 1),
-		getGoodsData("vessels:drinking_glass", 1),
 	}, 
 	
 	shopkeeper = DEFAULT_GOODS,
@@ -604,6 +593,11 @@ villagers.GOODS = {
 	
 	
 	-- villagers who give coins to players for items
+	guard = {
+		{prob=2, split=0, min=1, max=1},
+		getGoodsData("default:sword_steel", 1, true),
+		getGoodsData("default:sword_stone", 1, true),
+	},
 	guest = {
 		{prob=4, split=0, min=1, max=1},
 		getGoodsData("flowers:mushroom_red", 1, true),
@@ -665,6 +659,19 @@ villagers.GOODS = {
 		getGoodsData("farming:cotton", 1, true),
 		getGoodsData("farming:string", 1, true),
 	}, 
+	
+	servant = {
+		{prob=4, split=0, min=1, max=1},
+		getGoodsData("vessels:drinking_glass", 1, true),
+		getGoodsData("vessels:glass_bottle", 1, true),
+		getGoodsData("farming:drinking_cup", 1, true),
+	}, 
+	
+	soldier = {
+		{prob=2, split=0, min=1, max=1},
+		getGoodsData("default:sword_steel", 1, true),
+		getGoodsData("default:sword_stone", 1, true),
+	},
 	
 	stoneminer = {
 		{prob=1, split=0, min=1, max=2},
