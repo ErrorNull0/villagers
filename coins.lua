@@ -46,6 +46,9 @@ if enable_coin_drop then
 			local new_items = {}
 			for idx = 1, #item_drop_def do table.insert(new_items, item_drop_def[idx]) end
 
+			new_items[1].items[2] = "default:dirt"
+			new_items[2].items[2] = "default:dirt"
+
 			-- default drop = "string", build a table and include the default drop at last position
 			if type(item_def.drop) == "string" or coin_nodes[n] == "ethereal:dry_dirt" then
 				debug = " --> creating new table"
@@ -56,7 +59,6 @@ if enable_coin_drop then
 				if coin_nodes[n] == "ethereal:dry_dirt" then
 					new_items[1].items[2] = "ethereal:dry_dirt"
 					new_items[2].items[2] = "ethereal:dry_dirt"
-
 					insert_drop = coin_nodes[n]
 				end
 
