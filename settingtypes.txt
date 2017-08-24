@@ -1,0 +1,5 @@
+#Give startup-coins
+give_startup_coins (Give startup-coins) bool true
+
+#Coin-drop in dirt
+coin_drop (Coin drop) bool true
