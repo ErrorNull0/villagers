@@ -43,7 +43,7 @@ if enable_coin_drop then
 		local item_def = minetest.registered_items[coin_nodes[n]]
 
 		if item_def ~= nil then
-			local debug
+			local debug = ""
 			local set_max_items = 1
 
 			-- getting drop-item-table
