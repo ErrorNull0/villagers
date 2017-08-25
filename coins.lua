@@ -19,6 +19,65 @@ local function coin_drop_items(node)
 	return { { items = {"villagers:coins_gold", set_dirt}, rarity = 50 }, { items = {"villagers:coins", set_dirt}, rarity = 30 } }
 end
 
+
+p_coins_table = {}
+
+local function update_coins(player)
+	local p_name = player:get_player_name()
+	local inv = player:get_inventory()
+	
+	-- read-out coin stacks/update current coins
+	p_coins_table[p_name].coins.curr = 0
+	p_coins_table[p_name].coins_gold.curr = 0
+
+	local curr_stack
+
+	for i = 1, inv:get_size("main") do
+		curr_stack = inv:get_stack("main", i):to_table()
+
+		if curr_stack then
+			local addCount = curr_stack.count
+			local new_count = curr_stack.count
+
+			if curr_stack.name == "villagers:coins" then
+				p_coins_table[p_name].coins.curr = p_coins_table[p_name].coins.curr + curr_stack.count
+			elseif curr_stack.name == "villagers:coins_gold" then
+				p_coins_table[p_name].coins_gold.curr = p_coins_table[p_name].coins_gold.curr + curr_stack.count
+			end
+		end
+	end
+
+	-- update villagers:coins on change
+	if p_coins_table[p_name].coins.old ~= p_coins_table[p_name].coins.curr then
+		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins_new", { to_player = p_name, gain = 1.5 }) end
+		p_coins_table[p_name].coins.old = p_coins_table[p_name].coins.curr
+	end
+
+	-- update villagers:coins_gold on change
+	if p_coins_table[p_name].coins_gold.old ~= p_coins_table[p_name].coins_gold.curr then
+		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins_new", { to_player = p_name, gain = 1.5 }) end
+		p_coins_table[p_name].coins_gold.old = p_coins_table[p_name].coins_gold.curr
+	end
+
+	-- if player just joined do not play sound
+	if p_coins_table[p_name].just_joined == true then p_coins_table[p_name].just_joined = false end
+end
+
+-- register p_coins_table on playerjoin
+minetest.register_on_joinplayer(function(player)
+	local p_name = player:get_player_name()
+
+	if p_coins_table[p_name] == nil then
+		p_coins_table[p_name] = {}	
+	end
+
+	p_coins_table[p_name].just_joined = true
+	p_coins_table[p_name].coins = {curr = 0, old = 0}
+	p_coins_table[p_name].coins_gold = {curr = 0, old = 0}
+
+	update_coins(player)
+end)
+
 if enable_coin_drop then
 
 	minetest.log("[Villagers] hiding coins in dirt, please wait!")
@@ -74,4 +133,21 @@ if enable_coin_drop then
 			minetest.override_item(coin_nodes[n], { drop = set_item_drop })
 		end
 	end
+
+	local timer = 0
+
+	-- global loop to checkback if any player just collected a new coin
+	minetest.register_globalstep(function(dtime)
+
+		timer = timer + dtime
+		if timer < 0.5 then return end -- check for added coins every half second
+		timer = 0
+
+		local name = ""
+		local inv
+
+		for _,player in ipairs(minetest.get_connected_players()) do
+			update_coins(player)
+		end
+	end)
 end
