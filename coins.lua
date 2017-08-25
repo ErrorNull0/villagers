@@ -49,13 +49,13 @@ local function update_coins(player)
 
 	-- update villagers:coins on change
 	if p_coins_table[p_name].coins.old ~= p_coins_table[p_name].coins.curr then
-		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins_new", { to_player = p_name, gain = 1.5 }) end
+		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins", { to_player = p_name, gain = 1.5 }) end
 		p_coins_table[p_name].coins.old = p_coins_table[p_name].coins.curr
 	end
 
 	-- update villagers:coins_gold on change
 	if p_coins_table[p_name].coins_gold.old ~= p_coins_table[p_name].coins_gold.curr then
-		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins_new", { to_player = p_name, gain = 1.5 }) end
+		if p_coins_table[p_name].just_joined == false then minetest.sound_play("coins", { to_player = p_name, gain = 1.5 }) end
 		p_coins_table[p_name].coins_gold.old = p_coins_table[p_name].coins_gold.curr
 	end
 
